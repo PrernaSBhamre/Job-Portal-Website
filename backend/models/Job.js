@@ -15,12 +15,12 @@ const jobSchema = new mongoose.Schema(
       required: [true, 'Please add requirements']
     }],
     salary: {
-      type: Number,
-      required: [true, 'Please add a salary'],
+      type: String, // Kept as String to allow "₹4L - ₹6L" ranges from Figma
+      required: [true, 'Please add a salary or salary range'],
     },
     experienceLevel: {
-      type: Number,
-      required: [true, 'Please add required experience level in years'],
+      type: String, // Kept as String to allow "0-1 Years" ranges from Figma
+      required: [true, 'Please add required experience level'],
     },
     location: {
       type: String,
@@ -34,6 +34,9 @@ const jobSchema = new mongoose.Schema(
       type: Number,
       required: [true, 'Please add number of positions available']
     },
+    tags: [{
+      type: String // To store tags like ["React", "TypeScript", "Tailwind"]
+    }],
     company: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Company',

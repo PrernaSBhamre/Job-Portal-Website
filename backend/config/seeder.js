@@ -26,130 +26,195 @@ const importData = async () => {
     // 2. Create mock Users
     const users = await User.create([
       {
-        fullname: 'John Recruiter',
-        email: 'john@company.com',
-        phoneNumber: 1112223333,
-        password: 'password123', // In a real app, this should be hashed
+        fullname: 'TechNova HR',
+        email: 'hr@technova.in',
+        phoneNumber: 9876543210,
+        password: 'password123',
         role: 'recruiter',
       },
       {
-        fullname: 'Jane Applicant',
-        email: 'jane@student.com',
-        phoneNumber: 4445556666,
-        password: 'password123', // In a real app, this should be hashed
+        fullname: 'Arjun Student',
+        email: 'arjun@student.in',
+        phoneNumber: 9123456780,
+        password: 'password123',
         role: 'student',
         profile: {
-          bio: 'Recent CS Graduate looking for a frontend role.',
-          skills: ['React', 'Node.js', 'MongoDB', 'JavaScript'],
+          bio: 'Fresh Computer Science graduate looking for frontend roles.',
+          skills: ['React', 'JavaScript', 'HTML5', 'CSS3'],
         }
       },
       {
-        fullname: 'Bob Developer',
-        email: 'bob@student.com',
-        phoneNumber: 7778889999,
-        password: 'password123', // In a real app, this should be hashed
+        fullname: 'Priya Applicant',
+        email: 'priya@student.in',
+        phoneNumber: 9988776655,
+        password: 'password123',
         role: 'student',
         profile: {
-          bio: 'Experienced backend developer seeking new challenges.',
-          skills: ['Python', 'Django', 'PostgreSQL', 'AWS'],
+          bio: 'Passionate UI/UX designer with a portfolio of mobile apps.',
+          skills: ['Figma', 'Adobe XD', 'Prototyping'],
         }
       }
     ]);
 
     const recruiterId = users[0]._id;
-    const student1Id = users[1]._id;
-    const student2Id = users[2]._id;
+    const studentArjun = users[1]._id;
+    const studentPriya = users[2]._id;
 
     console.log('Users Created...');
 
-    // 3. Create mock Companies
+    // 3. Create mock Companies based on Figma
     const companies = await Company.create([
       {
-        name: 'TechNova Solutions',
-        description: 'Leading provider of cloud infrastructure and scalable web applications.',
-        website: 'https://technova.example.com',
-        location: 'San Francisco, CA',
+        name: 'TechNova Systems',
+        description: 'Leading provider of tech solutions in India.',
+        location: 'Bangalore, India',
         userId: recruiterId
       },
       {
-        name: 'DataFlow Inc',
-        description: 'Pioneering big data analytics and machine learning services.',
-        website: 'https://dataflow.example.com',
-        location: 'New York, NY',
+        name: 'Creative Pulse',
+        description: 'Award-winning UI/UX design agency.',
+        location: 'Pune, India',
+        userId: recruiterId
+      },
+      {
+        name: 'Infosys',
+        description: 'Global leader in next-generation digital services and consulting.',
+        location: 'Hyderabad, India',
+        userId: recruiterId
+      },
+      {
+        name: 'StartUp Inc',
+        description: 'Fast-growing startup building the future of remote work.',
+        location: 'Remote',
+        userId: recruiterId
+      },
+      {
+        name: 'DataFlow',
+        description: 'Data analytics and machine learning experts.',
+        location: 'Mumbai, India',
+        userId: recruiterId
+      },
+      {
+        name: 'QualityFirst',
+        description: 'Software QA and testing automation services.',
+        location: 'Hyderabad',
         userId: recruiterId
       }
     ]);
 
-    const company1Id = companies[0]._id;
-    const company2Id = companies[1]._id;
+    const techNovaId = companies[0]._id;
+    const creativePulseId = companies[1]._id;
+    const infosysId = companies[2]._id;
+    const startupIncId = companies[3]._id;
+    const dataFlowId = companies[4]._id;
+    const qualityFirstId = companies[5]._id;
 
     console.log('Companies Created...');
 
-    // 4. Create mock Jobs
+    // 4. Create mock Jobs based heavily on Figma Mockups
     const jobs = await Job.create([
       {
-        title: 'Frontend React Developer',
-        description: 'We are looking for an experienced React developer to build modern UIs.',
-        requirements: ['3+ years of React', 'Experience with Redux', 'Responsive Design'],
-        salary: 120000,
-        experienceLevel: 3,
-        location: 'Remote',
+        title: 'Junior React Developer',
+        description: 'We are looking for a fresh React developer to join our fast-paced Bangalore team.',
+        requirements: ['React JS', 'TypeScript', 'Tailwind CSS understanding'],
+        salary: '₹4L - ₹6L',
+        experienceLevel: '0-1 Years',
+        location: 'Bangalore, India',
+        jobType: 'Full-Time',
+        position: 5,
+        tags: ['React', 'TypeScript', 'Tailwind'],
+        company: techNovaId,
+        created_by: recruiterId
+      },
+      {
+        title: 'Fresher UI/UX Designer',
+        description: 'Join our creative team to design modern interfaces for global clients.',
+        requirements: ['Design portfolio', 'Figma expertise', 'Understanding of user journeys'],
+        salary: '₹3.5L - ₹5L',
+        experienceLevel: '0 Years',
+        location: 'Pune, India',
         jobType: 'Full-Time',
         position: 2,
-        company: company1Id,
+        tags: ['Figma', 'Adobe XD', 'Prototyping'],
+        company: creativePulseId,
         created_by: recruiterId
       },
       {
-        title: 'Backend Node.js Engineer',
-        description: 'Join our core infrastructure team to build scalable microservices.',
-        requirements: ['5+ years of Node.js', 'MongoDB expertise', 'AWS experience'],
-        salary: 140000,
-        experienceLevel: 5,
-        location: 'San Francisco, CA',
+        title: 'Software Engineer',
+        description: 'Join our massive enterprise team. Looking for strong Java basics.',
+        requirements: ['Core Java', 'Spring Boot', 'SQL fundamentals'],
+        salary: '₹4L - ₹6L',
+        experienceLevel: '0-2 Years',
+        location: 'Hyderabad, India',
         jobType: 'Full-Time',
-        position: 1,
-        company: company1Id,
+        position: 20,
+        tags: ['Java', 'Spring Boot', 'SQL'],
+        company: infosysId,
         created_by: recruiterId
       },
       {
-        title: 'Data Scientist',
-        description: 'Design and implement predictive models for our fintech clients.',
-        requirements: ['Python', 'TensorFlow', 'SQL', 'Masters Degree'],
-        salary: 135000,
-        experienceLevel: 2,
-        location: 'New York, NY',
-        jobType: 'Contract',
+        title: 'Frontend Dev Intern',
+        description: 'Learn the ropes of frontend development in a fast growing startup environment.',
+        requirements: ['HTML/CSS basics', 'Vanilla JS', 'Eagerness to learn'],
+        salary: '₹15k - ₹25k / mo',
+        experienceLevel: '0 Years',
+        location: 'Remote',
+        jobType: 'Internship',
         position: 3,
-        company: company2Id,
+        tags: ['HTML', 'CSS', 'JavaScript'],
+        company: startupIncId,
+        created_by: recruiterId
+      },
+      {
+        title: 'Python Developer',
+        description: 'Data-focused Python developer needed for our analytics pipeline.',
+        requirements: ['Python scripts', 'Django framework', 'PostgreSQL querying'],
+        salary: '₹4.5L - ₹7L',
+        experienceLevel: '0-1 Years',
+        location: 'Mumbai, India',
+        jobType: 'Full-Time',
+        position: 4,
+        tags: ['Python', 'Django', 'PostgreSQL'],
+        company: dataFlowId,
+        created_by: recruiterId
+      },
+      {
+        title: 'QA Automation Eng.',
+        description: 'Test automation role for freshers. Learn Selenium with us.',
+        requirements: ['Java basics', 'Manual testing concepts', 'Selenium understanding'],
+        salary: '₹15k - ₹25k / mo',
+        experienceLevel: '0-1 Years',
+        location: 'Hyderabad',
+        jobType: 'Internship',
+        position: 5,
+        tags: ['Selenium', 'Java', 'Testing'],
+        company: qualityFirstId,
         created_by: recruiterId
       }
     ]);
-
-    const job1Id = jobs[0]._id;
-    const job2Id = jobs[1]._id;
 
     console.log('Jobs Created...');
 
     // 5. Create mock Applications
     await Application.create([
       {
-        job: job1Id,
-        applicant: student1Id,
-        status: 'pending' // Jane applied for Frontend role
+        job: jobs[0]._id, // React Developer
+        applicant: studentArjun,
+        status: 'pending' 
       },
       {
-        job: job2Id,
-        applicant: student2Id,
-        status: 'accepted' // Bob applied for Backend role and was accepted
+        job: jobs[1]._id, // UI Designer
+        applicant: studentPriya,
+        status: 'accepted'
       }
     ]);
 
     // Update Jobs to include the application references
-    const app1 = await Application.findOne({ applicant: student1Id });
-    const app2 = await Application.findOne({ applicant: student2Id });
+    const app1 = await Application.findOne({ applicant: studentArjun });
+    const app2 = await Application.findOne({ applicant: studentPriya });
     
-    await Job.findByIdAndUpdate(job1Id, { $push: { applications: app1._id } });
-    await Job.findByIdAndUpdate(job2Id, { $push: { applications: app2._id } });
+    await Job.findByIdAndUpdate(jobs[0]._id, { $push: { applications: app1._id } });
+    await Job.findByIdAndUpdate(jobs[1]._id, { $push: { applications: app2._id } });
 
     console.log('Applications Created...');
 

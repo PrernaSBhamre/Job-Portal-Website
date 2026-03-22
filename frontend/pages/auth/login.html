@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FresherHub - Sign Up</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at top left, #1a1445, #05060f);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        /* NAVBAR */
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            font-size: 20px;
+        }
+
+        .logo-circle {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #7a5cff, #4c2cff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .fresher {
+            color: white;
+        }
+
+        .hub {
+            background: linear-gradient(135deg, #7a5cff, #4c2cff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .menu {
+            background: #0e0f1d;
+            padding: 8px 20px;
+            border-radius: 40px;
+            display: flex;
+            gap: 30px;
+        }
+
+        .menu a {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .auth {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .signup-btn,
+        .login-btn {
+            padding: 10px 20px;
+            border-radius: 30px;
+            background: transparent;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .auth .active {
+            background: linear-gradient(135deg, #ff8a00, #ff5e3a);
+        }
+
+        /* SIGNUP CARD */
+
+        .signup-section {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 0;
+        }
+
+        .card {
+            background: #0e0f1d;
+            padding: 40px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 420px;
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #7a5cff, #ff8a00, #ff5e3a);
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+        }
+
+        .card::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+            box-shadow: 0 0 40px rgba(122, 92, 255, 0.15);
+            z-index: -1;
+        }
+
+        .card h2 {
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .card p {
+            text-align: center;
+            font-size: 14px;
+            opacity: 0.7;
+            margin-bottom: 25px;
+        }
+
+        /* TOGGLE */
+
+        .toggle {
+            display: flex;
+            background: #090a14;
+            border-radius: 40px;
+            padding: 4px;
+            margin-bottom: 25px;
+        }
+
+        .toggle button {
+            flex: 1;
+            border: none;
+            padding: 10px;
+            border-radius: 40px;
+            background: transparent;
+            color: white;
+            cursor: pointer;
+        }
+
+        .toggle .active {
+            background: linear-gradient(135deg, #7a5cff, #4c2cff);
+        }
+
+        /* FORM */
+
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        .input-group label {
+            font-size: 12px;
+            opacity: 0.7;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            background: #05060f;
+            color: white;
+            outline: none;
+        }
+
+        .create-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 30px;
+            background: linear-gradient(135deg, #7a5cff, #4c2cff);
+            color: white;
+            font-weight: 500;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 20px 0;
+            opacity: 0.5;
+            font-size: 12px;
+        }
+
+        .social {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social a {
+            flex: 1;
+            padding: 10px;
+            border-radius: 30px;
+            background: #0a0b16;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            color: white;
+            cursor: pointer;
+            text-align: center;
+            display: block;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 13px;
+        }
+
+        .login-link span {
+            color: #7a5cff;
+            cursor: pointer;
+        }
+
+        /* FOOTER */
+
+        footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 40px 0;
+            background: #05060f;
+        }
+
+        footer .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+
+        .footer-title {
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .footer-links a {
+            display: block;
+            font-size: 14px;
+            opacity: 0.7;
+            margin-bottom: 6px;
+        }
+
+        .footer-desc {
+            opacity: 0.7;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .footer-social a {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-size: 16px;
+            transition: 0.3s;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .footer-social a:hover {
+            background: linear-gradient(135deg, #7a5cff, #4c2cff);
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px rgba(122, 92, 255, 0.6);
+        }
+
+        /* MOBILE */
+
+        @media(max-width:768px) {
+
+            .menu {
+                display: none;
+            }
+
+            nav {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .card {
+                padding: 30px 20px;
+            }
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+
+        .contact-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #7a5cff;
+            font-size: 16px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .contact-item p {
+            font-size: 14px;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+
+<body>
+
+
+
+    <section class="signup-section">
+
+        <div class="card">
+
+            <h2>Welcome Back</h2>
+            <p>Log in to access your FresherHub account</p>
+
+            <form id="loginForm">
+
+                <div class="input-group">
+                    <label>EMAIL ADDRESS</label>
+                    <input type="email" id="email" placeholder="john@example.com">
+                </div>
+
+                <div class="input-group">
+                    <label>PASSWORD</label>
+                    <input type="password" id="password" placeholder="Enter your password">
+                </div>
+
+                <button type="submit" class="create-btn">Log In →</button>
+
+            </form>
+
+            <div class="divider">OR LOG IN WITH</div>
+
+            <div class="social">
+                <a href="https://github.com/login" id="githubBtn" target="_blank">Github</a>
+                <a href="https://www.linkedin.com/login" id="linkedinBtn" target="_blank">LinkedIn</a>
+            </div>
+
+            <div class="login-link">
+                Don't have an account? <a href="register.html" style="color:#7a5cff;font-weight:600">Sign Up</a>
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function (e) {
+            e.preventDefault()
+            let email = document.getElementById("email").value
+            let password = document.getElementById("password").value
+
+            if (email == "" || password == "") {
+                alert("Please fill all fields")
+                return
+            }
+
+            alert("Logged In Successfully 🚀")
+            window.location.href = "../../index.html"
+        })
+        document.getElementById("githubBtn").onclick = () => { alert("Github Login Coming Soon") }
+        document.getElementById("linkedinBtn").onclick = () => { alert("LinkedIn Login Coming Soon") }
+    </script>
+
+</body>
+
+</html>

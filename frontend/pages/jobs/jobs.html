@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>FresherHub – Find Your Dream Job</title>
+<title>FresherHub ΓÇô Find Your Dream Job</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -22,24 +22,30 @@
 body{background:var(--bg);color:var(--tp);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--purple);border-radius:3px}
 
-/* ── PAGE TRANSITIONS ── */
+/* ΓöÇΓöÇ PAGE TRANSITIONS ΓöÇΓöÇ */
 .page{display:none;animation:fadeUp .35s ease both}
 .page.active{display:block}
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 
-/* ── NAVBAR ── */
-.navbar{background:rgba(11,11,20,.93);border-bottom:1px solid var(--border);backdrop-filter:blur(18px);padding:13px 0;position:sticky;top:0;z-index:1000}
-.logo-icon{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--purple),#a855f7);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:17px;color:#fff;flex-shrink:0}
-.logo-text{font-family:'Syne',sans-serif;font-weight:700;font-size:1.1rem}
-.logo-text span{color:var(--purple)}
-.nav-link{color:var(--tm)!important;font-weight:500;font-size:.88rem;padding:6px 13px!important;border-radius:8px;transition:all .2s;cursor:pointer}
-.nav-link:hover,.nav-link.act{color:var(--tp)!important;background:var(--hover)}
-.btn-li{background:transparent;border:1px solid var(--border);color:var(--tp);padding:7px 18px;border-radius:10px;font-weight:500;font-size:.85rem;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}
-.btn-li:hover{border-color:var(--purple);color:var(--purple)}
-.btn-su{background:var(--orange);color:#fff;border:none;padding:8px 20px;border-radius:10px;font-weight:700;font-size:.85rem;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}
-.btn-su:hover{background:var(--od);transform:translateY(-1px);box-shadow:0 6px 18px rgba(249,115,22,.35)}
+/* Navbar */
+.navbar-wrapper { border-bottom: 1px solid rgba(255, 255, 255, 0.05); background: rgba(11, 11, 20, 0.8); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 1000; }
+.navbar-custom { padding: 22px 0; display: flex; align-items: center; justify-content: space-between; }
+.logo-box { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.logo-icon { width: 36px; height: 36px; background: #5b21b6; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 1.1rem; box-shadow: 0 0 15px rgba(91, 33, 182, 0.6); }
+.logo-text { font-weight: 700; font-size: 1.35rem; color: #fff; letter-spacing: -0.5px; }
+.logo-text span { color: #8b5cf6; }
+.nav-pill { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 40px; padding: 6px 8px; display: flex; gap: 5px; }
+.nav-pill a { color: #a1a1aa; text-decoration: none; font-size: 0.88rem; font-weight: 500; padding: 8px 20px; border-radius: 30px; transition: 0.3s; }
+.nav-pill a:hover, .nav-pill a.active { color: #fff; background: rgba(255, 255, 255, 0.08); }
+.auth-btns { display: flex; align-items: center; gap: 25px; }
+.btn-login { color: #fff; text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: 0.3s; }
+.btn-login:hover { color: #94a3b8; }
+.btn-signup { background: linear-gradient(135deg, #f97316, #fb923c); color: #000; padding: 10px 24px; border-radius: 30px; text-decoration: none; font-weight: 800; font-size: 0.95rem; transition: 0.3s; border: none; }
+.btn-signup:hover { box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3); color: #000; }
+@media(max-width:991px) { .nav-pill { display: none; } }
+@media(max-width:500px) { .auth-btns { display: none; } }
 
-/* ── HERO ── */
+/* ΓöÇΓöÇ HERO ΓöÇΓöÇ */
 .hero{padding:36px 0 20px;background:radial-gradient(ellipse 700px 280px at 50% 0%,rgba(124,58,237,.13) 0%,transparent 70%)}
 .hero-title{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(1.55rem,3vw,2.3rem)}
 .hero-sub{color:var(--tm);font-size:.88rem;margin-top:4px}
@@ -51,7 +57,7 @@ body{background:var(--bg);color:var(--tp);font-family:'DM Sans',sans-serif;min-h
 .btn-srch{background:var(--purple);color:#fff;border:none;padding:9px 20px;margin:5px;border-radius:9px;font-weight:600;font-size:.82rem;cursor:pointer;transition:all .2s;white-space:nowrap}
 .btn-srch:hover{background:var(--ps)}
 
-/* ── FILTER PANEL ── */
+/* ΓöÇΓöÇ FILTER PANEL ΓöÇΓöÇ */
 .fpanel{background:var(--filter);border:1px solid var(--border);border-radius:16px;padding:20px;position:sticky;top:76px;max-height:calc(100vh - 90px);overflow-y:auto}
 .fpanel::-webkit-scrollbar{width:3px}
 .fp-title{font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem;display:flex;align-items:center;gap:7px;margin-bottom:18px}
@@ -66,7 +72,7 @@ body{background:var(--bg);color:var(--tp);font-family:'DM Sans',sans-serif;min-h
 .btn-clr{width:100%;background:transparent;border:1px solid var(--border);color:var(--tm);padding:8px;border-radius:9px;font-size:.8rem;cursor:pointer;transition:all .2s;margin-top:4px;font-family:'DM Sans',sans-serif}
 .btn-clr:hover{border-color:var(--purple);color:var(--purple)}
 
-/* ── SORT BAR ── */
+/* ΓöÇΓöÇ SORT BAR ΓöÇΓöÇ */
 .sbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px}
 .sbar select{background:var(--card);border:1px solid var(--border);color:var(--tp);padding:6px 11px;border-radius:8px;font-size:.8rem;cursor:pointer;font-family:'DM Sans',sans-serif}
 .sbar select:focus{outline:none;border-color:var(--purple)}
@@ -75,7 +81,7 @@ body{background:var(--bg);color:var(--tp);font-family:'DM Sans',sans-serif;min-h
 .btn-fmob{background:var(--card);border:1px solid var(--border);color:var(--tm);padding:7px 14px;border-radius:9px;font-size:.83rem;cursor:pointer;display:none;align-items:center;gap:6px;transition:all .2s;font-family:'DM Sans',sans-serif}
 .btn-fmob:hover{border-color:var(--purple);color:var(--purple)}
 
-/* ── JOB CARD ── */
+/* ΓöÇΓöÇ JOB CARD ΓöÇΓöÇ */
 .jcard{background:var(--card);border:1px solid var(--border);border-radius:15px;padding:20px 22px;transition:all .25s;cursor:pointer;position:relative;overflow:hidden;margin-bottom:14px;animation:fadeUp .35s ease both}
 .jcard::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:transparent;transition:background .25s;border-radius:3px 0 0 3px}
 .jcard:hover{border-color:var(--purple);transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.3)}
@@ -113,7 +119,7 @@ body{background:var(--bg);color:var(--tp);font-family:'DM Sans',sans-serif;min-h
 .btn-load{background:var(--card);border:1px solid var(--border);color:var(--tm);padding:12px 34px;border-radius:11px;font-weight:600;font-size:.88rem;cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:7px;margin:6px auto 0;font-family:'DM Sans',sans-serif}
 .btn-load:hover{border-color:var(--purple);color:var(--purple);background:var(--pg)}
 
-/* ── JD PAGE ── */
+/* ΓöÇΓöÇ JD PAGE ΓöÇΓöÇ */
 .jd-wrap{padding:24px 0 60px}
 .bc a{color:var(--tm);text-decoration:none;font-size:.82rem}
 .bc a:hover{color:var(--purple)}
@@ -159,7 +165,7 @@ body{background:var(--bg);color:var(--tp);font-family:'DM Sans',sans-serif;min-h
 .btn-upg{width:100%;background:linear-gradient(135deg,var(--purple),#a855f7);color:#fff;border:none;padding:10px;border-radius:9px;font-weight:700;font-size:.83rem;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}
 .btn-upg:hover{opacity:.9;transform:scale(1.02)}
 
-/* ── APPLY FORM PANEL ── */
+/* ΓöÇΓöÇ APPLY FORM PANEL ΓöÇΓöÇ */
 .apply-panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;margin-top:14px}
 .ap-title{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;margin-bottom:16px;display:flex;align-items:center;gap:7px}
 .ap-title i{color:var(--orange)}
@@ -224,7 +230,7 @@ textarea.fi{resize:vertical;min-height:80px}
 
 /* tooltip badge */
 .skill-known{position:relative}
-.skill-known::after{content:'✓ You have this';position:absolute;bottom:calc(100% + 5px);left:50%;transform:translateX(-50%);background:var(--green);color:#000;font-size:.65rem;font-weight:700;padding:3px 7px;border-radius:5px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .2s}
+.skill-known::after{content:'Γ£ô You have this';position:absolute;bottom:calc(100% + 5px);left:50%;transform:translateX(-50%);background:var(--green);color:#000;font-size:.65rem;font-weight:700;padding:3px 7px;border-radius:5px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .2s}
 .skill-known:hover::after{opacity:1}
 
 /* footer */
@@ -268,35 +274,34 @@ footer{background:#0c0c18;border-top:1px solid var(--border);padding:46px 0 22px
 </head>
 <body>
 
-<!-- ══════════════ NAVBAR ══════════════ -->
-<nav class="navbar navbar-expand-lg">
+<!-- ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ NAVBAR ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ -->
+<div class="navbar-wrapper">
   <div class="container">
-    <a class="d-flex align-items-center gap-2 text-decoration-none me-4" onclick="goJobs()" style="cursor:pointer">
-      <div class="logo-icon">F</div>
-      <span class="logo-text">Fresher<span>Hub</span></span>
-    </a>
-    <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
-      <i class="bi bi-list text-white fs-4"></i>
-    </button>
-    <div class="collapse navbar-collapse" id="nav">
-      <ul class="navbar-nav mx-auto gap-1">
-        <li><a class="nav-link">Home</a></li>
-        <li><a class="nav-link act" onclick="goJobs()" style="cursor:pointer">Find Jobs</a></li>
-        <li><a class="nav-link">Companies</a></li>
-        <li><a class="nav-link">Services</a></li>
-        <li><a class="nav-link">Resources</a></li>
-      </ul>
-      <div class="d-flex align-items-center gap-2 mt-3 mt-lg-0">
-        <button class="btn-li">Log In</button>
-        <button class="btn-su">Sign Up</button>
-      </div>
-    </div>
-  </div>
-</nav>
+    <nav class="navbar-custom">
+      <a href="../../index.html" class="logo-box">
+        <div class="logo-icon">F</div>
+        <div class="logo-text">Fresher<span>Hub</span></div>
+      </a>
 
-<!-- ════════════════════════════════════════
-     PAGE 1 — FIND JOBS
-════════════════════════════════════════ -->
+      <div class="nav-pill d-none d-lg-flex">
+        <a href="../../index.html">Home</a>
+        <a href="../jobs/jobs.html" class="active">Find Jobs</a>
+        <a href="#">Companies</a>
+        <a href="../services/services.html">Services</a>
+        <a href="../resources/resources.html">Resources</a>
+      </div>
+
+      <div class="auth-btns">
+        <a href="../auth/login.html" class="btn-login">Log In</a>
+        <a href="../auth/register.html" class="btn-signup">Sign Up</a>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<!-- ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+     PAGE 1 ΓÇö FIND JOBS
+ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ -->
 <div id="pageJobs" class="page active">
 
   <section class="hero">
@@ -309,7 +314,7 @@ footer{background:#0c0c18;border-top:1px solid var(--border);padding:46px 0 22px
         <div class="col-lg-6">
           <div class="search-box">
             <i class="bi bi-search"></i>
-            <input type="text" id="srch" placeholder="Search jobs, skills, companies…" onkeydown="if(event.key==='Enter')applyF()">
+            <input type="text" id="srch" placeholder="Search jobs, skills, companiesΓÇª" onkeydown="if(event.key==='Enter')applyF()">
             <button class="btn-srch" onclick="applyF()"><i class="bi bi-search me-1"></i>Search</button>
           </div>
         </div>
@@ -350,14 +355,14 @@ footer{background:#0c0c18;border-top:1px solid var(--border);padding:46px 0 22px
           <div class="fp-sec">
             <div class="fp-label">Salary (LPA)</div>
             <input type="range" min="0" max="20" value="20" id="salR" oninput="updSal(this.value)" style="width:100%;accent-color:var(--purple);margin-top:4px">
-            <div style="display:flex;justify-content:space-between;font-size:.73rem;color:var(--td);margin-top:3px"><span>₹0L</span><span id="salLbl">Any</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:.73rem;color:var(--td);margin-top:3px"><span>Γé╣0L</span><span id="salLbl">Any</span></div>
           </div>
           <div class="fp-sec">
             <div class="fp-label">Experience</div>
             <label class="fp-chk"><input type="radio" name="exp" class="ef" value="all" checked><span>All</span></label>
             <label class="fp-chk"><input type="radio" name="exp" class="ef" value="0"><span>Fresher (0 Yrs)</span></label>
-            <label class="fp-chk"><input type="radio" name="exp" class="ef" value="1"><span>0–1 Years</span></label>
-            <label class="fp-chk"><input type="radio" name="exp" class="ef" value="2"><span>1–2 Years</span></label>
+            <label class="fp-chk"><input type="radio" name="exp" class="ef" value="1"><span>0ΓÇô1 Years</span></label>
+            <label class="fp-chk"><input type="radio" name="exp" class="ef" value="2"><span>1ΓÇô2 Years</span></label>
           </div>
           <div class="fp-sec">
             <div class="fp-label">Job Type</div>
@@ -380,8 +385,8 @@ footer{background:#0c0c18;border-top:1px solid var(--border);padding:46px 0 22px
             <label style="color:var(--tm);font-size:.8rem">Sort:</label>
             <select id="sortSel" onchange="applyF()">
               <option value="newest">Newest First</option>
-              <option value="sh">Salary: High–Low</option>
-              <option value="sl">Salary: Low–High</option>
+              <option value="sh">Salary: HighΓÇôLow</option>
+              <option value="sl">Salary: LowΓÇôHigh</option>
               <option value="match">Best Match</option>
             </select>
           </div>
@@ -422,28 +427,28 @@ footer{background:#0c0c18;border-top:1px solid var(--border);padding:46px 0 22px
         </div>
         <div class="col-lg-3 col-md-6">
           <p class="ft mb-3">Contact Us</p>
-          <div class="fci"><i class="bi bi-geo-alt-fill"></i><span>Sai Complex, Temple Road,<br>Shirdi, Maharashtra – 423109</span></div>
+          <div class="fci"><i class="bi bi-geo-alt-fill"></i><span>Sai Complex, Temple Road,<br>Shirdi, Maharashtra ΓÇô 423109</span></div>
           <div class="fci"><i class="bi bi-telephone-fill"></i><span>+91 80 1234 5678</span></div>
           <div class="fci"><i class="bi bi-envelope-fill"></i><span>support@fresherhub.in</span></div>
         </div>
       </div>
-      <div class="fbot"><p>© 2026 FresherHub. All rights reserved.</p><div class="d-flex gap-3"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Sitemap</a></div></div>
+      <div class="fbot"><p>┬⌐ 2026 FresherHub. All rights reserved.</p><div class="d-flex gap-3"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a><a href="#">Sitemap</a></div></div>
     </div>
   </footer>
 </div>
 
-<!-- ════════════════════════════════════════
-     PAGE 2 — JOB DETAIL
-════════════════════════════════════════ -->
+<!-- ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+     PAGE 2 ΓÇö JOB DETAIL
+ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ -->
 <div id="pageJD" class="page">
   <div class="container jd-wrap">
 
     <!-- BREADCRUMB -->
     <nav style="padding:12px 0 10px">
       <div style="display:flex;align-items:center;gap:6px;font-size:.82rem;flex-wrap:wrap">
-        <a class="bc" onclick="goJobs()" style="color:var(--tm);text-decoration:none;cursor:pointer"><i class="bi bi-house me-1"></i>Jobs</a>
+        <a class="bc" href="jobs.html" style="color:var(--tm);text-decoration:none;cursor:pointer"><i class="bi bi-house me-1"></i>Jobs</a>
         <i class="bi bi-chevron-right" style="color:var(--td);font-size:.7rem"></i>
-        <span id="bcText" style="color:var(--td)">Loading…</span>
+        <span id="bcText" style="color:var(--td)">LoadingΓÇª</span>
       </div>
     </nav>
 
@@ -479,12 +484,12 @@ footer{background:#0c0c18;border-top:1px solid var(--border);padding:46px 0 22px
         </div>
         <div class="col-lg-3 col-md-6">
           <p class="ft mb-3">Contact Us</p>
-          <div class="fci"><i class="bi bi-geo-alt-fill"></i><span>Sai Complex, Temple Road, Shirdi, MH – 423109</span></div>
+          <div class="fci"><i class="bi bi-geo-alt-fill"></i><span>Sai Complex, Temple Road, Shirdi, MH ΓÇô 423109</span></div>
           <div class="fci"><i class="bi bi-telephone-fill"></i><span>+91 80 1234 5678</span></div>
           <div class="fci"><i class="bi bi-envelope-fill"></i><span>support@fresherhub.in</span></div>
         </div>
       </div>
-      <div class="fbot"><p>© 2026 FresherHub. All rights reserved.</p><div class="d-flex gap-3"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a></div></div>
+      <div class="fbot"><p>┬⌐ 2026 FresherHub. All rights reserved.</p><div class="d-flex gap-3"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a></div></div>
     </div>
   </footer>
 </div>
@@ -498,13 +503,13 @@ footer{background:#0c0c18;border-top:1px solid var(--border);padding:46px 0 22px
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-// ════════════════════ DATA ════════════════════
+// ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ DATA ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
 const JOBS=[
-  {id:1,title:'Junior React Developer',co:'TechNova Systems',ini:'T',loc:'Bangalore, India',type:'Full Time',exp:'0-1 Years',expV:1,sal:'₹4L – ₹6L / Year',salMin:4,skills:['React','TypeScript','Tailwind','Git'],pre:true,ceo:true,isNew:false,posted:'2 days ago',rating:4.5,rc:128,match:92,deadline:'Oct 15, 2026',daysLeft:30,apps:142,jobId:'#18829',ind:'IT Services',size:'500–1000',yr:'2015',color:'#7c3aed',
+  {id:1,title:'Junior React Developer',co:'TechNova Systems',ini:'T',loc:'Bangalore, India',type:'Full Time',exp:'0-1 Years',expV:1,sal:'Γé╣4L ΓÇô Γé╣6L / Year',salMin:4,skills:['React','TypeScript','Tailwind','Git'],pre:true,ceo:true,isNew:false,posted:'2 days ago',rating:4.5,rc:128,match:92,deadline:'Oct 15, 2026',daysLeft:30,apps:142,jobId:'#18829',ind:'IT Services',size:'500ΓÇô1000',yr:'2015',color:'#7c3aed',
     about:'TechNova Systems is a leading innovator in IT services, dedicated to building next-gen software solutions for global clients across 12 countries.',
     desc:'We are looking for a passionate Junior React Developer to join our dynamic team. You will work on building modern web applications using React, TypeScript, and Tailwind CSS. An excellent opportunity to learn and grow in a fast-paced product environment.',
     resp:['Build responsive, accessible UI components with React & TypeScript','Collaborate with designers to implement pixel-perfect interfaces','Write clean, well-documented, testable code','Participate in Agile ceremonies (sprint planning, retros)','Integrate REST APIs and manage application state with Redux'],
-    req:['JavaScript (ES6+) — strong fundamentals','React.js and its core principles (hooks, context)','HTML5, CSS3 and responsive design','Git version control and collaboration workflows','Willingness to learn and adapt continuously','Good problem-solving and communication skills'],
+    req:['JavaScript (ES6+) ΓÇö strong fundamentals','React.js and its core principles (hooks, context)','HTML5, CSS3 and responsive design','Git version control and collaboration workflows','Willingness to learn and adapt continuously','Good problem-solving and communication skills'],
     process:['Resume Screening','Online Coding Test','Technical Interview','HR Discussion','Offer Rollout'],
     salary:{base:350000,var:50000,ben:50000},
     reviews:[
@@ -512,7 +517,7 @@ const JOBS=[
       {n:'Sneha Patil',r:'Former Intern',text:'Smooth onboarding, early ownership of tasks. Management genuinely cares about your growth.',stars:4,mo:'Jan 2026'},
       {n:'Rahul Verma',r:'Software Engineer',text:'Fast-paced but very rewarding. Self-motivated people thrive here.',stars:4,mo:'Dec 2025'}
     ]},
-  {id:2,title:'Fresher UI/UX Designer',co:'Creative Pulse',ini:'C',loc:'Pune, India',type:'Full Time',exp:'0 Years',expV:0,sal:'₹3.5L – ₹5L / Year',salMin:3.5,skills:['Figma','Adobe XD','Prototyping','Design Systems'],pre:false,ceo:true,isNew:false,posted:'4 hours ago',rating:4.2,rc:76,match:80,deadline:'Apr 10, 2026',daysLeft:23,apps:89,jobId:'#19210',ind:'Design & Media',size:'50–200',yr:'2018',color:'#ec4899',
+  {id:2,title:'Fresher UI/UX Designer',co:'Creative Pulse',ini:'C',loc:'Pune, India',type:'Full Time',exp:'0 Years',expV:0,sal:'Γé╣3.5L ΓÇô Γé╣5L / Year',salMin:3.5,skills:['Figma','Adobe XD','Prototyping','Design Systems'],pre:false,ceo:true,isNew:false,posted:'4 hours ago',rating:4.2,rc:76,match:80,deadline:'Apr 10, 2026',daysLeft:23,apps:89,jobId:'#19210',ind:'Design & Media',size:'50ΓÇô200',yr:'2018',color:'#ec4899',
     about:'Creative Pulse is a boutique design consultancy crafting digital experiences for startups and Fortune 500 brands across South Asia.',
     desc:'Create beautiful, user-centred digital experiences for mobile and web products. Work alongside senior designers and directly with clients on end-to-end product design.',
     resp:['Design UI screens and interactive prototypes in Figma','Conduct user research and usability testing','Create and maintain design systems','Collaborate with devs to ensure design fidelity','Present design concepts and rationale to stakeholders'],
@@ -523,7 +528,7 @@ const JOBS=[
       {n:'Priya Singh',r:'UI Designer',text:'Brilliant place to start your design career. Creative, collaborative team with great client exposure.',stars:5,mo:'Mar 2026'},
       {n:'Karan Joshi',r:'UX Researcher',text:'Real client projects from month one. Management is very approachable and gives constructive feedback.',stars:4,mo:'Jan 2026'}
     ]},
-  {id:3,title:'Associate Software Engineer',co:'Infosys',ini:'I',loc:'Hyderabad, India',type:'Full Time',exp:'0-2 Years',expV:2,sal:'₹5L – ₹8L / Year',salMin:5,skills:['Java','Spring Boot','SQL','REST API'],pre:true,ceo:false,isNew:false,posted:'1 day ago',rating:4.7,rc:342,match:75,deadline:'Apr 20, 2026',daysLeft:33,apps:512,jobId:'#20001',ind:'IT Services',size:'200,000+',yr:'1981',color:'#0ea5e9',
+  {id:3,title:'Associate Software Engineer',co:'Infosys',ini:'I',loc:'Hyderabad, India',type:'Full Time',exp:'0-2 Years',expV:2,sal:'Γé╣5L ΓÇô Γé╣8L / Year',salMin:5,skills:['Java','Spring Boot','SQL','REST API'],pre:true,ceo:false,isNew:false,posted:'1 day ago',rating:4.7,rc:342,match:75,deadline:'Apr 20, 2026',daysLeft:33,apps:512,jobId:'#20001',ind:'IT Services',size:'200,000+',yr:'1981',color:'#0ea5e9',
     about:'Infosys is a global leader in IT services and consulting, serving clients across 50+ countries with 300,000+ employees worldwide.',
     desc:'Join Infosys as an ASE and work on enterprise-scale software products used by Fortune 500 companies. Structured training and global career paths provided.',
     resp:['Develop backend services using Java and Spring Boot','Write and optimise SQL queries for high-volume databases','Participate in Agile ceremonies','Write unit and integration tests','Collaborate across global teams in distributed environments'],
@@ -535,7 +540,7 @@ const JOBS=[
       {n:'Arjun Kumar',r:'Software Engineer',text:'Stable, well-paying job. Work-life balance depends on your project. Great stepping stone.',stars:4,mo:'Dec 2025'},
       {n:'Pooja Reddy',r:'Former ASE',text:'Lots of learning opportunities and certifications. The brand name opens many doors.',stars:4,mo:'Nov 2025'}
     ]},
-  {id:4,title:'Frontend Developer Intern',co:'StartUp Inc',ini:'S',loc:'Remote',type:'Internship',exp:'0 Years',expV:0,sal:'₹15k – ₹25k / Month',salMin:1.8,skills:['HTML','CSS','JavaScript','React'],pre:false,ceo:false,isNew:true,posted:'Just now',rating:3.9,rc:22,match:88,deadline:'Mar 30, 2026',daysLeft:12,apps:47,jobId:'#21500',ind:'SaaS / Startup',size:'10–50',yr:'2022',color:'#22c55e',
+  {id:4,title:'Frontend Developer Intern',co:'StartUp Inc',ini:'S',loc:'Remote',type:'Internship',exp:'0 Years',expV:0,sal:'Γé╣15k ΓÇô Γé╣25k / Month',salMin:1.8,skills:['HTML','CSS','JavaScript','React'],pre:false,ceo:false,isNew:true,posted:'Just now',rating:3.9,rc:22,match:88,deadline:'Mar 30, 2026',daysLeft:12,apps:47,jobId:'#21500',ind:'SaaS / Startup',size:'10ΓÇô50',yr:'2022',color:'#22c55e',
     about:'StartUp Inc is a SaaS startup building collaboration tools for remote teams. Series A funded with 40k+ monthly active users.',
     desc:'Remote internship building interactive UIs for a fast-growing SaaS product. Ship features that real users interact with every day.',
     resp:['Build React-based frontend features from Figma designs','Write responsive, semantic HTML and CSS','Contribute to the component library','Collaborate via GitHub (PRs, code reviews)','Participate in weekly product demos'],
@@ -546,7 +551,7 @@ const JOBS=[
       {n:'Ishaan Gupta',r:'Frontend Intern',text:'Features I built went live within 2 weeks. Super exciting for a fresher. Great remote culture.',stars:4,mo:'Feb 2026'},
       {n:'Mansi Thakur',r:'Intern',text:'Fast-paced but very rewarding. Good mentorship from the tech lead.',stars:4,mo:'Jan 2026'}
     ]},
-  {id:5,title:'Backend Developer – Python',co:'DataBridge Solutions',ini:'D',loc:'Mumbai, India',type:'Full Time',exp:'0-1 Years',expV:1,sal:'₹4L – ₹7L / Year',salMin:4,skills:['Python','Django','PostgreSQL','Redis'],pre:false,ceo:true,isNew:false,posted:'3 hours ago',rating:4.0,rc:54,match:68,deadline:'Apr 25, 2026',daysLeft:38,apps:93,jobId:'#20800',ind:'Data & Analytics',size:'100–500',yr:'2016',color:'#f59e0b',
+  {id:5,title:'Backend Developer ΓÇô Python',co:'DataBridge Solutions',ini:'D',loc:'Mumbai, India',type:'Full Time',exp:'0-1 Years',expV:1,sal:'Γé╣4L ΓÇô Γé╣7L / Year',salMin:4,skills:['Python','Django','PostgreSQL','Redis'],pre:false,ceo:true,isNew:false,posted:'3 hours ago',rating:4.0,rc:54,match:68,deadline:'Apr 25, 2026',daysLeft:38,apps:93,jobId:'#20800',ind:'Data & Analytics',size:'100ΓÇô500',yr:'2016',color:'#f59e0b',
     about:'DataBridge Solutions builds financial analytics platforms serving 50+ enterprise clients across India with real-time data pipelines.',
     desc:'Work on scalable REST APIs and data pipelines powering a financial analytics platform. Opportunity to learn distributed systems in a data-heavy environment.',
     resp:['Build REST APIs using Django REST Framework','Design and optimise PostgreSQL schemas','Work with Redis for caching and task queues','Write automated tests with pytest','Collaborate with frontend and data science teams'],
@@ -556,7 +561,7 @@ const JOBS=[
     reviews:[
       {n:'Nikhil Shah',r:'Backend Engineer',text:'Challenging work in a collaborative team. Modern tech stack and great exposure to real data engineering problems.',stars:4,mo:'Mar 2026'}
     ]},
-  {id:6,title:'DevOps Fresher',co:'CloudNine Tech',ini:'C',loc:'Bangalore, India',type:'Full Time',exp:'0 Years',expV:0,sal:'₹3L – ₹5.5L / Year',salMin:3,skills:['Docker','Linux','AWS','CI/CD'],pre:false,ceo:false,isNew:true,posted:'5 hours ago',rating:4.1,rc:31,match:60,deadline:'Apr 18, 2026',daysLeft:31,apps:61,jobId:'#21200',ind:'Cloud / DevOps',size:'50–200',yr:'2019',color:'#14b8a6',
+  {id:6,title:'DevOps Fresher',co:'CloudNine Tech',ini:'C',loc:'Bangalore, India',type:'Full Time',exp:'0 Years',expV:0,sal:'Γé╣3L ΓÇô Γé╣5.5L / Year',salMin:3,skills:['Docker','Linux','AWS','CI/CD'],pre:false,ceo:false,isNew:true,posted:'5 hours ago',rating:4.1,rc:31,match:60,deadline:'Apr 18, 2026',daysLeft:31,apps:61,jobId:'#21200',ind:'Cloud / DevOps',size:'50ΓÇô200',yr:'2019',color:'#14b8a6',
     about:'CloudNine Tech specialises in cloud-native infrastructure and DevOps consulting for mid-sized enterprises across India.',
     desc:'Join a cloud-native company and master infrastructure automation. Ideal for freshers passionate about DevOps, cloud computing, and automation.',
     resp:['Set up CI/CD pipelines using Jenkins / GitHub Actions','Manage Docker containers and Kubernetes pods','Monitor infra with Prometheus and Grafana','Automate tasks with Shell scripts and Python','Support AWS environment management and cost optimisation'],
@@ -566,18 +571,18 @@ const JOBS=[
     reviews:[
       {n:'Abhishek Nair',r:'DevOps Engineer',text:'Best place to start a DevOps career. They genuinely invest in training freshers on the latest cloud tools.',stars:4,mo:'Feb 2026'}
     ]},
-  {id:7,title:'Junior Data Analyst',co:'FinSight Analytics',ini:'F',loc:'Hyderabad, India',type:'Full Time',exp:'0-1 Years',expV:1,sal:'₹3.5L – ₹6L / Year',salMin:3.5,skills:['Python','SQL','Tableau','Excel'],pre:true,ceo:true,isNew:false,posted:'12 hours ago',rating:4.3,rc:87,match:72,deadline:'Apr 22, 2026',daysLeft:35,apps:204,jobId:'#20300',ind:'FinTech',size:'200–500',yr:'2017',color:'#8b5cf6',
+  {id:7,title:'Junior Data Analyst',co:'FinSight Analytics',ini:'F',loc:'Hyderabad, India',type:'Full Time',exp:'0-1 Years',expV:1,sal:'Γé╣3.5L ΓÇô Γé╣6L / Year',salMin:3.5,skills:['Python','SQL','Tableau','Excel'],pre:true,ceo:true,isNew:false,posted:'12 hours ago',rating:4.3,rc:87,match:72,deadline:'Apr 22, 2026',daysLeft:35,apps:204,jobId:'#20300',ind:'FinTech',size:'200ΓÇô500',yr:'2017',color:'#8b5cf6',
     about:'FinSight Analytics delivers financial intelligence dashboards to 30+ banking and NBFC clients across India, processing 2TB of data daily.',
     desc:'Analyse financial datasets and build executive dashboards that drive billion-rupee business decisions. Steep learning curve with massive impact.',
     resp:['Query and clean large financial datasets using SQL and Python','Build interactive Tableau/Power BI dashboards','Present insights to non-technical stakeholders','Automate recurring reports with Python scripts','Maintain data documentation and data dictionaries'],
-    req:['SQL — intermediate (JOINs, aggregations, subqueries)','Python for data analysis (Pandas, NumPy)','Tableau or Power BI basics','Excel pivot tables and VLOOKUP','Strong attention to detail and analytical thinking'],
+    req:['SQL ΓÇö intermediate (JOINs, aggregations, subqueries)','Python for data analysis (Pandas, NumPy)','Tableau or Power BI basics','Excel pivot tables and VLOOKUP','Strong attention to detail and analytical thinking'],
     process:['Online Test','SQL & Python Round','Case Study Presentation','HR Round','Offer'],
     salary:{base:330000,var:45000,ben:35000},
     reviews:[
       {n:'Ritika Agarwal',r:'Data Analyst',text:'Excellent exposure to real financial data. Great launchpad into fintech analytics.',stars:5,mo:'Mar 2026'},
       {n:'Varun Pillai',r:'Junior Analyst',text:'Manageable workload with genuinely interesting projects. Transparent management.',stars:4,mo:'Feb 2026'}
     ]},
-  {id:8,title:'Mobile App Developer (Android)',co:'AppVenture Labs',ini:'A',loc:'Pune, India',type:'Full Time',exp:'0-2 Years',expV:2,sal:'₹4.5L – ₹8L / Year',salMin:4.5,skills:['Kotlin','Android','Firebase','REST API'],pre:false,ceo:false,isNew:true,posted:'2 hours ago',rating:4.0,rc:19,match:55,deadline:'May 1, 2026',daysLeft:44,apps:38,jobId:'#21800',ind:'Mobile Apps',size:'10–50',yr:'2021',color:'#f97316',
+  {id:8,title:'Mobile App Developer (Android)',co:'AppVenture Labs',ini:'A',loc:'Pune, India',type:'Full Time',exp:'0-2 Years',expV:2,sal:'Γé╣4.5L ΓÇô Γé╣8L / Year',salMin:4.5,skills:['Kotlin','Android','Firebase','REST API'],pre:false,ceo:false,isNew:true,posted:'2 hours ago',rating:4.0,rc:19,match:55,deadline:'May 1, 2026',daysLeft:44,apps:38,jobId:'#21800',ind:'Mobile Apps',size:'10ΓÇô50',yr:'2021',color:'#f97316',
     about:'AppVenture Labs is building India\'s next consumer super-app with 500k+ monthly active users and growing 30% MoM.',
     desc:'Build and maintain Android applications for a rapidly growing consumer app startup. Ship features that real users love.',
     resp:['Develop new features using Kotlin and Jetpack Compose','Integrate Firebase for analytics, auth, and push notifications','Maintain code quality through unit tests and code reviews','Collaborate with UI/UX to implement pixel-perfect screens','Debug and resolve production issues promptly'],
@@ -589,15 +594,15 @@ const JOBS=[
     ]}
 ];
 
-// ════════════════════ STATE ════════════════════
+// ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ STATE ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
 let selSkills=[], jobSaved=new Set(), currentJob=null, showAll=false;
 
-// ════════════════════ NAVIGATION ════════════════════
+// ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ NAVIGATION ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
 function goJobs(){
   document.getElementById('pageJobs').classList.add('active');
   document.getElementById('pageJD').classList.remove('active');
   window.scrollTo({top:0,behavior:'smooth'});
-  document.title='FresherHub – Find Your Dream Job';
+  document.title='FresherHub ΓÇô Find Your Dream Job';
 }
 function goJD(id){
   currentJob=JOBS.find(j=>j.id===id);
@@ -606,17 +611,17 @@ function goJD(id){
   document.getElementById('pageJD').classList.add('active');
   window.scrollTo({top:0,behavior:'instant'});
   renderJD(currentJob);
-  document.title=`${currentJob.title} – FresherHub`;
+  document.title=`${currentJob.title} ΓÇô FresherHub`;
 }
 
-// ════════════════════ HELPERS ════════════════════
+// ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ HELPERS ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
 function mkStars(r,sz=''){
   return Array.from({length:5},(_,i)=>{
     const f=i<Math.floor(r), h=!f&&(r-Math.floor(r)>=.5)&&i===Math.floor(r);
     return `<i class="bi bi-star${f?'-fill':h?'-half':''}" style="color:${f||h?'var(--yellow)':'var(--border)'};${sz?`font-size:${sz}`:''}" ></i>`;
   }).join('');
 }
-function fmt(n){return '₹'+n.toLocaleString('en-IN')}
+function fmt(n){return 'Γé╣'+n.toLocaleString('en-IN')}
 
 function toast(msg,type='n'){
   const c=document.getElementById('tc');
@@ -627,7 +632,7 @@ function toast(msg,type='n'){
   setTimeout(()=>{t.style.animation='fadeO .3s ease forwards';setTimeout(()=>t.remove(),300)},2600);
 }
 
-// ════════════════════ JOBS PAGE ════════════════════
+// ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ JOBS PAGE ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
 function renderCard(j){
   const dl=j.daysLeft<=7?`<span class="badge-urg"><i class="bi bi-clock"></i>${j.daysLeft}d left</span>`:'';
   return `
@@ -715,7 +720,7 @@ function togSk(el,s){
   applyF();
 }
 function updSal(v){
-  document.getElementById('salLbl').textContent=v==20?'Any':`Up to ₹${v}L`;
+  document.getElementById('salLbl').textContent=v==20?'Any':`Up to Γé╣${v}L`;
   applyF();
 }
 function clearF(){
@@ -739,10 +744,10 @@ function bkJob(e,id){
   e.stopPropagation();
   const b=document.getElementById(`bk-${id}`);
   if(jobSaved.has(id)){jobSaved.delete(id);b.classList.remove('on');b.innerHTML='<i class="bi bi-bookmark"></i>';toast('Removed from saved');}
-  else{jobSaved.add(id);b.classList.add('on');b.innerHTML='<i class="bi bi-bookmark-fill"></i>';toast('Job saved ✓','s');}
+  else{jobSaved.add(id);b.classList.add('on');b.innerHTML='<i class="bi bi-bookmark-fill"></i>';toast('Job saved Γ£ô','s');}
 }
 
-// ════════════════════ JD PAGE ════════════════════
+// ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ JD PAGE ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
 function renderJD(j){
   document.getElementById('bcText').textContent=j.title;
   const total=j.salary.base+j.salary.var+j.salary.ben;
@@ -764,7 +769,7 @@ function renderJD(j){
           </div>
           <h1 class="jd-title">${j.title}</h1>
           <p style="color:var(--tm);font-size:.88rem;margin-top:5px">
-            <i class="bi bi-building me-1"></i>${j.co} &nbsp;·&nbsp;
+            <i class="bi bi-building me-1"></i>${j.co} &nbsp;┬╖&nbsp;
             <i class="bi bi-geo-alt me-1"></i>${j.loc}
           </p>
           <div class="d-flex align-items-center gap-2 mt-2">
@@ -890,7 +895,7 @@ function renderJD(j){
             </div>
           </div>
         </div>`).join('')}
-        <button style="background:transparent;border:1px solid var(--border);color:var(--tm);padding:9px 20px;border-radius:9px;font-size:.82rem;cursor:pointer;width:100%;margin-top:4px;font-family:'DM Sans',sans-serif" onclick="toast('Feature coming soon! 🔜')">
+        <button style="background:transparent;border:1px solid var(--border);color:var(--tm);padding:9px 20px;border-radius:9px;font-size:.82rem;cursor:pointer;width:100%;margin-top:4px;font-family:'DM Sans',sans-serif" onclick="toast('Feature coming soon! ≡ƒö£')">
           <i class="bi bi-plus-circle me-2"></i>Write a Review
         </button>
       </div>
@@ -918,9 +923,9 @@ function renderJD(j){
 
         <!-- SUCCESS STATE -->
         <div class="success-box" id="successBox">
-          <div style="font-size:2.5rem;margin-bottom:10px">🎉</div>
+          <div style="font-size:2.5rem;margin-bottom:10px">≡ƒÄë</div>
           <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;margin-bottom:6px">Application Submitted!</div>
-          <p style="color:var(--tm);font-size:.83rem;line-height:1.6">We'll notify you within 3–5 business days. Good luck!</p>
+          <p style="color:var(--tm);font-size:.83rem;line-height:1.6">We'll notify you within 3ΓÇô5 business days. Good luck!</p>
           <button onclick="resetForm()" style="background:transparent;border:1px solid var(--border);color:var(--tm);padding:8px 18px;border-radius:9px;font-size:.82rem;cursor:pointer;margin-top:12px;font-family:'DM Sans',sans-serif">Apply for Another Job</button>
         </div>
 
@@ -948,18 +953,18 @@ function renderJD(j){
           </div>
           <div class="mb-3">
             <label class="fl">Expected Salary (LPA)</label>
-            <input type="text" class="fi" placeholder="₹5L – ₹6L">
+            <input type="text" class="fi" placeholder="Γé╣5L ΓÇô Γé╣6L">
           </div>
           <div class="mb-3">
             <label class="fl">Cover Letter <span style="color:var(--td);font-weight:400">(optional)</span></label>
-            <textarea class="fi" placeholder="Tell us why you're a great fit…"></textarea>
+            <textarea class="fi" placeholder="Tell us why you're a great fitΓÇª"></textarea>
           </div>
           <div class="mb-3">
             <label class="fl">Upload Resume *</label>
             <div class="upload-z" onclick="document.getElementById('cvFile').click()" id="dropZone">
               <i class="bi bi-cloud-upload"></i>
               <span id="cvLabel">Click to upload or drag & drop</span><br>
-              <small style="font-size:.72rem">PDF or DOCX · Max 5MB</small>
+              <small style="font-size:.72rem">PDF or DOCX ┬╖ Max 5MB</small>
               <input type="file" id="cvFile" accept=".pdf,.doc,.docx" style="display:none" onchange="cvChosen(this)">
             </div>
           </div>
@@ -973,10 +978,10 @@ function renderJD(j){
       ${j.pre?`
       <!-- PREMIUM BOX -->
       <div class="prem-box">
-        <div class="prem-icon">🏆</div>
+        <div class="prem-icon">≡ƒÅå</div>
         <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:.92rem;margin-bottom:6px">Premium Opportunity</div>
         <p style="font-size:.78rem;color:var(--tm);margin-bottom:12px;line-height:1.5">Top companies prioritise premium applicants. Get 3x more visibility with Pro.</p>
-        <button class="btn-upg"><i class="bi bi-lightning-charge-fill me-1"></i>Upgrade to Pro →</button>
+        <button class="btn-upg"><i class="bi bi-lightning-charge-fill me-1"></i>Upgrade to Pro ΓåÆ</button>
       </div>`:``}
 
       <!-- SIMILAR JOBS -->
@@ -988,7 +993,7 @@ function renderJD(j){
             <div style="width:34px;height:34px;border-radius:9px;background:var(--hover);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:.85rem;color:${s.color};flex-shrink:0">${s.ini}</div>
             <div>
               <div class="sim-t">${s.title}</div>
-              <div class="sim-m">${s.co} · ${s.sal}</div>
+              <div class="sim-m">${s.co} ┬╖ ${s.sal}</div>
             </div>
           </div>
         </div>`).join('')}
@@ -1012,7 +1017,7 @@ function renderJD(j){
   if(dz){
     dz.addEventListener('dragover',e=>{e.preventDefault();dz.style.borderColor='var(--purple)';});
     dz.addEventListener('dragleave',()=>{dz.style.borderColor='var(--border)';});
-    dz.addEventListener('drop',e=>{e.preventDefault();dz.style.borderColor='var(--border)';const f=e.dataTransfer.files[0];if(f)document.getElementById('cvLabel').textContent=`✓ ${f.name}`;});
+    dz.addEventListener('drop',e=>{e.preventDefault();dz.style.borderColor='var(--border)';const f=e.dataTransfer.files[0];if(f)document.getElementById('cvLabel').textContent=`Γ£ô ${f.name}`;});
   }
 }
 
@@ -1039,7 +1044,7 @@ function toggleSave(){
     jobSaved.add(id);
     if(btn){btn.classList.add('on');btn.innerHTML=`<i class="bi bi-bookmark-fill"></i>Saved`;}
     if(mobBtn)mobBtn.innerHTML=`<i class="bi bi-bookmark-fill"></i>`;
-    toast('Job saved ✓','s');
+    toast('Job saved Γ£ô','s');
   }
 }
 
@@ -1058,7 +1063,7 @@ function scrollToApply(){
 // CV UPLOAD
 function cvChosen(inp){
   const f=inp.files[0];
-  if(f)document.getElementById('cvLabel').textContent=`✓ ${f.name}`;
+  if(f)document.getElementById('cvLabel').textContent=`Γ£ô ${f.name}`;
 }
 
 // SUBMIT APPLICATION
@@ -1070,8 +1075,8 @@ function submitApp(){
   if(!cv||!cv.files.length){toast('Please upload your Resume');return;}
   document.getElementById('applyForm').style.display='none';
   document.getElementById('successBox').classList.add('show');
-  toast(`Application for ${currentJob.title} submitted! 🎉`,'s');
-  setTimeout(()=>toast('You\'ll hear from us in 3–5 business days'),1400);
+  toast(`Application for ${currentJob.title} submitted! ≡ƒÄë`,'s');
+  setTimeout(()=>toast('You\'ll hear from us in 3ΓÇô5 business days'),1400);
 }
 
 function resetForm(){

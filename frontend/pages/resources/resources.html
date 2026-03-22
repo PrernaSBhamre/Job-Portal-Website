@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resources - FresherHub</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+<link rel="stylesheet" href="resources.css"><!-- ✅ Correct JS Linking -->
+<script defer src="resources.js"></script>
+
+</head>
+<body>
+
+<!-- Navbar -->
+<style>
+/* Navbar CSS */
+.navbar-wrapper { border-bottom: 1px solid rgba(255, 255, 255, 0.05); background: rgba(11, 11, 20, 0.8); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 1000; }
+.navbar-custom { padding: 22px 0; display: flex; align-items: center; justify-content: space-between; }
+.logo-box { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.logo-icon { width: 36px; height: 36px; background: #5b21b6; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 1.1rem; box-shadow: 0 0 15px rgba(91, 33, 182, 0.6); }
+.logo-text { font-weight: 700; font-size: 1.35rem; color: #fff; letter-spacing: -0.5px; }
+.logo-text span { color: #8b5cf6; }
+.nav-pill { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 40px; padding: 6px 8px; display: flex; gap: 5px; }
+.nav-pill a { color: #a1a1aa; text-decoration: none; font-size: 0.88rem; font-weight: 500; padding: 8px 20px; border-radius: 30px; transition: 0.3s; }
+.nav-pill a:hover, .nav-pill a.active { color: #fff; background: rgba(255, 255, 255, 0.08); }
+.auth-btns { display: flex; align-items: center; gap: 25px; }
+.btn-login { color: #fff; text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: 0.3s; }
+.btn-login:hover { color: #94a3b8; }
+.btn-signup { background: linear-gradient(135deg, #f97316, #fb923c); color: #000; padding: 10px 24px; border-radius: 30px; text-decoration: none; font-weight: 800; font-size: 0.95rem; transition: 0.3s; border: none; }
+.btn-signup:hover { box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3); color: #000; }
+@media(max-width:991px) { .nav-pill { display: none; } }
+@media(max-width:500px) { .auth-btns { display: none; } }
+</style>
+
+<div class="navbar-wrapper">
+  <div class="container">
+    <nav class="navbar-custom">
+      <a href="../../index.html" class="logo-box">
+        <div class="logo-icon">F</div>
+        <div class="logo-text">Fresher<span>Hub</span></div>
+      </a>
+
+      <div class="nav-pill d-none d-lg-flex">
+        <a href="../../index.html">Home</a>
+        <a href="../jobs/jobs.html">Find Jobs</a>
+        <a href="#">Companies</a>
+        <a href="../services/services.html">Services</a>
+        <a href="resources.html" class="active">Resources</a>
+      </div>
+
+      <div class="auth-btns">
+        <a href="../auth/login.html" class="btn-login">Log In</a>
+        <a href="../auth/register.html" class="btn-signup">Sign Up</a>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<!-- Search -->
+<section class="top-search">
+    <input type="text" placeholder="Search interview questions, templates, courses...">
+    <button>Search</button>
+</section>
+
+<div class="resources-wrapper">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <h3>Categories</h3>
+        <ul>
+            <li class="active">All Resources</li>
+            <li>Interview</li>
+            <li>Resume</li>
+            <li>Placement</li>
+            <li>Courses</li>
+        </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <section class="resource-content">
+
+        <!-- Interview Resources -->
+        <div class="resource-item" data-category="interview">
+            <img src="https://via.placeholder.com/120x120" alt="">
+            <div class="details">
+                <span class="badge free">FREE</span>
+                <h3>Top 100 Interview Questions (PDF)</h3>
+                <p>Most asked HR & technical questions.</p>
+                <div class="meta">
+                    <span>⭐ 4.7</span>
+                    <span>Downloaded 1,245 times</span>
+                </div>
+                <button class="download-btn">Download</button>
+            </div>
+        </div>
+
+        <div class="resource-item" data-category="interview">
+            <img src="https://via.placeholder.com/120x120" alt="">
+            <div class="details">
+                <span class="badge free">FREE</span>
+                <h3>Group Discussion Topics 2026</h3>
+                <p>Latest GD topics for campus placements.</p>
+                <div class="meta">
+                    <span>⭐ 4.5</span>
+                    <span>Downloaded 980 times</span>
+                </div>
+                <button class="download-btn">Download</button>
+            </div>
+        </div>
+
+        <!-- Resume Resources -->
+        <div class="resource-item" data-category="resume">
+            <img src="https://via.placeholder.com/120x120" alt="">
+            <div class="details">
+                <span class="badge pro">PRO</span>
+                <h3>Professional Resume Template</h3>
+                <p>ATS-friendly modern template.</p>
+                <div class="meta">
+                    <span>⭐ 4.9</span>
+                    <span>Downloaded 2,310 times</span>
+                </div>
+                <button class="download-btn" onclick="window.location.href='../auth/login.html'">Login to Download</button>
+            </div>
+        </div>
+
+        <div class="resource-item" data-category="resume">
+            <img src="https://via.placeholder.com/120x120" alt="">
+            <div class="details">
+                <span class="badge free">FREE</span>
+                <h3>Fresher Resume Sample</h3>
+                <p>Simple resume format for fresh graduates.</p>
+                <div class="meta">
+                    <span>⭐ 4.6</span>
+                    <span>Downloaded 1,120 times</span>
+                </div>
+                <button class="download-btn">Download</button>
+            </div>
+        </div>
+
+        <!-- Placement Resources -->
+        <div class="resource-item" data-category="placement">
+            <img src="https://via.placeholder.com/120x120" alt="">
+            <div class="details">
+                <span class="badge free">FREE</span>
+                <h3>Placement Preparation Guide</h3>
+                <p>Complete roadmap for campus placement success.</p>
+                <div class="meta">
+                    <span>⭐ 4.8</span>
+                    <span>Downloaded 1,540 times</span>
+                </div>
+                <button class="download-btn">Download</button>
+            </div>
+        </div>
+
+        <!-- Courses -->
+        <div class="resource-item" data-category="courses">
+            <img src="https://via.placeholder.com/120x120" alt="">
+            <div class="details">
+                <span class="badge pro">PRO</span>
+                <h3>Full Stack Development Course</h3>
+                <p>Complete MERN stack video course.</p>
+                <div class="meta">
+                    <span>⭐ 4.9</span>
+                    <span>Downloaded 3,200 times</span>
+                </div>
+                <button class="download-btn" onclick="window.location.href='../auth/login.html'">Login to Access</button>
+            </div>
+        </div>
+
+        <div class="resource-item" data-category="courses">
+            <img src="https://via.placeholder.com/120x120" alt="">
+            <div class="details">
+                <span class="badge free">FREE</span>
+                <h3>Data Structures Crash Course</h3>
+                <p>Quick revision guide for coding interviews.</p>
+                <div class="meta">
+                    <span>⭐ 4.7</span>
+                    <span>Downloaded 1,890 times</span>
+                </div>
+                <button class="download-btn">Download</button>
+            </div>
+        </div>
+
+    </section>
+
+</div>
+
+<footer>
+    <p>© 2026 FresherHub. All Rights Reserved.</p>
+</footer>
+
+</body>
+</html>

@@ -153,7 +153,31 @@
                   </div>
               </div>
 
-              <h4 class="mb-3 text-white">Upload Resume</h4>
+              <h4 class="mb-3 mt-4 text-white">Social Links & Preferences</h4>
+              <div class="row">
+                  <div class="col-md-4 mb-3 form-group">
+                      <label>LinkedIn URL</label>
+                      <input type="url" id="pLinkedIn" class="form-control" placeholder="https://linkedin.com/in/...">
+                  </div>
+                  <div class="col-md-4 mb-3 form-group">
+                      <label>GitHub URL</label>
+                      <input type="url" id="pGithub" class="form-control" placeholder="https://github.com/...">
+                  </div>
+                  <div class="col-md-4 mb-3 form-group">
+                      <label>Portfolio URL</label>
+                      <input type="url" id="pPortfolio" class="form-control" placeholder="https://mywebsite.com">
+                  </div>
+                  <div class="col-md-6 mb-3 form-group">
+                      <label>Expected Salary (LPA)</label>
+                      <input type="text" id="pSalary" class="form-control" placeholder="e.g., 5-8 LPA">
+                  </div>
+                  <div class="col-md-6 mb-3 form-group d-flex align-items-center">
+                      <input type="checkbox" id="pRelocate" class="form-check-input me-2" style="width:20px;height:20px;margin-top:0;background:rgba(0,0,0,0.2);border:1px solid var(--border);">
+                      <label class="mb-0 text-white" style="cursor:pointer;" for="pRelocate">Willing to Relocate</label>
+                  </div>
+              </div>
+
+              <h4 class="mb-3 mt-4 text-white">Upload Resume</h4>
               <div class="form-group mb-4">
                   <!-- Instead of actual file upload handling which requires Multer, we supply a URL entry + mock drop target for frontend UX -->
                   <label>Resume Link (Google Drive / Portfolio URL)</label>
@@ -168,7 +192,23 @@
                   </div>
               </div>
 
-              <button type="submit" class="btn-submit">Save Profile</button>
+              <h4 class="mb-3 mt-4 text-white">Latest Experience</h4>
+              <div class="row">
+                  <div class="col-md-6 mb-3 form-group"><label>Company</label><input type="text" id="pExpCompany" class="form-control" placeholder="Google"></div>
+                  <div class="col-md-6 mb-3 form-group"><label>Title</label><input type="text" id="pExpTitle" class="form-control" placeholder="Software Engineer"></div>
+                  <div class="col-md-6 mb-3 form-group"><label>Start Date</label><input type="month" id="pExpStart" class="form-control"></div>
+                  <div class="col-md-6 mb-3 form-group"><label>End Date</label><input type="month" id="pExpEnd" class="form-control"></div>
+              </div>
+
+              <h4 class="mb-3 mt-4 text-white">Primary Education</h4>
+              <div class="row">
+                  <div class="col-md-6 mb-3 form-group"><label>Institution</label><input type="text" id="pEduInst" class="form-control" placeholder="MIT"></div>
+                  <div class="col-md-6 mb-3 form-group"><label>Degree</label><input type="text" id="pEduDegree" class="form-control" placeholder="B.Tech Computer Science"></div>
+                  <div class="col-md-6 mb-3 form-group"><label>Passing Year</label><input type="number" id="pEduYear" class="form-control" placeholder="2024"></div>
+                  <div class="col-md-6 mb-3 form-group"><label>Grade / CGPA</label><input type="text" id="pEduGrade" class="form-control" placeholder="9.5"></div>
+              </div>
+
+              <button type="submit" class="btn-submit mt-4">Save Profile</button>
           </form>
       </div>
 

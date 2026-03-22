@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>FresherHub – Top Companies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#0b0b14;--card:#13131f;--filter:#161624;--hover:#1d1d30;
+  --border:#2a2a42;--purple:#7c3aed;--ps:#5b21b6;--pg:rgba(124,58,237,.18);
+  --orange:#f97316;--od:#ea580c;
+  --tp:#f0f0fa;--tm:#8888aa;--td:#5a5a78;
+  --tag:#1e1e38;--tagb:#3a3a5c;
+  --green:#22c55e;--yellow:#eab308;--red:#f87171;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tp);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--purple);border-radius:3px}
+
+/* Navbar */
+.navbar-wrapper { border-bottom: 1px solid rgba(255, 255, 255, 0.05); background: rgba(11, 11, 20, 0.8); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 1000; }
+.navbar-custom { padding: 22px 0; display: flex; align-items: center; justify-content: space-between; }
+.logo-box { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.logo-icon { width: 36px; height: 36px; background: #5b21b6; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 1.1rem; box-shadow: 0 0 15px rgba(91, 33, 182, 0.6); }
+.logo-text { font-weight: 700; font-size: 1.35rem; color: #fff; letter-spacing: -0.5px; }
+.logo-text span { color: #8b5cf6; }
+.nav-pill { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 40px; padding: 6px 8px; display: flex; gap: 5px; }
+.nav-pill a { color: #a1a1aa; text-decoration: none; font-size: 0.88rem; font-weight: 500; padding: 8px 20px; border-radius: 30px; transition: 0.3s; }
+.nav-pill a:hover, .nav-pill a.active { color: #fff; background: rgba(255, 255, 255, 0.08); }
+.auth-btns { display: flex; align-items: center; gap: 25px; }
+.btn-login { color: #fff; text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: 0.3s; }
+.btn-login:hover { color: #94a3b8; }
+.btn-signup { background: linear-gradient(135deg, #f97316, #fb923c); color: #000; padding: 10px 24px; border-radius: 30px; text-decoration: none; font-weight: 800; font-size: 0.95rem; transition: 0.3s; border: none; }
+.btn-signup:hover { box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3); color: #000; }
+@media(max-width:991px) { .nav-pill { display: none; } }
+@media(max-width:500px) { .auth-btns { display: none; } }
+
+/* HERO */
+.hero{padding:36px 0 20px;background:radial-gradient(ellipse 700px 280px at 50% 0%,rgba(249,115,22,.13) 0%,transparent 70%)}
+.hero-title{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(1.55rem,3vw,2.3rem)}
+.hero-sub{color:var(--tm);font-size:.88rem;margin-top:4px}
+.search-box{background:var(--card);border:1px solid var(--border);border-radius:13px;display:flex;align-items:center;overflow:hidden;transition:border-color .2s; margin-top:20px;}
+.search-box:focus-within{border-color:var(--orange);box-shadow:0 0 0 3px rgba(249,115,22,.15)}
+.search-box i{padding:0 13px;color:var(--td);font-size:1rem}
+.search-box input{flex:1;background:transparent;border:none;outline:none;color:var(--tp);padding:13px 0;font-size:.92rem;font-family:'DM Sans',sans-serif}
+.search-box input::placeholder{color:var(--td)}
+.btn-srch{background:var(--orange);color:#fff;border:none;padding:9px 20px;margin:5px;border-radius:9px;font-weight:600;font-size:.82rem;cursor:pointer;transition:all .2s;white-space:nowrap}
+.btn-srch:hover{background:var(--od)}
+
+/* COMPANY CARDS */
+.comp-grid { margin-top: 40px; }
+.ccard { background: var(--card); border: 1px solid var(--border); border-radius: 15px; padding: 24px; transition: all 0.25s; text-decoration: none; display: flex; flex-direction: column; height: 100%; position: relative; overflow: hidden;}
+.ccard:hover { border-color: var(--orange); transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+.ccard::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: transparent; transition: background 0.25s; border-radius: 3px 0 0 3px; }
+.ccard:hover::before { background: var(--orange); }
+
+.clogo { width: 68px; height: 68px; border-radius: 14px; background: var(--filter); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.6rem; margin-bottom: 20px; color: var(--orange); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+.clogo img { width: 100%; height: 100%; object-fit: contain; border-radius: 12px; }
+
+.cname { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.25rem; color: var(--tp); margin-bottom: 5px; }
+.cloc { color: var(--td); font-size: 0.85rem; margin-bottom: 12px; display: flex; align-items: center; gap: 5px; }
+
+.cdesc { color: var(--tm); font-size: 0.88rem; line-height: 1.6; flex-grow: 1; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 20px;}
+
+.cmeta { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); padding-top: 16px; }
+.cstat { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.05rem; color: var(--tp); }
+.cstat-lbl { font-size: 0.75rem; color: var(--td); text-transform: uppercase; letter-spacing: 0.5px; }
+.btn-site { background: rgba(255,255,255,0.03); color: var(--tp); border: 1px solid var(--border); padding: 8px 16px; border-radius: 8px; font-weight: 600; font-size: 0.8rem; text-decoration: none; transition: 0.2s; }
+.btn-site:hover { background: rgba(255,255,255,0.08); color: var(--orange); border-color: var(--border); }
+
+.cbadge { position: absolute; top: 20px; right: 20px; background: rgba(249, 115, 22, 0.1); border: 1px solid rgba(249, 115, 22, 0.2); color: var(--orange); font-size: 0.72rem; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
+
+/* empty */
+.nores{text-align:center;padding:80px 20px;color:var(--td)}
+.nores i{font-size:3rem;display:block;margin-bottom:15px;color:var(--border)}
+
+/* Footer */
+footer{background:#0c0c18;border-top:1px solid var(--border);padding:46px 0 22px; margin-top: 80px;}
+.ft{font-family:'Syne',sans-serif;font-weight:700;font-size:.92rem}
+.ft span{color:var(--purple)}
+.fl-links{list-style:none;padding:0}
+.fl-links li{margin-bottom:8px}
+.fl-links a{color:var(--tm);text-decoration:none;font-size:.84rem;transition:color .2s}
+.fl-links a:hover{color:var(--tp)}
+.fci{display:flex;gap:11px;margin-bottom:11px}
+.fci i{color:var(--purple);font-size:.95rem;margin-top:2px;flex-shrink:0}
+.fci span{color:var(--tm);font-size:.82rem;line-height:1.5}
+.fbot{border-top:1px solid var(--border);margin-top:32px;padding-top:16px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
+.fbot p,.fbot a{color:var(--td);font-size:.77rem;text-decoration:none}
+</style>
+</head>
+<body>
+
+<div class="navbar-wrapper">
+  <div class="container">
+    <nav class="navbar-custom">
+      <a href="../../index.html" class="logo-box">
+        <div class="logo-icon">F</div>
+        <div class="logo-text">Fresher<span>Hub</span></div>
+      </a>
+      <div class="nav-pill d-none d-lg-flex">
+        <a href="../../index.html">Home</a>
+        <a href="../jobs/jobs.html">Find Jobs</a>
+        <a href="companies.html" class="active">Companies</a>
+        <a href="../services/services.html">Services</a>
+        <a href="../resources/resources.html">Resources</a>
+      </div>
+      <div class="auth-btns" id="navAuthArea">
+        <a href="../auth/login.html" class="btn-login">Log In</a>
+        <a href="../auth/register.html" class="btn-signup">Sign Up</a>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container" style="max-width: 800px; text-align: center;">
+    <h1 class="hero-title">Discover <span style="color:var(--orange)">Top Employers</span></h1>
+    <p class="hero-sub" style="font-size: 1rem; margin-top:15px; max-width: 600px; margin-left: auto; margin-right: auto;">
+      Explore leading product and services companies actively hiring fresh talent right now. View their profiles, open roles, and company culture.
+    </p>
+    
+    <div class="search-box">
+      <i class="bi bi-search"></i>
+      <input type="text" id="srch" placeholder="Search by company name, industry, or location..." onkeyup="filterCompanies()">
+    </div>
+  </div>
+</section>
+
+<div class="container comp-grid">
+  <div class="row g-4" id="compContainer">
+    <!-- Populated by JS -->
+    <div style="text-align:center; padding: 100px 0; color: #94a3b8; width: 100%;">
+        <div class="spinner-border text-warning" role="status"></div>
+        <p class="mt-3">Loading Companies...</p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-4 col-md-6">
+        <div class="logo-box mb-4">
+          <div class="logo-icon">F</div>
+          <div class="logo-text">Fresher<span>Hub</span></div>
+        </div>
+        <p style="color:#94a3b8; font-size:0.95rem; line-height:1.6; margin-bottom:25px;">Connecting India's brightest
+          fresh talent with top IT companies. We bridge the gap between education and premium tech careers.</p>
+        <div class="d-flex gap-3">
+          <a class="btn-sh" href="#"><i class="bi bi-linkedin"></i></a>
+          <a class="btn-sh" href="#"><i class="bi bi-twitter-x"></i></a>
+          <a class="btn-sh" href="#"><i class="bi bi-instagram"></i></a>
+          <a class="btn-sh" href="#"><i class="bi bi-facebook"></i></a>
+        </div>
+      </div>
+
+      <div class="col-lg-2 col-md-3 col-6">
+        <p class="ft mb-4">Job Seekers</p>
+        <ul class="fl-links">
+          <li><a href="../jobs/jobs.html">Job Alerts</a></li>
+          <li><a href="../services/services.html">Resume Services</a></li>
+          <li><a href="../resources/resources.html">Career Advice</a></li>
+          <li><a href="#">Student Discounts</a></li>
+        </ul>
+      </div>
+
+      <div class="col-lg-2 col-md-3 col-6">
+        <p class="ft mb-4">Employers</p>
+        <ul class="fl-links">
+          <li><a href="../auth/register.html">Browse Candidates</a></li>
+          <li><a href="#">Recruitment Solutions</a></li>
+          <li><a href="#">Pricing Plans</a></li>
+          <li><a href="#">Partner with Us</a></li>
+        </ul>
+      </div>
+
+      <div class="col-lg-4 col-md-6">
+        <p class="ft mb-4">Contact HQ</p>
+        <div class="fci"><i class="bi bi-geo-alt-fill"></i><span>Sai Complex, Temple Road,<br>Shirdi, Maharashtra –
+            423109</span></div>
+        <div class="fci"><i class="bi bi-telephone-fill"></i><span>+91 80 1234 5678</span></div>
+        <div class="fci"><i class="bi bi-envelope-fill"></i><span>support@fresherhub.in</span></div>
+      </div>
+    </div>
+
+    <div class="fbot">
+      <p>© 2024 FresherHub Global. All rights reserved.</p>
+      <div class="d-flex gap-4">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Sitemap</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="../../js/config.js"></script>
+<script src="../../js/auth.js"></script>
+<script src="companies.js"></script>
+</body>
+</html>

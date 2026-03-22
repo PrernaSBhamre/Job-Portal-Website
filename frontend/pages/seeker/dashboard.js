@@ -47,10 +47,37 @@ async function fetchProfile() {
                 document.getElementById('pBio').value = data.profile.bio || '';
                 document.getElementById('pSkills').value = data.profile.skills ? data.profile.skills.join(', ') : '';
                 
+                if (data.profile.socialLinks) {
+                    document.getElementById('pLinkedIn').value = data.profile.socialLinks.linkedIn || '';
+                    document.getElementById('pGithub').value = data.profile.socialLinks.github || '';
+                    document.getElementById('pPortfolio').value = data.profile.socialLinks.portfolio || '';
+                }
+                
+                if (data.profile.preferences) {
+                    document.getElementById('pSalary').value = data.profile.preferences.expectedSalary || '';
+                    document.getElementById('pRelocate').checked = data.profile.preferences.willingnessToRelocate || false;
+                }
+                
                 if (data.profile.resume) {
                     document.getElementById('pResume').value = data.profile.resume;
                     document.getElementById('currentResumeBox').style.display = 'flex';
                     document.getElementById('currentResumeLink').href = data.profile.resume;
+                }
+                
+                if (data.profile.experience && data.profile.experience.length > 0) {
+                    const exp = data.profile.experience[0];
+                    document.getElementById('pExpCompany').value = exp.company || '';
+                    document.getElementById('pExpTitle').value = exp.title || '';
+                    document.getElementById('pExpStart').value = exp.startDate || '';
+                    document.getElementById('pExpEnd').value = exp.endDate || '';
+                }
+
+                if (data.profile.education && data.profile.education.length > 0) {
+                    const edu = data.profile.education[0];
+                    document.getElementById('pEduInst').value = edu.institution || '';
+                    document.getElementById('pEduDegree').value = edu.degree || '';
+                    document.getElementById('pEduYear').value = edu.endYear || '';
+                    document.getElementById('pEduGrade').value = edu.grade || '';
                 }
             }
         }
@@ -73,7 +100,28 @@ async function updateProfile(e) {
         profile: {
             bio: document.getElementById('pBio').value.trim(),
             skills: skillsArr,
-            resume: resumeUrl
+            resume: resumeUrl,
+            socialLinks: {
+                linkedIn: document.getElementById('pLinkedIn').value.trim(),
+                github: document.getElementById('pGithub').value.trim(),
+                portfolio: document.getElementById('pPortfolio').value.trim()
+            },
+            preferences: {
+                expectedSalary: document.getElementById('pSalary').value.trim(),
+                willingnessToRelocate: document.getElementById('pRelocate').checked
+            },
+            experience: [{
+                company: document.getElementById('pExpCompany').value.trim(),
+                title: document.getElementById('pExpTitle').value.trim(),
+                startDate: document.getElementById('pExpStart').value.trim(),
+                endDate: document.getElementById('pExpEnd').value.trim(),
+            }],
+            education: [{
+                institution: document.getElementById('pEduInst').value.trim(),
+                degree: document.getElementById('pEduDegree').value.trim(),
+                endYear: document.getElementById('pEduYear').value.trim(),
+                grade: document.getElementById('pEduGrade').value.trim(),
+            }]
         }
     };
 

@@ -27,10 +27,26 @@ const applyForJob = async (req, res, next) => {
       throw new Error('You have already applied for this job');
     }
 
+    // Extract file path from Multer upload
+    if (!req.file) {
+      res.status(400);
+      throw new Error('Please upload a resume file (PDF, DOCX).');
+    }
+    const resumeUrl = `/uploads/resumes/${req.file.filename}`;
+
+    const { coverLetter, fullName, phone, college, graduationYear, portfolio } = req.body;
+
     // Create the application
     const application = await Application.create({
       job: jobId,
       applicant: userId,
+      resume: resumeUrl,
+      coverLetter,
+      fullName,
+      phone,
+      college,
+      graduationYear,
+      portfolio,
       status: 'pending',
     });
 

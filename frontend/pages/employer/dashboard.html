@@ -199,6 +199,15 @@
     
     .j-title { font-weight: 700; font-size: 1.1rem; }
     .j-meta { font-size: 0.85rem; color: var(--text-muted); margin-top: 5px; }
+
+    /* Kanban ATS Board */
+    .kanban-board { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 10px; min-height: 400px; }
+    .kanban-col { min-width: 250px; background: rgba(0,0,0,0.3); border-radius: 10px; padding: 15px; border: 1px solid var(--border); display: flex; flex-direction: column; }
+    .kanban-header { font-weight: 700; margin-bottom: 15px; text-transform: uppercase; font-size: 0.85rem; color: var(--text-muted); letter-spacing: 0.5px; }
+    .kanban-card { background: var(--card); padding: 15px; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 12px; }
+    .kanban-card h5 { font-size: 1rem; font-weight: 700; margin: 0 0 5px 0; color: #fff; }
+    .kanban-card p { font-size: 0.8rem; color: var(--text-muted); margin: 0 0 10px 0; }
+    .action-select { width: 100%; background: #0b0b14; color: white; border: 1px solid var(--purple-light); border-radius: 5px; padding: 6px; font-size: 0.8rem; cursor: pointer; outline: none; }
   </style>
 </head>
 <body>
@@ -314,12 +323,14 @@
       </div>
       
       <!-- Applicants Modal/Panel -->
-      <div id="applicantsPanel" class="panel" style="display:none;">
-          <div class="d-flex justify-content-between align-items-center mb-3">
-              <h2 class="panel-title m-0">Applicants</h2>
-              <button class="btn btn-sm btn-outline-light" onclick="closeApplicants()">X Close</button>
+      <div id="applicantsPanel" class="panel" style="display:none; border: none; background: transparent; padding: 0;">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+              <h2 class="panel-title m-0">Applicant Tracking System (ATS)</h2>
+              <button class="btn btn-sm btn-outline-light" onclick="closeApplicants()"><i class="bi bi-arrow-left"></i> Back to Jobs</button>
           </div>
-          <div id="applicantsList"></div>
+          <div class="kanban-board" id="kanbanBoard">
+              <!-- Rendered via JS -->
+          </div>
       </div>
 
   </div>

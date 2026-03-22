@@ -31,11 +31,20 @@ const updateUserProfile = async (req, res, next) => {
 
       // Update nested profile object
       if (req.body.profile) {
-        user.profile.bio = req.body.profile.bio || user.profile.bio;
+        user.profile.bio = req.body.profile.bio !== undefined ? req.body.profile.bio : user.profile.bio;
         user.profile.skills = req.body.profile.skills || user.profile.skills;
         user.profile.resume = req.body.profile.resume || user.profile.resume;
         user.profile.resumeOriginalName = req.body.profile.resumeOriginalName || user.profile.resumeOriginalName;
         user.profile.profilePhoto = req.body.profile.profilePhoto || user.profile.profilePhoto;
+        user.profile.education = req.body.profile.education || user.profile.education;
+        user.profile.experience = req.body.profile.experience || user.profile.experience;
+        
+        if (req.body.profile.socialLinks) {
+           user.profile.socialLinks = { ...user.profile.socialLinks, ...req.body.profile.socialLinks };
+        }
+        if (req.body.profile.preferences) {
+           user.profile.preferences = { ...user.profile.preferences, ...req.body.profile.preferences };
+        }
       }
 
       // If email is being changed, check if it's already taken

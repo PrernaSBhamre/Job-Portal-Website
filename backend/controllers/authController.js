@@ -47,7 +47,26 @@ const loginUser = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-    // Check for user email
+    // 1. Intercept Admin logins first
+    const Admin = require('../models/Admin');
+    const adminUser = await Admin.findOne({ email });
+    
+    if (adminUser) {
+        if (await adminUser.matchPassword(password)) {
+            return res.json({
+                _id: adminUser._id,
+                fullname: 'System Admin',
+                email: adminUser.email,
+                role: 'admin',
+                token: generateToken(adminUser._id),
+            });
+        } else {
+            res.status(401);
+            throw new Error('Invalid email or password');
+        }
+    }
+
+    // 2. Normal User logins
     const user = await User.findOne({ email });
 
     if (user && (await user.matchPassword(password))) {

@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Please add an email'],
       unique: true,
+      match: [/^\S+@\S+\.\S+$/, 'Please use a valid email address']
     },
     phoneNumber: {
       type: Number,
@@ -21,7 +22,7 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ['student', 'recruiter'],
+      enum: ['student', 'recruiter', 'admin'],
       required: [true, 'Please select a role']
     },
     profile: {
@@ -33,6 +34,31 @@ const userSchema = new mongoose.Schema(
       profilePhoto: {
         type: String,
         default: ""
+      },
+      education: [{
+        institution: String,
+        degree: String,
+        startYear: String,
+        endYear: String,
+        grade: String
+      }],
+      experience: [{
+        company: String,
+        title: String,
+        description: String,
+        startDate: String,
+        endDate: String,
+        isCurrent: Boolean
+      }],
+      socialLinks: {
+        linkedIn: String,
+        github: String,
+        portfolio: String
+      },
+      preferences: {
+        expectedSalary: String,
+        willingnessToRelocate: { type: Boolean, default: false },
+        preferredLocations: [{ type: String }]
       }
     },
   },

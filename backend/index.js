@@ -2,6 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const path = require('path');
 
 // Load environment variables from the .env file
 dotenv.config();
@@ -13,9 +14,34 @@ connectDB();
 // Initialize the express application
 const app = express();
 
+// Automatically provision fixed admin credentials in the separate Admin table
+const Admin = require('./models/Admin');
+const provisionAdmin = async () => {
+    try {
+        const existingAdmin = await Admin.findOne({ email: 'admin@gmail.com' });
+        if (!existingAdmin) {
+            // Remove old admin if exists to prevent duplicates
+            await Admin.deleteOne({ email: 'admin@jobportal.com' }).catch(()=>{});
+            
+            await Admin.create({
+                email: 'admin@gmail.com',
+                password: 'admin@31',
+                role: 'admin'
+            });
+            console.log('Fixed Admin Credential Provisioned in Dedicated Admin Table.');
+        }
+    } catch (e) {
+        console.error('Failed to provision admin:', e);
+    }
+};
+provisionAdmin();
+
 // --- Middleware ---
 // Enable CORS to allow requests from the frontend
 app.use(cors());
+
+// Serve Static Uploads
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Parse incoming JSON payloads in the request body
 app.use(express.json());
 // Parse incoming URL-encoded data

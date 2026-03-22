@@ -18,14 +18,20 @@ function switchTab(tabId, btn) {
 
     document.getElementById('usersTab').style.display = 'none';
     document.getElementById('jobsTab').style.display = 'none';
+    document.getElementById('resourcesTab').style.display = 'none';
     document.getElementById('dashboardTab').style.display = 'none';
 
     document.getElementById(tabId + 'Tab').style.display = 'block';
 
     if(tabId === 'users') fetchUsers();
     else if(tabId === 'jobs') fetchJobs();
+    else if(tabId === 'resources') fetchResources();
     else if(tabId === 'dashboard') loadStats();
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('cmsForm')?.addEventListener('submit', createResource);
+});
 
 async function fetchUsers() {
     const list = document.getElementById('usersList');
@@ -142,4 +148,77 @@ async function loadStats() {
         document.getElementById('statApps').innerText = appsC;
 
     } catch(err) { console.error("Error loading stats", err); }
+}
+
+async function fetchResources() {
+    const list = document.getElementById('resourcesList');
+    list.innerHTML = '<tr><td colspan="3" class="text-center">Loading...</td></tr>';
+
+    try {
+        const res = await fetch(`${CONFIG.API_URL}/resources`);
+        if(res.ok) {
+            const resources = await res.json();
+            if(resources.length === 0) { list.innerHTML = '<tr><td colspan="3" class="text-center">No articles found.</td></tr>'; return; }
+            
+            list.innerHTML = resources.map(r => `
+                <tr>
+                    <td><strong>${r.title}</strong></td>
+                    <td>${r.category}</td>
+                    <td>
+                        <button class="btn-danger-outline p-1 px-3" onclick="deleteResource('${r._id}')">Remove</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+    } catch(err) {
+        list.innerHTML = '<tr><td colspan="3" class="text-center text-danger">Error loading articles.</td></tr>';
+    }
+}
+
+async function createResource(e) {
+    e.preventDefault();
+    const content = document.getElementById('rContent').value.trim();
+    const words = content.split(' ').length;
+    const readTime = Math.ceil(words / 200) + ' min read';
+
+    const payload = {
+        title: document.getElementById('rTitle').value.trim(),
+        category: document.getElementById('rCategory').value,
+        content: content,
+        readTime: readTime,
+        imageUrl: document.getElementById('rImage').value.trim(),
+        author: 'FresherHub Admin'
+    };
+
+    try {
+        const res = await fetch(`${CONFIG.API_URL}/resources`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session.token}` },
+            body: JSON.stringify(payload)
+        });
+
+        if(res.ok) {
+            alert('Article Published!');
+            document.getElementById('cmsForm').reset();
+            fetchResources();
+        } else {
+            alert('Failed to publish article.');
+        }
+    } catch(err) {
+        alert('Server Error.');
+    }
+}
+
+async function deleteResource(id) {
+    if(!confirm("Delete this article forever?")) return;
+    try {
+        const res = await fetch(`${CONFIG.API_URL}/resources/${id}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${session.token}` }
+        });
+        if(res.ok) fetchResources();
+        else alert('Failed to delete.');
+    } catch(err) {
+        alert('Server Error.');
+    }
 }

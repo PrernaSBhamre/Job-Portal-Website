@@ -8,12 +8,13 @@ const {
   withdrawApplication,
 } = require('../controllers/applicationController');
 const { protect, isRecruiter } = require('../middleware/authMiddleware');
+const uploadResume = require('../middleware/uploadMiddleware');
 
 router.route('/user')
   .get(protect, getAppliedJobs);
 
 router.route('/job/:jobId')
-  .post(protect, applyForJob)
+  .post(protect, uploadResume.single('resume'), applyForJob)
   .get(protect, isRecruiter, getApplicants);
 
 router.route('/:id/status')

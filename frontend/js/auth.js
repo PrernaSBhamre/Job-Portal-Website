@@ -27,15 +27,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const session = getSession();
     const authDiv = document.querySelector('.auth, .auth-btns');
 
+    // Basic XSS Santizer
+    const escapeHTML = (str) => {
+        let div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    };
+
     if (session && authDiv) {
         // Build correct path to dashboard
         let depth = window.location.pathname.split('/').length - 1;
         let base = '';
         if (window.location.pathname.includes('pages/')) {
-            // Already inside pages/something/
             base = '../';
         } else {
-            // At root
             base = 'pages/';
         }
         
@@ -48,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="user-profile" style="display: flex; align-items: center; gap: 15px;">
                 <a href="${dashboardUrl}" id="navProfileBtn" class="user-name" style="font-weight: 500; text-decoration: none; color: #fff;">
                   <i class="bi bi-person-circle" style="font-size: 20px; color: #a78bfa; margin-right: 5px; vertical-align: middle;"></i>
-                  ${session.user.fullname}
+                  ${escapeHTML(session.user.fullname)}
                 </a>
                 <button onclick="logout()" style="padding: 8px 15px; border-radius: 30px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.05); color: white; cursor: pointer; transition: 0.3s; font-family: 'Inter', sans-serif;">
                   Logout

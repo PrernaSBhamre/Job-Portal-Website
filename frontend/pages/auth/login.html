@@ -452,7 +452,14 @@
                     data.token
                 );
                 alert("Logged In Successfully 🚀");
-                window.location.href = "../../index.html";
+                
+                if (data.role === 'admin') {
+                    window.location.href = "../admin/dashboard.html";
+                } else if (data.role === 'recruiter') {
+                    window.location.href = "../employer/dashboard.html";
+                } else {
+                    window.location.href = "../../index.html";
+                }
             } else {
                 alert(`Login Failed: ${data.message || 'Invalid credentials'}`);
             }

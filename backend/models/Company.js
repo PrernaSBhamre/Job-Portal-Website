@@ -19,6 +19,9 @@ const companySchema = new mongoose.Schema(
     logo: {
       type: String, // URL to company logo
     },
+    industry: { type: String, default: 'Technology & Services' },
+    companySize: { type: String, default: '500-10,000+' },
+    founded: { type: String, default: '2010' },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',

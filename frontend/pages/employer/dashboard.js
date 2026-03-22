@@ -170,47 +170,86 @@ async function createJob(e) {
     }
 }
 
-// 5. View Applicants for a Job
+// 5. View Applicants for a Job (Kanban Board)
 async function viewApplicants(jobId) {
     document.getElementById('myJobsTab').style.display = 'none';
     const panel = document.getElementById('applicantsPanel');
     panel.style.display = 'block';
     
-    const list = document.getElementById('applicantsList');
-    list.innerHTML = 'Loading applicants...';
+    const board = document.getElementById('kanbanBoard');
+    board.innerHTML = '<p class="text-white">Loading ATS Pipeline...</p>';
 
     try {
         const res = await fetch(`${CONFIG.API_URL}/applications/job/${jobId}`, {
-            headers: {
-                'Authorization': `Bearer ${session.token}`
-            }
+            headers: { 'Authorization': `Bearer ${session.token}` }
         });
         
         if (res.ok) {
             const apps = await res.json();
-            if (apps.length === 0) {
-                list.innerHTML = '<p class="text-muted">No applications yet.</p>';
-                return;
-            }
+            
+            const cols = {
+                'pending': '', 'shortlisted': '', 'interviewing': '', 'offered': '', 'rejected': ''
+            };
 
-            list.innerHTML = apps.map(a => `
-                <div class="p-3 mb-3" style="background: rgba(255,255,255,0.05); border-radius: 8px; border: 1px solid var(--border);">
-                    <div class="fw-bold text-white mb-1">${a.applicant?.fullname || 'Unknown User'}</div>
-                    <div style="font-size: 0.85rem; color: var(--text-muted); mb-2">
-                        <i class="bi bi-envelope"></i> ${a.applicant?.email || 'N/A'} • 
-                        <i class="bi bi-telephone"></i> ${a.applicant?.phoneNumber || 'N/A'}
+            apps.forEach(a => {
+                const stat = a.status.toLowerCase();
+                const sel = `
+                    <select class="action-select" onchange="updateAppStatus('${a._id}', this.value, '${jobId}')">
+                        <option value="pending" ${stat==='pending'?'selected':''}>Pending</option>
+                        <option value="shortlisted" ${stat==='shortlisted'?'selected':''}>Shortlisted</option>
+                        <option value="interviewing" ${stat==='interviewing'?'selected':''}>Interviewing</option>
+                        <option value="offered" ${stat==='offered'?'selected':''}>Offered</option>
+                        <option value="rejected" ${stat==='rejected'?'selected':''}>Rejected</option>
+                    </select>
+                `;
+                
+                let cardHTML = `
+                    <div class="kanban-card">
+                        <h5>${a.applicant?.fullname || 'Unknown User'}</h5>
+                        <p><i class="bi bi-envelope"></i> ${a.applicant?.email || 'N/A'}<br/>
+                           <i class="bi bi-telephone"></i> ${a.applicant?.phoneNumber || 'N/A'}</p>
+                        ${sel}
                     </div>
-                    <div class="mt-2 text-capitalize" style="font-size: 0.85rem; font-weight: 600; color: ${a.status === 'pending' ? 'var(--orange)' : 'var(--purple-light)'}">
-                        Status: ${a.status}
-                    </div>
-                </div>
-            `).join('');
+                `;
+                if(cols[stat] !== undefined) cols[stat] += cardHTML;
+            });
 
+            board.innerHTML = `
+                <div class="kanban-col"><div class="kanban-header">Applied (${(cols.pending.match(/<div class="kanban-card"/g)||[]).length})</div>${cols.pending}</div>
+                <div class="kanban-col"><div class="kanban-header text-primary">Shortlisted (${(cols.shortlisted.match(/<div class="kanban-card"/g)||[]).length})</div>${cols.shortlisted}</div>
+                <div class="kanban-col"><div class="kanban-header text-warning">Interviewing (${(cols.interviewing.match(/<div class="kanban-card"/g)||[]).length})</div>${cols.interviewing}</div>
+                <div class="kanban-col"><div class="kanban-header text-success">Offered (${(cols.offered.match(/<div class="kanban-card"/g)||[]).length})</div>${cols.offered}</div>
+                <div class="kanban-col"><div class="kanban-header text-danger">Rejected (${(cols.rejected.match(/<div class="kanban-card"/g)||[]).length})</div>${cols.rejected}</div>
+            `;
         } else {
-            list.innerHTML = 'Failed to load applicants.';
+            board.innerHTML = '<p class="text-white">Failed to load ATS Pipeline.</p>';
         }
     } catch (err) {
-        list.innerHTML = 'Error loading applicants.';
+        board.innerHTML = '<p class="text-danger">Error loading applicants.</p>';
+    }
+}
+
+// Update Applicant Status
+async function updateAppStatus(appId, newStatus, jobId) {
+    try {
+        const res = await fetch(`${CONFIG.API_URL}/applications/${appId}/status`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${session.token}`
+            },
+            body: JSON.stringify({ status: newStatus })
+        });
+        
+        if(res.ok) {
+            // Re-render the board silently to snap the card to the new column
+            viewApplicants(jobId);
+        } else {
+            alert('Failed to move applicant pipeline status.');
+        }
+    } catch(err) {
+        console.error(err);
+        alert('Server Error.');
     }
 }
 

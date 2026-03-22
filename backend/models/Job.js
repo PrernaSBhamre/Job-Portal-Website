@@ -10,6 +10,15 @@ const jobSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Please add a description'],
     },
+    responsibilities: [{
+      type: String
+    }],
+    eligibility: {
+      type: String
+    },
+    perks: [{
+      type: String
+    }],
     requirements: [{
       type: String,
       required: [true, 'Please add requirements']

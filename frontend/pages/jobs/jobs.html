@@ -286,7 +286,7 @@ footer{background:#0c0c18;border-top:1px solid var(--border);padding:46px 0 22px
       <div class="nav-pill d-none d-lg-flex">
         <a href="../../index.html">Home</a>
         <a href="../jobs/jobs.html" class="active">Find Jobs</a>
-        <a href="#">Companies</a>
+        <a href="../companies/companies.html">Companies</a>
         <a href="../services/services.html">Services</a>
         <a href="../resources/resources.html">Resources</a>
       </div>
@@ -504,88 +504,11 @@ footer{background:#0c0c18;border-top:1px solid var(--border);padding:46px 0 22px
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 // ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ DATA ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
-const JOBS=[
-  {id:1,title:'Junior React Developer',co:'TechNova Systems',ini:'T',loc:'Bangalore, India',type:'Full Time',exp:'0-1 Years',expV:1,sal:'Γé╣4L ΓÇô Γé╣6L / Year',salMin:4,skills:['React','TypeScript','Tailwind','Git'],pre:true,ceo:true,isNew:false,posted:'2 days ago',rating:4.5,rc:128,match:92,deadline:'Oct 15, 2026',daysLeft:30,apps:142,jobId:'#18829',ind:'IT Services',size:'500ΓÇô1000',yr:'2015',color:'#7c3aed',
-    about:'TechNova Systems is a leading innovator in IT services, dedicated to building next-gen software solutions for global clients across 12 countries.',
-    desc:'We are looking for a passionate Junior React Developer to join our dynamic team. You will work on building modern web applications using React, TypeScript, and Tailwind CSS. An excellent opportunity to learn and grow in a fast-paced product environment.',
-    resp:['Build responsive, accessible UI components with React & TypeScript','Collaborate with designers to implement pixel-perfect interfaces','Write clean, well-documented, testable code','Participate in Agile ceremonies (sprint planning, retros)','Integrate REST APIs and manage application state with Redux'],
-    req:['JavaScript (ES6+) ΓÇö strong fundamentals','React.js and its core principles (hooks, context)','HTML5, CSS3 and responsive design','Git version control and collaboration workflows','Willingness to learn and adapt continuously','Good problem-solving and communication skills'],
-    process:['Resume Screening','Online Coding Test','Technical Interview','HR Discussion','Offer Rollout'],
-    salary:{base:350000,var:50000,ben:50000},
-    reviews:[
-      {n:'Ankit Mehta',r:'Junior Dev at TechNova',text:'Amazing culture, very supportive seniors. Got to work on real features from week one. Highly recommended for freshers!',stars:5,mo:'Feb 2026'},
-      {n:'Sneha Patil',r:'Former Intern',text:'Smooth onboarding, early ownership of tasks. Management genuinely cares about your growth.',stars:4,mo:'Jan 2026'},
-      {n:'Rahul Verma',r:'Software Engineer',text:'Fast-paced but very rewarding. Self-motivated people thrive here.',stars:4,mo:'Dec 2025'}
-    ]},
-  {id:2,title:'Fresher UI/UX Designer',co:'Creative Pulse',ini:'C',loc:'Pune, India',type:'Full Time',exp:'0 Years',expV:0,sal:'Γé╣3.5L ΓÇô Γé╣5L / Year',salMin:3.5,skills:['Figma','Adobe XD','Prototyping','Design Systems'],pre:false,ceo:true,isNew:false,posted:'4 hours ago',rating:4.2,rc:76,match:80,deadline:'Apr 10, 2026',daysLeft:23,apps:89,jobId:'#19210',ind:'Design & Media',size:'50ΓÇô200',yr:'2018',color:'#ec4899',
-    about:'Creative Pulse is a boutique design consultancy crafting digital experiences for startups and Fortune 500 brands across South Asia.',
-    desc:'Create beautiful, user-centred digital experiences for mobile and web products. Work alongside senior designers and directly with clients on end-to-end product design.',
-    resp:['Design UI screens and interactive prototypes in Figma','Conduct user research and usability testing','Create and maintain design systems','Collaborate with devs to ensure design fidelity','Present design concepts and rationale to stakeholders'],
-    req:['Proficiency in Figma or Adobe XD','Understanding of UX principles and design thinking','Portfolio with minimum 2 projects','Basic HTML/CSS knowledge is a plus','Strong visual communication skills'],
-    process:['Portfolio Review','Design Challenge','Creative Interview','Culture Fit','Offer'],
-    salary:{base:300000,var:40000,ben:35000},
-    reviews:[
-      {n:'Priya Singh',r:'UI Designer',text:'Brilliant place to start your design career. Creative, collaborative team with great client exposure.',stars:5,mo:'Mar 2026'},
-      {n:'Karan Joshi',r:'UX Researcher',text:'Real client projects from month one. Management is very approachable and gives constructive feedback.',stars:4,mo:'Jan 2026'}
-    ]},
-  {id:3,title:'Associate Software Engineer',co:'Infosys',ini:'I',loc:'Hyderabad, India',type:'Full Time',exp:'0-2 Years',expV:2,sal:'Γé╣5L ΓÇô Γé╣8L / Year',salMin:5,skills:['Java','Spring Boot','SQL','REST API'],pre:true,ceo:false,isNew:false,posted:'1 day ago',rating:4.7,rc:342,match:75,deadline:'Apr 20, 2026',daysLeft:33,apps:512,jobId:'#20001',ind:'IT Services',size:'200,000+',yr:'1981',color:'#0ea5e9',
-    about:'Infosys is a global leader in IT services and consulting, serving clients across 50+ countries with 300,000+ employees worldwide.',
-    desc:'Join Infosys as an ASE and work on enterprise-scale software products used by Fortune 500 companies. Structured training and global career paths provided.',
-    resp:['Develop backend services using Java and Spring Boot','Write and optimise SQL queries for high-volume databases','Participate in Agile ceremonies','Write unit and integration tests','Collaborate across global teams in distributed environments'],
-    req:['Strong Java foundation (OOP, Collections, Exceptions)','Spring Boot framework understanding','SQL and relational database concepts','REST API design and consumption','Strong analytical and logical thinking'],
-    process:['Online Test','Technical Round 1','Technical Round 2','HR Round','Offer Rollout'],
-    salary:{base:450000,var:60000,ben:65000},
-    reviews:[
-      {n:'Divya Nair',r:'ASE at Infosys',text:'World-class training in Mysore. Best place to start an enterprise tech career with structured growth paths.',stars:5,mo:'Feb 2026'},
-      {n:'Arjun Kumar',r:'Software Engineer',text:'Stable, well-paying job. Work-life balance depends on your project. Great stepping stone.',stars:4,mo:'Dec 2025'},
-      {n:'Pooja Reddy',r:'Former ASE',text:'Lots of learning opportunities and certifications. The brand name opens many doors.',stars:4,mo:'Nov 2025'}
-    ]},
-  {id:4,title:'Frontend Developer Intern',co:'StartUp Inc',ini:'S',loc:'Remote',type:'Internship',exp:'0 Years',expV:0,sal:'Γé╣15k ΓÇô Γé╣25k / Month',salMin:1.8,skills:['HTML','CSS','JavaScript','React'],pre:false,ceo:false,isNew:true,posted:'Just now',rating:3.9,rc:22,match:88,deadline:'Mar 30, 2026',daysLeft:12,apps:47,jobId:'#21500',ind:'SaaS / Startup',size:'10ΓÇô50',yr:'2022',color:'#22c55e',
-    about:'StartUp Inc is a SaaS startup building collaboration tools for remote teams. Series A funded with 40k+ monthly active users.',
-    desc:'Remote internship building interactive UIs for a fast-growing SaaS product. Ship features that real users interact with every day.',
-    resp:['Build React-based frontend features from Figma designs','Write responsive, semantic HTML and CSS','Contribute to the component library','Collaborate via GitHub (PRs, code reviews)','Participate in weekly product demos'],
-    req:['HTML5, CSS3, JavaScript fundamentals','Basic React (hooks, state)','Git basics','Eagerness to learn and take ownership','Good async communication for a remote team'],
-    process:['Resume Screen','Take-home Project','Video Interview','Offer'],
-    salary:{base:180000,var:0,ben:0},
-    reviews:[
-      {n:'Ishaan Gupta',r:'Frontend Intern',text:'Features I built went live within 2 weeks. Super exciting for a fresher. Great remote culture.',stars:4,mo:'Feb 2026'},
-      {n:'Mansi Thakur',r:'Intern',text:'Fast-paced but very rewarding. Good mentorship from the tech lead.',stars:4,mo:'Jan 2026'}
-    ]},
-  {id:5,title:'Backend Developer ΓÇô Python',co:'DataBridge Solutions',ini:'D',loc:'Mumbai, India',type:'Full Time',exp:'0-1 Years',expV:1,sal:'Γé╣4L ΓÇô Γé╣7L / Year',salMin:4,skills:['Python','Django','PostgreSQL','Redis'],pre:false,ceo:true,isNew:false,posted:'3 hours ago',rating:4.0,rc:54,match:68,deadline:'Apr 25, 2026',daysLeft:38,apps:93,jobId:'#20800',ind:'Data & Analytics',size:'100ΓÇô500',yr:'2016',color:'#f59e0b',
-    about:'DataBridge Solutions builds financial analytics platforms serving 50+ enterprise clients across India with real-time data pipelines.',
-    desc:'Work on scalable REST APIs and data pipelines powering a financial analytics platform. Opportunity to learn distributed systems in a data-heavy environment.',
-    resp:['Build REST APIs using Django REST Framework','Design and optimise PostgreSQL schemas','Work with Redis for caching and task queues','Write automated tests with pytest','Collaborate with frontend and data science teams'],
-    req:['Python 3.x and Django basics','PostgreSQL or any relational DB','REST API principles','Git version control','Curiosity about data systems and analytics'],
-    process:['Screening Call','Python Technical Test','System Design','HR Round','Offer'],
-    salary:{base:380000,var:55000,ben:40000},
-    reviews:[
-      {n:'Nikhil Shah',r:'Backend Engineer',text:'Challenging work in a collaborative team. Modern tech stack and great exposure to real data engineering problems.',stars:4,mo:'Mar 2026'}
-    ]},
-  {id:6,title:'DevOps Fresher',co:'CloudNine Tech',ini:'C',loc:'Bangalore, India',type:'Full Time',exp:'0 Years',expV:0,sal:'Γé╣3L ΓÇô Γé╣5.5L / Year',salMin:3,skills:['Docker','Linux','AWS','CI/CD'],pre:false,ceo:false,isNew:true,posted:'5 hours ago',rating:4.1,rc:31,match:60,deadline:'Apr 18, 2026',daysLeft:31,apps:61,jobId:'#21200',ind:'Cloud / DevOps',size:'50ΓÇô200',yr:'2019',color:'#14b8a6',
-    about:'CloudNine Tech specialises in cloud-native infrastructure and DevOps consulting for mid-sized enterprises across India.',
-    desc:'Join a cloud-native company and master infrastructure automation. Ideal for freshers passionate about DevOps, cloud computing, and automation.',
-    resp:['Set up CI/CD pipelines using Jenkins / GitHub Actions','Manage Docker containers and Kubernetes pods','Monitor infra with Prometheus and Grafana','Automate tasks with Shell scripts and Python','Support AWS environment management and cost optimisation'],
-    req:['Basic Linux command line proficiency','Networking fundamentals (DNS, TCP/IP)','Familiarity with Docker is a plus','AWS Cloud Practitioner certification preferred','Willingness to learn IaC tools (Terraform)'],
-    process:['Resume Screen','Tech Assessment','Interview Round 1','HR Discussion','Offer'],
-    salary:{base:270000,var:30000,ben:25000},
-    reviews:[
-      {n:'Abhishek Nair',r:'DevOps Engineer',text:'Best place to start a DevOps career. They genuinely invest in training freshers on the latest cloud tools.',stars:4,mo:'Feb 2026'}
-    ]},
-  {id:7,title:'Junior Data Analyst',co:'FinSight Analytics',ini:'F',loc:'Hyderabad, India',type:'Full Time',exp:'0-1 Years',expV:1,sal:'Γé╣3.5L ΓÇô Γé╣6L / Year',salMin:3.5,skills:['Python','SQL','Tableau','Excel'],pre:true,ceo:true,isNew:false,posted:'12 hours ago',rating:4.3,rc:87,match:72,deadline:'Apr 22, 2026',daysLeft:35,apps:204,jobId:'#20300',ind:'FinTech',size:'200ΓÇô500',yr:'2017',color:'#8b5cf6',
-    about:'FinSight Analytics delivers financial intelligence dashboards to 30+ banking and NBFC clients across India, processing 2TB of data daily.',
-    desc:'Analyse financial datasets and build executive dashboards that drive billion-rupee business decisions. Steep learning curve with massive impact.',
-    resp:['Query and clean large financial datasets using SQL and Python','Build interactive Tableau/Power BI dashboards','Present insights to non-technical stakeholders','Automate recurring reports with Python scripts','Maintain data documentation and data dictionaries'],
-    req:['SQL ΓÇö intermediate (JOINs, aggregations, subqueries)','Python for data analysis (Pandas, NumPy)','Tableau or Power BI basics','Excel pivot tables and VLOOKUP','Strong attention to detail and analytical thinking'],
-    process:['Online Test','SQL & Python Round','Case Study Presentation','HR Round','Offer'],
-    salary:{base:330000,var:45000,ben:35000},
-    reviews:[
-      {n:'Ritika Agarwal',r:'Data Analyst',text:'Excellent exposure to real financial data. Great launchpad into fintech analytics.',stars:5,mo:'Mar 2026'},
-      {n:'Varun Pillai',r:'Junior Analyst',text:'Manageable workload with genuinely interesting projects. Transparent management.',stars:4,mo:'Feb 2026'}
-    ]}
-];
+
 
 // No need to redefine CONFIG here since it's in config.js
 let selSkills=[], jobSaved=new Set(), currentJob=null, showAll=false;
+let JOBS = [];
 let fetchedJobs = [];
 
 // FETCH JOBS FROM BACKEND
@@ -640,6 +563,7 @@ async function fetchJobs() {
             }));
             
             selSkills = [];
+            JOBS = fetchedJobs;
             renderJobs(fetchedJobs.slice(0, 5));
         }
     } catch (e) {
@@ -656,13 +580,7 @@ function goJobs(){
   document.title='FresherHub ΓÇô Find Your Dream Job';
 }
 function goJD(id){
-  currentJob=fetchedJobs.find(j=>j.id===id);
-  if(!currentJob)return;
-  document.getElementById('pageJobs').classList.remove('active');
-  document.getElementById('pageJD').classList.add('active');
-  window.scrollTo({top:0,behavior:'instant'});
-  renderJD(currentJob);
-  document.title=`${currentJob.title} ΓÇô FresherHub`;
+  window.location.href = `job-details.html?id=${id}`;
 }
 
 // ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ HELPERS ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
@@ -1157,7 +1075,7 @@ async function submitApp() {
   if (!cv || !cv.files.length) { toast('Please upload your Resume'); return; }
 
   try {
-      const response = await fetch(`${CONFIG.API_URL}/applications/${currentJob.id}`, {
+      const response = await fetch(`${CONFIG.API_URL}/applications/job/${currentJob.id}`, {
           method: 'POST',
           headers: {
               'Authorization': `Bearer ${session.token}`

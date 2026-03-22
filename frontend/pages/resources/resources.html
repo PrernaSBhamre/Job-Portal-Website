@@ -46,7 +46,7 @@
       <div class="nav-pill d-none d-lg-flex">
         <a href="../../index.html">Home</a>
         <a href="../jobs/jobs.html">Find Jobs</a>
-        <a href="#">Companies</a>
+        <a href="../companies/companies.html">Companies</a>
         <a href="../services/services.html">Services</a>
         <a href="resources.html" class="active">Resources</a>
       </div>
@@ -84,6 +84,24 @@
         <!-- JS will inject dynamic resources here -->
     </section>
 
+</div>
+
+<!-- Article Reader Modal -->
+<div class="modal fade" id="articleModal" tabindex="-1" aria-labelledby="articleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content" style="background: var(--card, #181824); border: 1px solid var(--border, #2a2a42); color: white;">
+      <div class="modal-header" style="border-bottom: 1px solid var(--border, #2a2a42);">
+        <h5 class="modal-title fw-bold" id="articleModalLabel">Article</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4" id="articleModalBody">
+         <!-- Content injected via JS -->
+      </div>
+      <div class="modal-footer" style="border-top: 1px solid var(--border, #2a2a42);">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close Reader</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <footer>

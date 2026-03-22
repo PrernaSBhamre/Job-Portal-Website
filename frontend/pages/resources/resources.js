@@ -83,9 +83,34 @@ function filterResources(category) {
 function openResource(id) {
     const session = getSession();
     if (!session || !session.token) {
-        alert("Please login to read premium resources.");
+        alert("Please login to create an account to read premium resources.");
         window.location.href = '../auth/login.html';
         return;
     }
-    alert('Resource full preview modal coming soon!');
+    
+    // Find the resource from allResources array
+    const article = allResources.find(r => r._id === id);
+    if(!article) {
+        alert("Error loading article contents.");
+        return;
+    }
+    
+    // Populate Modal
+    document.getElementById('articleModalLabel').innerText = article.title;
+    
+    const bodyHTML = `
+        ${article.imageUrl ? `<img src="${article.imageUrl}" style="width:100%; height:auto; border-radius:12px; margin-bottom: 20px;" alt="...">` : ''}
+        <div class="d-flex align-items-center gap-3 mb-4">
+            <span class="badge bg-primary">${article.category}</span>
+            <span class="text-muted small"><i class="bi bi-clock"></i> ${article.readTime}</span>
+            <span class="text-muted small"><i class="bi bi-person"></i> By ${article.author}</span>
+        </div>
+        <div style="line-height: 1.8; font-size: 1.05rem; white-space: pre-wrap;">${article.content}</div>
+    `;
+    
+    document.getElementById('articleModalBody').innerHTML = bodyHTML;
+    
+    // Show Modal
+    const myModal = new bootstrap.Modal(document.getElementById('articleModal'));
+    myModal.show();
 }

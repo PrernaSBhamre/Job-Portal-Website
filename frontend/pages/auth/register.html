@@ -408,6 +408,11 @@ line-height:1.5;
 </div>
 
 <div class="input-group">
+<label>PHONE NUMBER</label>
+<input type="tel" id="phone" placeholder="Enter your phone number">
+</div>
+
+<div class="input-group">
 <label>PASSWORD</label>
 <input type="password" id="password" placeholder="Create a strong password">
 </div>
@@ -433,36 +438,65 @@ Already have an account? <a href="login.html" style="color:#7a5cff;font-weight:6
 
 
 
+<script src="../../js/config.js"></script>
+<script src="../../js/auth.js"></script>
 <script>
 
 const fresherBtn = document.getElementById("fresherBtn")
 const employerBtn = document.getElementById("employerBtn")
+let selectedRole = "student";
 
 fresherBtn.onclick = () =>{
 fresherBtn.classList.add("active")
 employerBtn.classList.remove("active")
+selectedRole = "student";
 }
 
 employerBtn.onclick = () =>{
 employerBtn.classList.add("active")
 fresherBtn.classList.remove("active")
+selectedRole = "recruiter";
 }
 
-document.getElementById("signupForm").addEventListener("submit",function(e){
+document.getElementById("signupForm").addEventListener("submit", async function(e){
 
 e.preventDefault()
 
 let name = document.getElementById("name").value
 let email = document.getElementById("email").value
+let phone = document.getElementById("phone").value
 let password = document.getElementById("password").value
 
-if(name=="" || email=="" || password==""){
+if(name=="" || email=="" || phone=="" || password==""){
 alert("Please fill all fields")
 return
 }
 
-alert("Account Created Successfully 🚀")
-window.location.href="login.html"
+try {
+    const response = await fetch(`${CONFIG.API_URL}/auth/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            fullname: name,
+            email: email,
+            phoneNumber: phone,
+            password: password,
+            role: selectedRole
+        })
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+        alert("Account Created Successfully 🚀\nPlease log in.");
+        window.location.href="login.html"
+    } else {
+        alert(`Registration Failed: ${data.message || 'Unknown error'}`);
+    }
+} catch (error) {
+    console.error("Error connecting to server:", error);
+    alert("Registration Failed: Error connecting to server.");
+}
 
 })
 

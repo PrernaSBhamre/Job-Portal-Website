@@ -422,23 +422,49 @@
 
 
 
-    <script>
-        document.getElementById("loginForm").addEventListener("submit", function (e) {
-            e.preventDefault()
-            let email = document.getElementById("email").value
-            let password = document.getElementById("password").value
+<script src="../../js/config.js"></script>
+<script src="../../js/auth.js"></script>
+<script>
+    document.getElementById("loginForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+        
+        let email = document.getElementById("email").value;
+        let password = document.getElementById("password").value;
 
-            if (email == "" || password == "") {
-                alert("Please fill all fields")
-                return
+        if (email === "" || password === "") {
+            alert("Please fill all fields");
+            return;
+        }
+
+        try {
+            const response = await fetch(`${CONFIG.API_URL}/auth/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // Store user session data
+                setSession(
+                    { _id: data._id, fullname: data.fullname, email: data.email, role: data.role }, 
+                    data.token
+                );
+                alert("Logged In Successfully 🚀");
+                window.location.href = "../../index.html";
+            } else {
+                alert(`Login Failed: ${data.message || 'Invalid credentials'}`);
             }
+        } catch (error) {
+            console.error("Error connecting to server:", error);
+            alert("Login Failed: Error connecting to server.");
+        }
+    });
 
-            alert("Logged In Successfully 🚀")
-            window.location.href = "../../index.html"
-        })
-        document.getElementById("githubBtn").onclick = () => { alert("Github Login Coming Soon") }
-        document.getElementById("linkedinBtn").onclick = () => { alert("LinkedIn Login Coming Soon") }
-    </script>
+    document.getElementById("githubBtn").onclick = () => { alert("Github Login Coming Soon") };
+    document.getElementById("linkedinBtn").onclick = () => { alert("LinkedIn Login Coming Soon") };
+</script>
 
 </body>
 

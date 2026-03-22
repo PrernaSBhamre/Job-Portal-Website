@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>My Profile – FresherHub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0b14;
+      --card: #181824;
+      --border: #2a2a42;
+      --purple: #6d28d9;
+      --purple-light: #8b5cf6;
+      --orange: #f97316;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+      background-position: center top;
+    }
+
+    /* Navbar styling */
+    .navbar-wrapper {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      background: rgba(11, 11, 20, 0.8);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .navbar-custom { padding: 22px 0; display: flex; align-items: center; justify-content: space-between; }
+    .logo-box { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .logo-icon { width: 36px; height: 36px; background: #5b21b6; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 1.1rem; box-shadow: 0 0 15px rgba(91, 33, 182, 0.6); }
+    .logo-text { font-weight: 700; font-size: 1.35rem; color: #fff; letter-spacing: -0.5px; }
+    .logo-text span { color: #8b5cf6; }
+    .nav-pill { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 40px; padding: 6px 8px; display: flex; gap: 5px; }
+    .nav-pill a { color: #a1a1aa; text-decoration: none; font-size: 0.88rem; font-weight: 500; padding: 8px 20px; border-radius: 30px; transition: 0.3s; }
+    .nav-pill a:hover, .nav-pill a.active { color: #fff; background: rgba(255, 255, 255, 0.08); }
+    .auth-btns { display: flex; align-items: center; gap: 25px; }
+
+    .dashboard-container { padding: 50px 0; }
+    .panel { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 30px; margin-bottom: 30px; }
+    .panel-title { font-weight: 800; font-size: 1.5rem; margin-bottom: 20px; color: #fff; }
+
+    .nav-tabs { border-bottom: 1px solid var(--border); margin-bottom: 25px; }
+    .nav-tabs .nav-link { color: var(--text-muted); border: none; font-weight: 600; padding: 12px 25px; border-bottom: 2px solid transparent; cursor: pointer; }
+    .nav-tabs .nav-link.active { color: var(--purple-light); background: transparent; border-bottom: 2px solid var(--purple-light); }
+
+    .form-group label { font-weight: 600; color: var(--text-muted); margin-bottom: 8px; display: block; font-size: 0.9rem; }
+    .form-control { background: rgba(0,0,0,0.2) !important; border: 1px solid var(--border) !important; color: white !important; border-radius: 10px; padding: 12px 15px; }
+    .form-control:focus { border-color: var(--purple-light) !important; box-shadow: 0 0 0 0.25rem rgba(139, 92, 246, 0.25) !important; }
+    .btn-submit { background: linear-gradient(135deg, var(--purple), var(--purple-light)); color: white; border: none; padding: 12px 30px; border-radius: 10px; font-weight: 600; transition: 0.3s; margin-top: 15px; }
+    .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(109, 40, 217, 0.3); }
+
+    .app-card { background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+    .app-title { font-weight: 700; font-size: 1.1rem; margin-bottom: 4px; }
+    .app-co { font-size: 0.9rem; color: var(--text-muted); }
+    .app-status { font-size: 0.85rem; font-weight: 700; padding: 6px 12px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .status-pending { background: rgba(249, 115, 22, 0.1); color: var(--orange); border: 1px solid rgba(249, 115, 22, 0.3); }
+    .status-reviewed { background: rgba(59, 130, 246, 0.1); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.3); }
+    .status-accepted { background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .status-rejected { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
+
+    /* Mock File Upload box */
+    .file-drop {
+        border: 2px dashed rgba(255,255,255,0.15);
+        border-radius: 15px;
+        padding: 30px;
+        text-align: center;
+        background: rgba(0,0,0,0.2);
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    .file-drop:hover { border-color: var(--purple-light); background: rgba(139, 92, 246, 0.05); }
+    .current-resume {
+        margin-top: 15px;
+        padding: 15px;
+        background: rgba(16, 185, 129, 0.1);
+        border: 1px solid rgba(16, 185, 129, 0.2);
+        border-radius: 10px;
+        color: #10b981;
+        display: none;
+        align-items: center;
+        gap: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar-wrapper">
+    <div class="container">
+      <nav class="navbar-custom">
+        <a href="../../index.html" class="logo-box">
+          <div class="logo-icon">F</div>
+          <div class="logo-text">Fresher<span>Hub</span></div>
+        </a>
+        <div class="nav-pill d-none d-md-flex">
+          <a href="../../index.html">Home</a>
+          <a href="../jobs/jobs.html">Find Jobs</a>
+          <a href="../services/services.html">Services</a>
+          <a href="../resources/resources.html">Resources</a>
+          <a href="#" class="active mt-1 text-purple-light">My Profile</a>
+        </div>
+        <div class="auth-btns">
+          <!-- Auth logic will populate this -->
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <div class="container dashboard-container">
+      <ul class="nav-tabs d-flex list-unstyled">
+          <li class="nav-item">
+              <a class="nav-link active" onclick="switchTab('profile', this)">Profile & Resume</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" onclick="switchTab('applications', this)">My Applications</a>
+          </li>
+      </ul>
+
+      <div id="profileTab" class="panel">
+          <h2 class="panel-title">Update Profile</h2>
+          <form id="profileForm">
+              <div class="row">
+                  <div class="col-md-6 mb-3 form-group">
+                      <label>Full Name</label>
+                      <input type="text" id="pName" class="form-control" required>
+                  </div>
+                  <div class="col-md-6 mb-3 form-group">
+                      <label>Phone Number</label>
+                      <input type="text" id="pPhone" class="form-control" required>
+                  </div>
+                  <div class="col-md-12 mb-3 form-group">
+                      <label>Bio / Summary</label>
+                      <textarea id="pBio" class="form-control" rows="3" placeholder="Tell recruiters about yourself..."></textarea>
+                  </div>
+                  <div class="col-md-12 mb-4 form-group">
+                      <label>Skills (Comma separated)</label>
+                      <input type="text" id="pSkills" class="form-control" placeholder="React, Node.js, Python">
+                  </div>
+              </div>
+
+              <h4 class="mb-3 text-white">Upload Resume</h4>
+              <div class="form-group mb-4">
+                  <!-- Instead of actual file upload handling which requires Multer, we supply a URL entry + mock drop target for frontend UX -->
+                  <label>Resume Link (Google Drive / Portfolio URL)</label>
+                  <input type="url" id="pResume" class="form-control" placeholder="https://drive.google.com/...">
+                  
+                  <div id="currentResumeBox" class="current-resume">
+                      <i class="bi bi-file-earmark-check-fill fs-5"></i>
+                      <div>
+                          <div class="fw-bold fs-6">Resume Attached</div>
+                          <a href="#" id="currentResumeLink" target="_blank" style="color: #10b981; font-size: 0.85rem;">View Document</a>
+                      </div>
+                  </div>
+              </div>
+
+              <button type="submit" class="btn-submit">Save Profile</button>
+          </form>
+      </div>
+
+      <div id="applicationsTab" class="panel" style="display:none;">
+          <h2 class="panel-title">My Applied Jobs</h2>
+          <div id="myAppsList">Loading...</div>
+      </div>
+  </div>
+
+  <script src="../../js/config.js"></script>
+  <script src="../../js/auth.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>

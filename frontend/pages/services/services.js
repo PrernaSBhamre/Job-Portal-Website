@@ -38,9 +38,26 @@ document.querySelectorAll(".categories button").forEach(button=>{
     });
 });
 
-// Login Modal
-document.querySelectorAll(".login-btn").forEach(btn=>{
-    btn.addEventListener("click", function(){
-        alert("Please login to access this service.");
+// Dynamic Session Check for Buttons
+document.addEventListener('DOMContentLoaded', () => {
+    const session = getSession && typeof getSession === 'function' ? getSession() : null;
+    let targetDash = '../auth/login.html';
+    
+    if (session && session.user) {
+        if(session.user.role === 'recruiter') targetDash = '../employer/dashboard.html';
+        else if(session.user.role === 'admin') targetDash = '../admin/dashboard.html';
+        else targetDash = '../seeker/dashboard.html';
+    }
+
+    document.querySelectorAll(".login-btn").forEach(btn => {
+        if (session) {
+            btn.innerText = "Try Now";
+            btn.onclick = () => { window.location.href = targetDash; };
+        } else {
+            btn.onclick = () => { 
+                alert("Please login to access this service."); 
+                window.location.href = '../auth/login.html';
+            };
+        }
     });
 });

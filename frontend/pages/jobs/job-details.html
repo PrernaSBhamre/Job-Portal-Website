@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Details - FresherHub</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #0b0b14;
+            --card: #151521;
+            --card-hover: #1c1c2b;
+            --border: #2a2a42;
+            --purple: #7c3aed;
+            --orange: #f97316;
+            --tp: #f8fafc; /* text primary */
+            --ts: #94a3b8; /* text secondary */
+            --green: #22c55e;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--tp);
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+        }
+
+        /* Navbar CSS */
+        .navbar-wrapper { border-bottom: 1px solid rgba(255, 255, 255, 0.05); background: rgba(11, 11, 20, 0.8); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 1000; }
+        .navbar-custom { padding: 22px 0; display: flex; align-items: center; justify-content: space-between; }
+        .logo-box { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .logo-icon { width: 36px; height: 36px; background: #5b21b6; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 1.1rem; box-shadow: 0 0 15px rgba(91, 33, 182, 0.6); }
+        .logo-text { font-weight: 700; font-size: 1.35rem; color: #fff; letter-spacing: -0.5px; }
+        .logo-text span { color: #8b5cf6; }
+        .nav-pill { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 40px; padding: 6px 8px; display: flex; gap: 5px; }
+        .nav-pill a { color: #a1a1aa; text-decoration: none; font-size: 0.88rem; font-weight: 500; padding: 8px 20px; border-radius: 30px; transition: 0.3s; }
+        .nav-pill a:hover, .nav-pill a.active { color: #fff; background: rgba(255, 255, 255, 0.08); }
+        .auth-btns { display: flex; align-items: center; gap: 25px; }
+        .btn-login { color: #fff; text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: 0.3s; }
+        .btn-login:hover { color: #94a3b8; }
+        .btn-signup { background: linear-gradient(135deg, var(--orange), #fb923c); color: #000; padding: 10px 24px; border-radius: 30px; text-decoration: none; font-weight: 800; font-size: 0.95rem; transition: 0.3s; border: none; }
+        .btn-signup:hover { box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3); }
+
+        /* General Layout */
+        .page-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .jd-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 24px;
+        }
+
+        /* Card 1: Header */
+        .co-av {
+            width: 64px;
+            height: 64px;
+            background: #0f0f17;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .jd-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--tp);
+            margin-bottom: 5px;
+        }
+
+        .jd-co {
+            font-size: 0.95rem;
+            color: var(--ts);
+        }
+
+        .badge-premium {
+            background: rgba(124, 58, 237, 0.15);
+            border: 1px solid rgba(124, 58, 237, 0.3);
+            color: #a78bfa;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            height: max-content;
+        }
+
+        .stat-group {
+            display: flex;
+            gap: 40px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .stat-lbl {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--ts);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-val {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--tp);
+        }
+
+        .btn-quick {
+            background: var(--orange);
+            color: #fff;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: 0.3s;
+        }
+        .btn-quick:hover { background: #ea580c; }
+
+        .btn-save {
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            border: 1px solid var(--border);
+            padding: 12px 30px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: 0.3s;
+        }
+        .btn-save:hover { background: rgba(255,255,255,0.1); }
+
+        /* Card Sections */
+        .sec-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Syne', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--tp);
+            margin-bottom: 24px;
+        }
+        .sec-header i {
+            color: var(--purple);
+            font-size: 1.2rem;
+        }
+
+        .comp-desc {
+            font-size: 0.95rem;
+            color: var(--ts);
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        .comp-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+        .cg-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            padding: 15px;
+            border-radius: 12px;
+        }
+        @media (max-width: 768px) { .comp-grid { grid-template-columns: repeat(2, 1fr); } }
+
+        /* Job Desc */
+        .sub-head {
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: var(--tp);
+            margin: 25px 0 15px;
+        }
+
+        .jd-p { color: var(--ts); font-size: 0.95rem; line-height: 1.7; }
+
+        .jd-tags { display: flex; flex-wrap: wrap; gap: 10px; }
+        .jd-tag {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: #cbd5e1;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .req-list { list-style: none; padding: 0; margin: 0; }
+        .req-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+            color: var(--ts);
+            line-height: 1.6;
+        }
+        .req-list li i { color: var(--purple); font-size: 1.1rem; }
+
+        /* Right Column */
+        .ov-list { list-style: none; padding: 0; margin: 0; }
+        .ov-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .ov-list li:last-child { border: none; padding-bottom: 0; }
+        .ov-lbl { color: var(--ts); font-size: 0.9rem; display: flex; align-items: center; gap: 10px; }
+        .ov-val { color: var(--tp); font-weight: 600; font-size: 0.95rem; }
+
+        .prem-card {
+            background: linear-gradient(145deg, rgba(124, 58, 237, 0.1), rgba(0,0,0,0));
+            border: 1px solid rgba(124, 58, 237, 0.2);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            margin-top: 24px;
+        }
+        .prem-icon {
+            width: 40px; height: 40px;
+            background: var(--purple);
+            color: #fff;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 1.1rem;
+        }
+        .prem-title { font-weight: 700; color: #fff; font-size: 1rem; margin-bottom: 8px; }
+        .prem-p { color: var(--ts); font-size: 0.85rem; line-height: 1.5; margin-bottom: 15px;}
+        .prem-link { color: var(--orange); font-weight: 700; font-size: 0.85rem; text-decoration: none; }
+
+        .btn-apply-huge {
+            width: 100%;
+            background: var(--orange);
+            color: #fff;
+            border: none;
+            padding: 16px;
+            border-radius: 14px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+        .btn-apply-huge:hover {
+            background: #ea580c;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(249, 115, 22, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar-wrapper">
+    <div class="container">
+      <nav class="navbar-custom">
+        <a href="../../index.html" class="logo-box">
+          <div class="logo-icon">F</div>
+          <div class="logo-text">Fresher<span>Hub</span></div>
+        </a>
+        <div class="nav-pill d-none d-lg-flex">
+          <a href="../../index.html">Home</a>
+          <a href="jobs.html" class="active">Find Jobs</a>
+          <a href="#">Companies</a>
+          <a href="../services/services.html">Services</a>
+          <a href="../resources/resources.html">Resources</a>
+        </div>
+        <div class="auth-btns" id="navAuthArea">
+          <a href="../auth/login.html" class="btn-login">Log In</a>
+          <a href="../auth/register.html" class="btn-signup">Sign Up</a>
+        </div>
+      </nav>
+    </div>
+</div>
+
+<div class="page-container" id="loadingArea">
+    <div style="text-align:center; padding: 100px 0; color: #94a3b8;">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="mt-3">Loading Job Details...</p>
+    </div>
+</div>
+
+<div class="page-container" id="jobArea" style="display:none;">
+    <div class="row">
+        <!-- LEFT COLUMN -->
+        <div class="col-lg-8">
+            
+            <!-- Header Card -->
+            <div class="jd-card">
+                <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
+                    <div class="d-flex gap-3 align-items-center">
+                        <div class="co-av" id="jdInitial">TN</div>
+                        <div>
+                            <div class="jd-title" id="jdTitle">Junior React Developer</div>
+                            <div class="jd-co"><span id="jdCompany">TechNova Systems</span> • <span id="jdLoc">Bangalore, India</span></div>
+                        </div>
+                    </div>
+                    <div class="badge-premium" id="jdBadge"><i class="bi bi-star-fill"></i> PREMIUM JOB</div>
+                </div>
+
+                <div class="stat-group">
+                    <div class="stat-item">
+                        <div class="stat-lbl">Salary</div>
+                        <div class="stat-val" id="jdSal">₹4L - ₹6L / Year</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-lbl">Experience</div>
+                        <div class="stat-val" id="jdExp">0-1 Years</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-lbl">Job Type</div>
+                        <div class="stat-val" id="jdType">Full Time</div>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-3">
+                    <button class="btn-quick" id="btnQuickApply">Quick Apply</button>
+                    <button class="btn-save" id="btnSaveJob">Save Job</button>
+                </div>
+            </div>
+
+            <!-- About Company -->
+            <div class="jd-card">
+                <div class="sec-header"><i class="bi bi-building"></i> About the Company</div>
+                <div class="comp-desc" id="jdCompDesc">
+                    We are a leading innovator in the software solutions space, dedicated to building scalable and robust applications for global clients. We foster a culture of learning and innovation, making it an ideal place for fresh talent to start their careers.
+                </div>
+                <div class="comp-grid">
+                    <div class="cg-card">
+                        <div class="stat-lbl">Industry</div>
+                        <div class="stat-val" style="font-size:0.95rem; margin-top:5px;">IT Services</div>
+                    </div>
+                    <div class="cg-card">
+                        <div class="stat-lbl">Company Size</div>
+                        <div class="stat-val" style="font-size:0.95rem; margin-top:5px;">500-1000</div>
+                    </div>
+                    <div class="cg-card">
+                        <div class="stat-lbl">Founded</div>
+                        <div class="stat-val" style="font-size:0.95rem; margin-top:5px;">2015</div>
+                    </div>
+                    <div class="cg-card">
+                        <div class="stat-lbl">Website</div>
+                        <div class="stat-val" style="font-size:0.95rem; margin-top:5px;"><a href="#" style="color:#fff;">Visit <i class="bi bi-box-arrow-up-right"></i></a></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Job Description -->
+            <div class="jd-card">
+                <div class="sec-header"><i class="bi bi-file-earmark-text"></i> Job Description</div>
+                
+                <div class="sub-head">Responsibilities</div>
+                <div class="jd-p" id="jdDesc">
+                    We are looking for a passionate Junior Developer to join our dynamic team. You will be working on building modern web applications. This is an excellent opportunity for freshers to learn and grow in a fast-paced environment.
+                </div>
+
+                <div class="sub-head">Required Skills</div>
+                <div class="jd-tags" id="jdTags">
+                    <!-- Javascript injected -->
+                </div>
+
+                <div class="sub-head">Key Requirements</div>
+                <ul class="req-list" id="jdReqs">
+                    <!-- Javascript injected -->
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div class="col-lg-4">
+            
+            <div class="jd-card">
+                <div class="sec-header" style="font-size:1.15rem; margin-bottom:10px;">Job Overview</div>
+                <ul class="ov-list">
+                    <li>
+                        <div class="ov-lbl"><i class="bi bi-calendar-event"></i> Posted</div>
+                        <div class="ov-val" id="ovPosted">2 days ago</div>
+                    </li>
+                    <li>
+                        <div class="ov-lbl"><i class="bi bi-hourglass-split"></i> Deadline</div>
+                        <div class="ov-val">Oct 15, 2026</div>
+                    </li>
+                    <li>
+                        <div class="ov-lbl"><i class="bi bi-people"></i> Applicants</div>
+                        <div class="ov-val" id="ovApps">142</div>
+                    </li>
+                    <li>
+                        <div class="ov-lbl"><i class="bi bi-hash"></i> Job ID</div>
+                        <div class="ov-val" id="ovID">#15529</div>
+                    </li>
+                </ul>
+
+                <div class="prem-card">
+                    <div class="prem-icon"><i class="bi bi-gem"></i></div>
+                    <div class="prem-title">Premium Opportunity</div>
+                    <div class="prem-p">Top companies prioritize premium applicants.</div>
+                    <a href="#" class="prem-link">Upgrade to Pro ➔</a>
+                </div>
+
+                <button class="btn-apply-huge" id="btnSideApply">Apply Now ></button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="../../js/config.js"></script>
+<script src="../../js/auth.js"></script>
+<script src="job-details.js"></script>
+</body>
+</html>

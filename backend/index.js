@@ -27,8 +27,9 @@ const userRoutes = require('./routes/userRoutes');
 const companyRoutes = require('./routes/companyRoutes');
 const jobRoutes = require('./routes/jobRoutes');
 const applicationRoutes = require('./routes/applicationRoutes');
-const savedJobRoutes = require('./routes/savedJobRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const savedJobRoutes = require('./routes/savedJobRoutes');
+const resourceRoutes = require('./routes/resourceRoutes');
 
 // --- Mount Routes ---
 app.use('/api/auth', authRoutes);
@@ -36,8 +37,9 @@ app.use('/api/users', userRoutes);
 app.use('/api/companies', companyRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/applications', applicationRoutes);
-app.use('/api/saved-jobs', savedJobRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/saved-jobs', savedJobRoutes);
+app.use('/api/resources', resourceRoutes);
 
 // --- Basic Route ---
 // A simple test route to verify the server is running

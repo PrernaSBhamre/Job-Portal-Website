@@ -581,21 +581,72 @@ const JOBS=[
     reviews:[
       {n:'Ritika Agarwal',r:'Data Analyst',text:'Excellent exposure to real financial data. Great launchpad into fintech analytics.',stars:5,mo:'Mar 2026'},
       {n:'Varun Pillai',r:'Junior Analyst',text:'Manageable workload with genuinely interesting projects. Transparent management.',stars:4,mo:'Feb 2026'}
-    ]},
-  {id:8,title:'Mobile App Developer (Android)',co:'AppVenture Labs',ini:'A',loc:'Pune, India',type:'Full Time',exp:'0-2 Years',expV:2,sal:'Γé╣4.5L ΓÇô Γé╣8L / Year',salMin:4.5,skills:['Kotlin','Android','Firebase','REST API'],pre:false,ceo:false,isNew:true,posted:'2 hours ago',rating:4.0,rc:19,match:55,deadline:'May 1, 2026',daysLeft:44,apps:38,jobId:'#21800',ind:'Mobile Apps',size:'10ΓÇô50',yr:'2021',color:'#f97316',
-    about:'AppVenture Labs is building India\'s next consumer super-app with 500k+ monthly active users and growing 30% MoM.',
-    desc:'Build and maintain Android applications for a rapidly growing consumer app startup. Ship features that real users love.',
-    resp:['Develop new features using Kotlin and Jetpack Compose','Integrate Firebase for analytics, auth, and push notifications','Maintain code quality through unit tests and code reviews','Collaborate with UI/UX to implement pixel-perfect screens','Debug and resolve production issues promptly'],
-    req:['Kotlin or Java for Android development','Android lifecycle and Jetpack components','Firebase or similar BaaS platform','REST API integration and JSON parsing','Git and collaborative development workflows'],
-    process:['Resume Screen','Take-home Android Task','Technical Interview','Founder Round','Offer'],
-    salary:{base:400000,var:50000,ben:45000},
-    reviews:[
-      {n:'Rohan Desai',r:'Android Developer',text:'Super exciting startup environment. Shipped 3 features in my first month. Very ownership-driven culture.',stars:4,mo:'Mar 2026'}
     ]}
 ];
 
-// ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ STATE ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+// No need to redefine CONFIG here since it's in config.js
 let selSkills=[], jobSaved=new Set(), currentJob=null, showAll=false;
+let fetchedJobs = [];
+
+// FETCH JOBS FROM BACKEND
+async function fetchJobs() {
+    try {
+        const queryParams = window.location.search;
+        const res = await fetch(`${CONFIG.API_URL}/jobs${queryParams}`);
+        
+        // Also fetch saved jobs if logged in
+        const session = getSession();
+        if (session && session.token) {
+            try {
+                const sres = await fetch(`${CONFIG.API_URL}/saved-jobs`, { headers: { 'Authorization': `Bearer ${session.token}` } });
+                if(sres.ok) {
+                    const sdata = await sres.json();
+                    // sdata is an array of saved job objects where `job` has the ID
+                    sdata.forEach(sj => {
+                        if (sj.job && sj.job._id) jobSaved.add(sj.job._id);
+                        // Depending on populate depth, could just be sj.job
+                        else if (sj.job) jobSaved.add(sj.job);
+                    });
+                }
+            } catch(e) { console.error("Error fetching saved jobs", e); }
+        }
+
+        if(res.ok) {
+            const data = await res.json();
+            
+            // Map backend data to frontend structure
+            fetchedJobs = data.map(j => ({
+                id: j._id,
+                title: j.title,
+                co: j.company ? j.company.name : 'Unknown Company',
+                ini: j.company && j.company.name ? j.company.name.charAt(0).toUpperCase() : 'C',
+                loc: j.location || 'Remote',
+                type: j.jobType || 'Full Time',
+                exp: j.experienceLevel || 'Fresher',
+                expV: parseInt(j.experienceLevel) || 0,
+                sal: j.salary || 'Not Disclosed',
+                salMin: parseInt(j.salary) || 0,
+                skills: j.tags && j.tags.length ? j.tags : ['JavaScript', 'HTML'],
+                pre: false, ceo: false, isNew: true,
+                posted: new Date(j.createdAt).toLocaleDateString() || 'Recently',
+                rating: 4.5, rc: 100, match: 85, daysLeft: 30, apps: 0,
+                color: '#6d28d9',
+                desc: j.description || '',
+                resp: j.requirements ? [j.requirements] : [],
+                req: [],
+                process: [],
+                salary: { base: 0, var: 0, ben: 0 },
+                reviews: []
+            }));
+            
+            selSkills = [];
+            renderJobs(fetchedJobs.slice(0, 5));
+        }
+    } catch (e) {
+        console.error("Failed to fetch jobs:", e);
+        toast("Failed to load jobs from server.");
+    }
+}
 
 // ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ NAVIGATION ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
 function goJobs(){
@@ -605,7 +656,7 @@ function goJobs(){
   document.title='FresherHub ΓÇô Find Your Dream Job';
 }
 function goJD(id){
-  currentJob=JOBS.find(j=>j.id===id);
+  currentJob=fetchedJobs.find(j=>j.id===id);
   if(!currentJob)return;
   document.getElementById('pageJobs').classList.remove('active');
   document.getElementById('pageJD').classList.add('active');
@@ -621,7 +672,7 @@ function mkStars(r,sz=''){
     return `<i class="bi bi-star${f?'-fill':h?'-half':''}" style="color:${f||h?'var(--yellow)':'var(--border)'};${sz?`font-size:${sz}`:''}" ></i>`;
   }).join('');
 }
-function fmt(n){return 'Γé╣'+n.toLocaleString('en-IN')}
+function fmt(n){return '₹'+n.toLocaleString('en-IN')}
 
 function toast(msg,type='n'){
   const c=document.getElementById('tc');
@@ -636,7 +687,7 @@ function toast(msg,type='n'){
 function renderCard(j){
   const dl=j.daysLeft<=7?`<span class="badge-urg"><i class="bi bi-clock"></i>${j.daysLeft}d left</span>`:'';
   return `
-  <div class="jcard" onclick="goJD(${j.id})">
+  <div class="jcard" onclick="goJD('${j.id}')">
     <div class="d-flex align-items-start justify-content-between gap-3 flex-wrap">
       <div class="d-flex align-items-start gap-3">
         <div class="clogo" style="color:${j.color}">${j.ini}</div>
@@ -671,8 +722,8 @@ function renderCard(j){
         <div class="stars">${mkStars(j.rating,'0.78rem')}<span style="font-size:.75rem;color:var(--tm);margin-left:4px">${j.rating}</span></div>
       </div>
       <div class="d-flex align-items-center gap-2">
-        <button class="btn-bk${jobSaved.has(j.id)?' on':''}" id="bk-${j.id}" onclick="bkJob(event,${j.id})" title="Save"><i class="bi bi-bookmark${jobSaved.has(j.id)?'-fill':''}"></i></button>
-        <button class="btn-apply" onclick="event.stopPropagation();goJD(${j.id})">Apply Now</button>
+        <button class="btn-bk${jobSaved.has(j.id)?' on':''}" id="bk-${j.id}" onclick="bkJob(event,'${j.id}')" title="Save"><i class="bi bi-bookmark${jobSaved.has(j.id)?'-fill':''}"></i></button>
+        <button class="btn-apply" onclick="event.stopPropagation();goJD('${j.id}')">View & Apply</button>
       </div>
     </div>
   </div>`;
@@ -693,7 +744,7 @@ function applyF(){
   const exp=document.querySelector('.ef:checked')?.value||'all';
   const maxS=parseFloat(document.getElementById('salR').value);
 
-  let arr=JOBS.filter(j=>{
+  let arr=fetchedJobs.filter(j=>{
     const mQ=!q||j.title.toLowerCase().includes(q)||j.co.toLowerCase().includes(q)||j.skills.some(s=>s.toLowerCase().includes(q));
     const mL=!locs.length||locs.some(l=>j.loc.toLowerCase().includes(l));
     const mT=!types.length||types.includes(j.type);
@@ -720,7 +771,7 @@ function togSk(el,s){
   applyF();
 }
 function updSal(v){
-  document.getElementById('salLbl').textContent=v==20?'Any':`Up to Γé╣${v}L`;
+  document.getElementById('salLbl').textContent=v==20?'Any':`Up to ₹${v}L`;
   applyF();
 }
 function clearF(){
@@ -1030,22 +1081,45 @@ function swTab(id,btn){
 }
 
 // SAVE
-function toggleSave(){
+async function toggleSave(){
   if(!currentJob)return;
+  const session = getSession();
+  if(!session || !session.token) {
+      toast('Please login to save jobs.');
+      return;
+  }
+
   const id=currentJob.id;
   const btn=document.getElementById('saveBtn');
   const mobBtn=document.getElementById('mobSaveBtn');
-  if(jobSaved.has(id)){
-    jobSaved.delete(id);
-    if(btn){btn.classList.remove('on');btn.innerHTML=`<i class="bi bi-bookmark"></i>Save Job`;}
-    if(mobBtn)mobBtn.innerHTML=`<i class="bi bi-bookmark"></i>`;
-    toast('Removed from saved');
-  } else {
-    jobSaved.add(id);
-    if(btn){btn.classList.add('on');btn.innerHTML=`<i class="bi bi-bookmark-fill"></i>Saved`;}
-    if(mobBtn)mobBtn.innerHTML=`<i class="bi bi-bookmark-fill"></i>`;
-    toast('Job saved Γ£ô','s');
-  }
+  
+  try {
+      if(jobSaved.has(id)){
+        // Remove
+        const res = await fetch(`${CONFIG.API_URL}/saved-jobs/${id}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${session.token}` }
+        });
+        if(res.ok) {
+            jobSaved.delete(id);
+            if(btn){btn.classList.remove('on');btn.innerHTML=`<i class="bi bi-bookmark"></i>Save Job`;}
+            if(mobBtn)mobBtn.innerHTML=`<i class="bi bi-bookmark"></i>`;
+            toast('Removed from saved');
+        }
+      } else {
+        // Save
+        const res = await fetch(`${CONFIG.API_URL}/saved-jobs/${id}`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${session.token}` }
+        });
+        if(res.ok) {
+            jobSaved.add(id);
+            if(btn){btn.classList.add('on');btn.innerHTML=`<i class="bi bi-bookmark-fill"></i>Saved`;}
+            if(mobBtn)mobBtn.innerHTML=`<i class="bi bi-bookmark-fill"></i>`;
+            toast('Job saved Γ£ô','s');
+        }
+      }
+  } catch(e) { console.error(e); toast('Error communicating with server'); }
 }
 
 // SHARE
@@ -1067,16 +1141,43 @@ function cvChosen(inp){
 }
 
 // SUBMIT APPLICATION
-function submitApp(){
-  const n=document.getElementById('appName')?.value.trim();
-  const e=document.getElementById('appEmail')?.value.trim();
-  if(!n||!e){toast('Please fill in Name and Email');return;}
-  const cv=document.getElementById('cvFile');
-  if(!cv||!cv.files.length){toast('Please upload your Resume');return;}
-  document.getElementById('applyForm').style.display='none';
-  document.getElementById('successBox').classList.add('show');
-  toast(`Application for ${currentJob.title} submitted! ≡ƒÄë`,'s');
-  setTimeout(()=>toast('You\'ll hear from us in 3ΓÇô5 business days'),1400);
+async function submitApp() {
+  const session = getSession();
+  if (!session || !session.token) {
+      toast('Please login to apply for jobs.');
+      setTimeout(() => window.location.href = '../auth/login.html', 1500);
+      return;
+  }
+
+  // Frontend validation for visual completeness (even though backend doesn't need it)
+  const n = document.getElementById('appName')?.value.trim();
+  const e = document.getElementById('appEmail')?.value.trim();
+  if (!n || !e) { toast('Please fill in Name and Email'); return; }
+  const cv = document.getElementById('cvFile');
+  if (!cv || !cv.files.length) { toast('Please upload your Resume'); return; }
+
+  try {
+      const response = await fetch(`${CONFIG.API_URL}/applications/${currentJob.id}`, {
+          method: 'POST',
+          headers: {
+              'Authorization': `Bearer ${session.token}`
+          }
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+          document.getElementById('applyForm').style.display='none';
+          document.getElementById('successBox').classList.add('show');
+          toast(`Application for ${currentJob.title} submitted! 🎉`,'s');
+          setTimeout(() => toast('You\'ll hear from us in 3–5 business days'), 1400);
+      } else {
+          toast(data.message || 'Failed to submit application');
+      }
+  } catch (error) {
+      console.error("Error submitting application:", error);
+      toast("Error connecting to server.");
+  }
 }
 
 function resetForm(){
@@ -1105,7 +1206,9 @@ function closeFD(){
 }
 
 // INIT
-renderJobs(JOBS.slice(0,5));
+fetchJobs();
 </script>
+<script src="../../js/config.js"></script>
+<script src="../../js/auth.js"></script>
 </body>
 </html>

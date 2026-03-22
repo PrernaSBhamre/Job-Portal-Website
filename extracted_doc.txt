@@ -1,0 +1,517 @@
+Project Title: Job Portal Management System
+
+1]FUNCTIONAL REQUIREMENTS
+FR-1: User Registration
+The system shall allow users to register an account using email and password.
+Users can register as:
+Job Seeker
+Recruiter/Employer
+The system shall validate user inputs before account creation.
+
+FR-2: User Authentication
+The system shall allow registered users to log in using secure authentication.
+Authentication shall be handled using JWT tokens.
+Users shall remain authenticated across sessions.
+
+FR-3: User Profile Management
+Job seekers shall be able to manage their profile information including:
+Personal details
+Skills
+Work experience
+Education
+Resume upload
+Profile picture
+
+FR-4: Company Registration
+Recruiters shall be able to create and manage company profiles.
+Company profiles shall include:
+Company name
+Company description
+Industry
+Website
+Location
+Logo
+
+FR-5: Job Posting
+Recruiters shall be able to create job postings including:
+Job title
+Job description
+Required skills
+Salary range
+Job location
+Job type
+Experience level
+
+FR-6: Job Browsing and Search
+Job seekers shall be able to browse available job listings.
+The system shall allow filtering by:
+Job title
+Location
+Salary
+Job type
+Experience level
+
+FR-7: Job Application
+Job seekers shall be able to apply for jobs using their profile and resume.
+The system shall store application data in the database.
+
+FR-8: Application Tracking
+Users shall be able to view the status of their job applications.
+Application statuses may include:
+Applied
+Under Review
+Shortlisted
+Rejected
+Accepted
+
+FR-9: Employer Dashboard
+Recruiters shall have a dashboard where they can:
+Manage job postings
+View job applicants
+Update application status
+Delete job listings
+
+FR-10: Saved Jobs
+Job seekers shall be able to bookmark jobs to view later.
+Saved jobs shall be stored in the database.
+
+FR-11: Admin Management
+Admin users shall be able to:
+View all users
+Manage job listings
+Manage companies
+Monitor job applications
+
+2] NON-FUNCTIONAL REQUIREMENTS
+1: Security
+User credentials shall be securely stored using encrypted passwords.
+Authentication shall be protected using JWT tokens.
+2: Performance
+The system shall provide quick responses when retrieving job listings and user data.
+
+3: Scalability
+The system shall support multiple concurrent users without affecting performance.
+
+4: Reliability
+All user data including job listings and applications shall be stored reliably.
+
+5: Maintainability
+The backend shall follow MVC architecture to ensure maintainability.
+
+6: Availability
+The system shall be accessible online via web browser at all times except during maintenance.
+
+3]TECHNOLOGY STACK
+Backend
+Component
+Technology
+Runtime
+Node.js
+Framework
+Express.js
+Authentication
+JWT
+Password Encryption
+bcrypt
+
+Database
+Component
+Technology
+Primary Database
+MongoDB
+ODM
+Mongoose
+
+Frontend
+Component
+Technology
+UI Framework
+React.js
+Styling
+Tailwind CSS
+
+Tools
+Tool
+Purpose
+Postman
+API Testing
+Git
+Version Control
+
+4] DATABASE SCHEMA
+users
+Field
+Description
+_id
+Unique user identifier
+name
+User full name
+email
+Email address
+password
+Hashed password
+role
+jobSeeker / recruiter / admin
+phone
+Contact number
+skills
+Array of skills
+resume
+Resume file URL
+profilePicture
+Profile image
+location
+User location
+createdAt
+Account creation date
+
+companies
+Field
+Description
+_id
+Company ID
+name
+Company name
+description
+Company description
+industry
+Company industry
+website
+Company website
+logo
+Company logo
+location
+Company location
+createdBy
+Recruiter ID
+createdAt
+Creation date
+
+jobs
+Field
+Description
+_id
+Job ID
+title
+Job title
+description
+Job description
+companyId
+Company reference
+location
+Job location
+salary
+Salary range
+jobType
+Full-time / Part-time / Internship
+experienceLevel
+Required experience
+skillsRequired
+Required skills
+postedBy
+Recruiter ID
+deadline
+Application deadline
+createdAt
+Job posting date
+
+applications
+Field
+Description
+_id
+Application ID
+jobId
+Job reference
+userId
+Applicant ID
+resume
+Resume used for application
+coverLetter
+Optional message
+status
+Applied / Shortlisted / Rejected
+appliedAt
+Application date
+
+saved_jobs
+Field
+Description
+_id
+Saved job ID
+userId
+User reference
+jobId
+Job reference
+savedAt
+Date saved
+
+5]REST API ENDPOINTS
+Authentication APIs
+Method
+Endpoint
+Description
+POST
+/api/auth/register
+Register new user
+POST
+/api/auth/login
+Login user
+POST
+/api/auth/logout
+Logout user
+GET
+/api/auth/me
+Get logged-in user
+
+User APIs
+Method
+Endpoint
+Description
+GET
+/api/users/profile
+Get user profile
+PUT
+/api/users/profile
+Update profile
+GET
+/api/users/:id
+Get user by ID
+
+Company APIs
+Method
+Endpoint
+Description
+POST
+/api/companies
+Create company
+GET
+/api/companies
+Get all companies
+GET
+/api/companies/:id
+Get company details
+PUT
+/api/companies/:id
+Update company
+DELETE
+/api/companies/:id
+Delete company
+
+Job APIs
+Method
+Endpoint
+Description
+POST
+/api/jobs
+Create job
+GET
+/api/jobs
+Get all jobs
+GET
+/api/jobs/:id
+Get job details
+PUT
+/api/jobs/:id
+Update job
+DELETE
+/api/jobs/:id
+Delete job
+
+Application APIs
+Method
+Endpoint
+Description
+POST
+/api/applications/:jobId
+Apply for job
+GET
+/api/applications/user
+Get user applications
+GET
+/api/applications/job/:jobId
+Get applicants
+PUT
+/api/applications/:id/status
+Update status
+
+Saved Jobs APIs
+Method
+Endpoint
+Description
+POST
+/api/saved-jobs/:jobId
+Save job
+GET
+/api/saved-jobs
+Get saved jobs
+DELETE
+/api/saved-jobs/:jobId
+Remove saved job
+
+6] SYSTEM WORKFLOW
+User Registration / Login        ↓User Completes Profile        ↓Recruiter Creates Company Profile        ↓Recruiter Posts Job Listings        ↓Job Seekers Browse Jobs        ↓User Applies for Job        ↓Application Stored in Database        ↓Recruiter Reviews Applications        ↓Recruiter Updates Application Status        ↓User Tracks Application Status
+7] BACKEND ROUTES DEFINITION
+The backend of the Job Portal Management System follows a RESTful API architecture where each resource such as users, jobs, companies, and applications has dedicated routes. These routes allow the frontend to interact with the backend server and perform operations such as creating, retrieving, updating, and deleting data.
+
+7.1 Authentication Routes
+Base Route
+/api/auth
+These routes handle user registration, login, and authentication.
+Method
+Route
+Description
+POST
+/api/auth/register
+Register a new user
+POST
+/api/auth/login
+Authenticate user and return token
+POST
+/api/auth/logout
+Logout the user
+GET
+/api/auth/me
+Get current logged-in user details
+PUT
+/api/auth/change-password
+Update user password
+
+7.2 User Routes
+Base Route
+/api/users
+These routes manage user profile information.
+Method
+Route
+Description
+GET
+/api/users/profile
+Retrieve logged-in user profile
+PUT
+/api/users/profile
+Update user profile
+GET
+/api/users/:id
+Retrieve user details by ID
+DELETE
+/api/users/:id
+Delete user account
+
+7.3 Company Routes
+Base Route
+/api/companies
+These routes allow recruiters to manage company information.
+Method
+Route
+Description
+POST
+/api/companies
+Create a new company
+GET
+/api/companies
+Retrieve all companies
+GET
+/api/companies/:id
+Retrieve specific company details
+PUT
+/api/companies/:id
+Update company information
+DELETE
+/api/companies/:id
+Remove company
+
+7.4 Job Routes
+Base Route
+/api/jobs
+These routes manage job listings posted by recruiters.
+Method
+Route
+Description
+POST
+/api/jobs
+Create a new job listing
+GET
+/api/jobs
+Retrieve all available jobs
+GET
+/api/jobs/:id
+Retrieve job details
+PUT
+/api/jobs/:id
+Update job information
+DELETE
+/api/jobs/:id
+Delete job listing
+Job Search Filters
+/api/jobs?location=pune/api/jobs?type=remote/api/jobs?salary=50000/api/jobs?keyword=developer
+These query parameters allow users to search and filter jobs.
+
+7.5 Job Application Routes
+Base Route
+/api/applications
+These routes manage job applications submitted by job seekers.
+Method
+Route
+Description
+POST
+/api/applications/:jobId
+Apply for a job
+GET
+/api/applications/user
+Retrieve applications submitted by a user
+GET
+/api/applications/job/:jobId
+Retrieve applicants for a job
+PUT
+/api/applications/:id/status
+Update application status
+DELETE
+/api/applications/:id
+Withdraw application
+
+7.6 Saved Jobs Routes
+Base Route
+/api/saved-jobs
+These routes allow users to bookmark jobs for later viewing.
+Method
+Route
+Description
+POST
+/api/saved-jobs/:jobId
+Save a job
+GET
+/api/saved-jobs
+Retrieve saved jobs
+DELETE
+/api/saved-jobs/:jobId
+Remove saved job
+
+7.7 Admin Routes
+Base Route
+/api/admin
+These routes allow administrators to manage the system.
+Method
+Route
+Description
+GET
+/api/admin/users
+Retrieve all users
+DELETE
+/api/admin/users/:id
+Delete user
+GET
+/api/admin/jobs
+Retrieve all jobs
+DELETE
+/api/admin/jobs/:id
+Remove job listing
+GET
+/api/admin/applications
+Retrieve all job applications
+
+8]BACKEND ROUTE STRUCTURE
+The backend routes are organized in the project as follows:
+backend│├── routes│├── authRoutes.js├── userRoutes.js├── jobRoutes.js├── companyRoutes.js├── applicationRoutes.js├── savedJobRoutes.js├── adminRoutes.js
+Each route file contains the API endpoints related to a specific resource.
+9] ROUTE FLOW IN THE SYSTEM
+Example workflow of API calls:
+User registersPOST /api/auth/registerUser logs inPOST /api/auth/loginRecruiter creates companyPOST /api/companiesRecruiter posts jobPOST /api/jobsUser browses jobsGET /api/jobsUser applies for jobPOST /api/applications/:jobIdRecruiter reviews applicantsGET /api/applications/job/:jobId

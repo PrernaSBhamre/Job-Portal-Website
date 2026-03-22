@@ -584,18 +584,20 @@
     }
 
     .job-card {
-      background: var(--card);
-      border: 1px solid var(--border);
+      background: #181824; /* matched dark background */
+      border: 1px solid rgba(255, 255, 255, 0.05);
       border-radius: 20px;
       padding: 26px;
       transition: 0.3s;
       position: relative;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
     }
 
     .job-card:hover {
-      border-color: var(--purple-light);
-      box-shadow: 0 10px 40px rgba(109, 40, 217, 0.15);
+      border-color: rgba(139, 92, 246, 0.3);
+      box-shadow: 0 10px 40px rgba(109, 40, 217, 0.08); /* subtle soft purple glow */
       transform: translateY(-4px);
     }
 
@@ -607,74 +609,89 @@
     }
 
     .co-av {
-      width: 46px;
-      height: 46px;
-      border-radius: 12px;
-      background: #2a2a42;
+      width: 50px;
+      height: 50px;
+      border-radius: 14px;
+      background: #0f0f17; /* much darker avatar background */
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 800;
       color: #fff;
       font-size: 1.1rem;
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .jc-title {
-      font-size: 1.1rem;
-      font-weight: 700;
+      font-size: 1.15rem;
+      font-weight: 800;
       color: #fff;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
 
     .jc-co {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: #94a3b8;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .jc-tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 20px;
+      gap: 10px;
+      margin-bottom: 24px;
     }
 
     .j-tag {
-      background: rgba(139, 92, 246, 0.1);
-      border: 1px solid rgba(139, 92, 246, 0.3);
-      color: #a78bfa;
-      padding: 4px 10px;
-      border-radius: 12px;
-      font-size: 0.75rem;
-      font-weight: 600;
+      background: rgba(255, 255, 255, 0.05); /* very dark grey */
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #94a3b8; /* light grey text */
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
     }
 
     .jc-meta {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
+      flex-direction: column; /* Stacked vertically like screenshot */
+      gap: 10px;
+      margin-bottom: 30px;
       font-size: 0.85rem;
       color: #94a3b8;
+      flex-grow: 1; /* Pushes button to bottom */
+    }
+
+    .jc-meta span {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .jc-btn {
       width: 100%;
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
-      padding: 12px 20px;
-      background: var(--purple);
+      gap: 8px;
+      padding: 14px;
+      background: #7c3aed; /* bright purple */
       color: #fff;
       border: none;
       border-radius: 12px;
-      font-weight: 600;
+      font-weight: 700;
+      font-size: 0.95rem;
       text-decoration: none;
       transition: 0.3s;
     }
 
     .jc-btn:hover {
-      background: var(--purple-light);
+      background: #8b5cf6;
       color: #fff;
+      box-shadow: 0 5px 20px rgba(124, 58, 237, 0.4); /* Glow on hover */
     }
 
     /* ------------------- SECTION 2: RESUME AI ------------------- */
@@ -1368,7 +1385,7 @@
                 <input type="text" placeholder="Any Location" value="Any Location">
               </div>
             </div>
-            <button class="btn-search" onclick="window.location.href='pages/jobs/jobs.html'">Search</button>
+            <button class="btn-search" id="heroSearchBtn">Search</button>
           </div>
 
           <div class="trending">
@@ -1430,117 +1447,16 @@
   <!-- SECTION 1: LATEST JOBS -->
   <section class="section-pad">
     <div class="container">
-      <h2 class="sec-title">Featured <span class="gradient-text-purple">Jobs</span></h2>
-      <p class="sec-sub">Explore hand-picked roles crafted for ambitious entry-level professionals.</p>
+      <div class="d-flex justify-content-between align-items-end mb-5">
+        <div>
+          <div style="color: #8b5cf6; font-size: 0.75rem; font-weight: 800; letter-spacing: 1.5px; margin-bottom: 8px; text-transform: uppercase;">Curated Opportunities</div>
+          <h2 style="font-size: 3rem; font-weight: 800; color: #fff; margin:0; letter-spacing:-1px;">Featured IT Jobs</h2>
+        </div>
+        <a href="pages/jobs/jobs.html" style="color: #fff; text-decoration: none; font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; gap: 8px; transition: 0.2s;">View All Jobs <i class="bi bi-arrow-right"></i></a>
+      </div>
 
-      <div class="job-grid">
-        <!-- Job 1 -->
-        <a href="pages/jobs/jobs.html" class="job-card" style="text-decoration: none;">
-          <div class="jc-head">
-            <div class="co-av" style="background:#5b21b6">TN</div>
-            <div>
-              <div class="jc-title">Junior React Developer</div>
-              <div class="jc-co">TechNova Systems</div>
-            </div>
-          </div>
-          <div class="jc-tags"><span class="j-tag">REACT</span><span class="j-tag">TYPESCRIPT</span><span
-              class="j-tag">REDUX</span></div>
-          <div class="jc-meta">
-            <span><i class="bi bi-geo-alt me-1"></i>Bangalore Hybrid</span>
-            <span><i class="bi bi-cash me-1"></i>₹4.5 - 7 LPA</span>
-          </div>
-          <div class="jc-btn">Apply Now <i class="bi bi-arrow-right"></i></div>
-        </a>
-
-        <!-- Job 2 -->
-        <a href="pages/jobs/jobs.html" class="job-card" style="text-decoration: none;">
-          <div class="jc-head">
-            <div class="co-av" style="background:#1d4ed8">CS</div>
-            <div>
-              <div class="jc-title">Backend Engineer</div>
-              <div class="jc-co">CloudScale India</div>
-            </div>
-          </div>
-          <div class="jc-tags"><span class="j-tag">NODE.JS</span><span class="j-tag">EXPRESS</span><span
-              class="j-tag">AWS</span></div>
-          <div class="jc-meta">
-            <span><i class="bi bi-geo-alt me-1"></i>Pune Remote</span>
-            <span><i class="bi bi-cash me-1"></i>₹5 - 8 LPA</span>
-          </div>
-          <div class="jc-btn">Apply Now <i class="bi bi-arrow-right"></i></div>
-        </a>
-
-        <!-- Job 3 -->
-        <a href="pages/jobs/jobs.html" class="job-card" style="text-decoration: none;">
-          <div class="jc-head">
-            <div class="co-av" style="background:#be185d">QF</div>
-            <div>
-              <div class="jc-title">QA Automation</div>
-              <div class="jc-co">QualityFirst</div>
-            </div>
-          </div>
-          <div class="jc-tags"><span class="j-tag">SELENIUM</span><span class="j-tag">JAVA</span><span
-              class="j-tag">TESTING</span></div>
-          <div class="jc-meta">
-            <span><i class="bi bi-geo-alt me-1"></i>Mumbai Onsite</span>
-            <span><i class="bi bi-cash me-1"></i>₹4 - 6 LPA</span>
-          </div>
-          <div class="jc-btn">Apply Now <i class="bi bi-arrow-right"></i></div>
-        </a>
-
-        <!-- Job 4 -->
-        <a href="pages/jobs/jobs.html" class="job-card" style="text-decoration: none;">
-          <div class="jc-head">
-            <div class="co-av" style="background:#c2410c">PS</div>
-            <div>
-              <div class="jc-title">Associate UI/UX</div>
-              <div class="jc-co">PixelPerfect Studio</div>
-            </div>
-          </div>
-          <div class="jc-tags"><span class="j-tag">FIGMA</span><span class="j-tag">FRAMER</span><span
-              class="j-tag">WIREFRAMING</span></div>
-          <div class="jc-meta">
-            <span><i class="bi bi-geo-alt me-1"></i>Delhi Hybrid</span>
-            <span><i class="bi bi-cash me-1"></i>₹4 - 7 LPA</span>
-          </div>
-          <div class="jc-btn">Apply Now <i class="bi bi-arrow-right"></i></div>
-        </a>
-
-        <!-- Job 5 -->
-        <a href="pages/jobs/jobs.html" class="job-card" style="text-decoration: none;">
-          <div class="jc-head">
-            <div class="co-av" style="background:#047857">DM</div>
-            <div>
-              <div class="jc-title">Python Developer</div>
-              <div class="jc-co">DataMinds AI</div>
-            </div>
-          </div>
-          <div class="jc-tags"><span class="j-tag">PYTHON</span><span class="j-tag">DJANGO</span><span
-              class="j-tag">SQL</span></div>
-          <div class="jc-meta">
-            <span><i class="bi bi-geo-alt me-1"></i>Hyderabad Remote</span>
-            <span><i class="bi bi-cash me-1"></i>₹5.5 - 9 LPA</span>
-          </div>
-          <div class="jc-btn">Apply Now <i class="bi bi-arrow-right"></i></div>
-        </a>
-
-        <!-- Job 6 -->
-        <a href="pages/jobs/jobs.html" class="job-card" style="text-decoration: none;">
-          <div class="jc-head">
-            <div class="co-av" style="background:#0f766e">WS</div>
-            <div>
-              <div class="jc-title">Frontend Developer</div>
-              <div class="jc-co">WebSolutions</div>
-            </div>
-          </div>
-          <div class="jc-tags"><span class="j-tag">HTML</span><span class="j-tag">CSS</span><span
-              class="j-tag">JAVASCRIPT</span></div>
-          <div class="jc-meta">
-            <span><i class="bi bi-geo-alt me-1"></i>Chennai Onsite</span>
-            <span><i class="bi bi-cash me-1"></i>₹3.5 - 5 LPA</span>
-          </div>
-          <div class="jc-btn">Apply Now <i class="bi bi-arrow-right"></i></div>
-        </a>
+      <div class="job-grid" id="featured-jobs-grid">
+        <!-- Jobs will be injected dynamically via home.js -->
       </div>
     </div>
   </section>
@@ -1807,6 +1723,9 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/home.js"></script>
 </body>
 
 </html>

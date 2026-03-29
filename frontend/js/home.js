@@ -11,8 +11,9 @@ async function fetchFeaturedJobs() {
         const response = await fetch(`${CONFIG.API_URL}/jobs`);
         if (response.ok) {
             const data = await response.json();
+            const jobsArray = Array.isArray(data) ? data : (data.jobs || []);
             // Take the latest 6 jobs
-            const jobsToDisplay = data.slice(0, 6);
+            const jobsToDisplay = jobsArray.slice(0, 6);
             
             if (jobsToDisplay.length === 0) {
                 grid.innerHTML = '<p style="color: #94a3b8; text-align: center; width: 100%;">No featured jobs available.</p>';

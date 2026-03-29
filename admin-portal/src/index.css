@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #0b0b14;
+  --card: #181824;
+  --border: #2a2a42;
+  --purple: #6d28d9;
+  --purple-light: #8b5cf6;
+  --orange: #f97316;
+  --orange-light: #fb923c;
+}
+
+body {
+  background-color: var(--bg);
+  color: #f8fafc;
+  font-family: 'Inter', sans-serif;
+}
+
+.glass {
+  background: rgba(24, 24, 36, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sidebar-link-active {
+  background: rgba(109, 40, 217, 0.2);
+  color: #8b5cf6;
+  border-right: 3px solid #8b5cf6;
+}

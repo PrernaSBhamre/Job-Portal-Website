@@ -3,25 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Resources - FresherHub</title>
+<title>Resources - FresherHub Premium</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-<link rel="stylesheet" href="resources.css"><!-- ✅ Correct JS Linking -->
+
+<!-- The JS file below hydrates the DOM -->
 <script defer src="resources.js"></script>
 
-</head>
-<body>
-
-<!-- Navbar -->
 <style>
-/* Navbar CSS */
+:root{
+  --bg:#0b0b14;--card:#13131f;--filter:#161624;--hover:#1d1d30;
+  --border:#2a2a42;--purple:#7c3aed;--ps:#5b21b6;--pg:rgba(124,58,237,.18);
+  --orange:#f97316;--od:#ea580c;
+  --tp:#f0f0fa;--tm:#8888aa;--td:#5a5a78;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tp);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--purple);border-radius:3px}
+
+/* Navbar */
 .navbar-wrapper { border-bottom: 1px solid rgba(255, 255, 255, 0.05); background: rgba(11, 11, 20, 0.8); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 1000; }
 .navbar-custom { padding: 22px 0; display: flex; align-items: center; justify-content: space-between; }
 .logo-box { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-.logo-icon { width: 36px; height: 36px; background: #5b21b6; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 1.1rem; box-shadow: 0 0 15px rgba(91, 33, 182, 0.6); }
-.logo-text { font-weight: 700; font-size: 1.35rem; color: #fff; letter-spacing: -0.5px; }
+.logo-icon { width: 36px; height: 36px; background: #5b21b6; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 1.1rem; box-shadow: 0 0 15px rgba(91, 33, 182, 0.6); font-family:'Inter', sans-serif;}
+.logo-text { font-weight: 800; font-size: 1.35rem; color: #fff; letter-spacing: -0.5px; font-family:'Inter', sans-serif;}
 .logo-text span { color: #8b5cf6; }
 .nav-pill { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 40px; padding: 6px 8px; display: flex; gap: 5px; }
 .nav-pill a { color: #a1a1aa; text-decoration: none; font-size: 0.88rem; font-weight: 500; padding: 8px 20px; border-radius: 30px; transition: 0.3s; }
@@ -29,11 +37,81 @@
 .auth-btns { display: flex; align-items: center; gap: 25px; }
 .btn-login { color: #fff; text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: 0.3s; }
 .btn-login:hover { color: #94a3b8; }
-.btn-signup { background: linear-gradient(135deg, #f97316, #fb923c); color: #000; padding: 10px 24px; border-radius: 30px; text-decoration: none; font-weight: 800; font-size: 0.95rem; transition: 0.3s; border: none; }
+.btn-signup { background: linear-gradient(135deg, var(--orange), #fb923c); color: #000; padding: 10px 24px; border-radius: 30px; text-decoration: none; font-weight: 800; font-size: 0.95rem; transition: 0.3s; border: none; }
 .btn-signup:hover { box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3); color: #000; }
-@media(max-width:991px) { .nav-pill { display: none; } }
-@media(max-width:500px) { .auth-btns { display: none; } }
+
+/* HERO */
+.hero { padding: 60px 0 30px; position: relative;}
+.hero-title { font-weight: 900; font-size: clamp(2.2rem, 4vw, 3.5rem); margin-bottom: 12px; }
+.hero-title span { color: var(--orange); }
+.hero-sub { color: var(--tm); font-size: 1.05rem; max-width: 600px; line-height: 1.6; }
+
+/* LAYOUT */
+.res-layout { display: flex; gap: 40px; margin-top: 30px; margin-bottom: 80px; align-items: flex-start;}
+@media(max-width: 900px) { .res-layout { flex-direction: column; } }
+
+/* SIDEBAR */
+.sidebar { width: 280px; background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; flex-shrink: 0; position: sticky; top: 120px; }
+.sidebar h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: 20px; color: #fff; padding-bottom: 15px; border-bottom: 1px solid var(--border); }
+.sidebar ul { list-style: none; padding: 0; margin: 0; }
+.sidebar li { padding: 12px 16px; margin-bottom: 8px; border-radius: 10px; cursor: pointer; color: var(--tm); font-weight: 600; font-size: 0.95rem; transition: 0.2s; display: flex; align-items: center; justify-content: space-between; }
+.sidebar li:hover { background: rgba(255, 255, 255, 0.05); color: #fff; }
+.sidebar li.active { background: var(--pg); color: var(--purple); font-weight: 700; border: 1px solid rgba(124, 58, 237, 0.3); }
+
+/* MAIN AREA */
+.res-main { flex: 1; min-width: 0;}
+.top-search { position: relative; margin-bottom: 30px; }
+.top-search i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--td); }
+.top-search input { width: 100%; background: var(--filter); border: 1px solid var(--border); border-radius: 14px; padding: 16px 16px 16px 45px; color: #fff; font-size: 0.95rem; transition: 0.3s; }
+.top-search input:focus { border-color: var(--purple); outline: none; box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15); }
+
+/* RESOURCE CARDS INJECTED BY JS */
+.resource-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 24px; }
+
+.res-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
+    transition: 0.3s; display: flex; flex-direction: column; height: 100%; position: relative;
+}
+.res-card:hover { transform: translateY(-4px); border-color: var(--purple); box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+
+.res-img-box { width: 100%; height: 180px; position: relative; background: var(--filter); border-bottom: 1px solid var(--border); }
+.res-img-box img { width: 100%; height: 100%; object-fit: cover; }
+.res-badge { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 6px 14px; border-radius: 30px; font-weight: 700; font-size: 0.75rem; letter-spacing: 0.5px; text-transform: uppercase; }
+
+.res-body { padding: 25px; display: flex; flex-direction: column; flex-grow: 1; }
+.res-meta { display: flex; align-items: center; gap: 15px; color: var(--td); font-size: 0.85rem; font-weight: 600; margin-bottom: 12px; }
+.res-meta i { color: var(--purple); font-size: 1rem; }
+.res-title { font-weight: 800; font-size: 1.25rem; color: #fff; margin-bottom: 10px; line-height: 1.4; display: -webkit-box;      -webkit-line-clamp: 2;
+      line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.res-desc { color: var(--tm); font-size: 0.95rem; line-height: 1.6; margin-bottom: 25px; flex-grow: 1; display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+.res-footer { border-top: 1px solid var(--border); padding-top: 20px; display: flex; align-items: center; justify-content: space-between; }
+.res-author { display: flex; align-items: center; gap: 8px; color: #fff; font-size: 0.85rem; font-weight: 600; }
+.res-author-av { width: 30px; height: 30px; border-radius: 50%; background: var(--hover); display: flex; align-items: center; justify-content: center; color: var(--orange); font-size: 0.8rem; font-weight: 800; }
+.btn-read { background: rgba(255,255,255,0.05); color: #fff; border: 1px solid var(--border); padding: 8px 16px; border-radius: 8px; font-weight: 600; font-size: 0.85rem; transition: 0.2s; cursor: pointer; }
+.btn-read:hover { background: var(--orange); border-color: var(--orange); color: #000; }
+
+/* MODAL Override */
+.modal-content { background: var(--card) !important; border: 1px solid var(--border) !important; }
+.modal-header { border-bottom: 1px solid var(--border) !important; }
+.modal-footer { border-top: 1px solid var(--border) !important; }
+
+/* FOOTER */
+footer{background:#0c0c18;border-top:1px solid var(--border);padding:80px 0 30px; margin-top: 50px;}
+.ft{font-weight:800;font-size:1.1rem; color:#fff;}
+.fl-links{list-style:none;padding:0;}
+.fl-links li{margin-bottom:12px;}
+.fl-links a{color:#94a3b8;text-decoration:none;font-size:.95rem;transition:color .2s; font-weight:500;}
+.fl-links a:hover{color:#fff;}
+.fci{display:flex;gap:12px;margin-bottom:18px;}
+.fci i{color:var(--purple);font-size:1.2rem;margin-top:2px;flex-shrink:0;}
+.fbot{border-top:1px solid var(--border);margin-top:60px;padding-top:25px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:15px;}
+.fbot p,.fbot a{color:#64748b;font-size:.85rem;text-decoration:none;font-weight:500;}
+.btn-sh{background:rgba(255,255,255,0.05);color:#fff;width:44px;height:44px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;transition:0.3s;text-decoration:none;font-size:1.1rem;}
+.btn-sh:hover{background:var(--purple);}
 </style>
+</head>
+<body>
 
 <div class="navbar-wrapper">
   <div class="container">
@@ -51,7 +129,7 @@
         <a href="resources.html" class="active">Resources</a>
       </div>
 
-      <div class="auth-btns">
+      <div class="auth-btns" id="navAuthArea">
         <a href="../auth/login.html" class="btn-login">Log In</a>
         <a href="../auth/register.html" class="btn-signup">Sign Up</a>
       </div>
@@ -59,53 +137,106 @@
   </div>
 </div>
 
-<!-- Search -->
-<section class="top-search">
-    <input type="text" placeholder="Search interview questions, templates, courses...">
-    <button>Search</button>
-</section>
-
-<div class="resources-wrapper">
-
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <h3>Categories</h3>
-        <ul>
-            <li class="active">All Resources</li>
-            <li>Interview</li>
-            <li>Resume</li>
-            <li>Placement</li>
-            <li>Courses</li>
-        </ul>
-    </aside>
-
-    <!-- Main Content -->
-    <section class="resource-content" id="resourceContainer">
-        <!-- JS will inject dynamic resources here -->
+<div class="container">
+    <section class="hero">
+        <h1 class="hero-title">Career <span>Resources</span></h1>
+        <p class="hero-sub">Master your next interview, perfect your resume, and discover premium placement strategies curated by industry experts.</p>
     </section>
 
+    <div class="res-layout">
+        
+        <aside class="sidebar">
+            <h3>Categories</h3>
+            <ul>
+                <li class="active">All Resources <span class="badge bg-secondary rounded-pill">∞</span></li>
+                <li>Interview <i class="bi bi-chevron-right small"></i></li>
+                <li>Resume <i class="bi bi-chevron-right small"></i></li>
+                <li>Placement <i class="bi bi-chevron-right small"></i></li>
+                <li>Courses <i class="bi bi-chevron-right small"></i></li>
+            </ul>
+        </aside>
+
+        <main class="res-main">
+            <div class="top-search">
+                <i class="bi bi-search"></i>
+                <input type="text" placeholder="Search articles, guides, exact phrases...">
+            </div>
+
+            <div class="resource-grid" id="resourceContainer">
+                <div style="text-align:center; padding: 100px 0; color: #94a3b8; width: 100%; grid-column: 1 / -1;">
+                    <div class="spinner-border text-primary shadow-sm" role="status"></div>
+                    <p class="mt-3 fw-bold">Loading Premium Resources...</p>
+                </div>
+            </div>
+        </main>
+
+    </div>
 </div>
 
 <!-- Article Reader Modal -->
-<div class="modal fade" id="articleModal" tabindex="-1" aria-labelledby="articleModalLabel" aria-hidden="true">
+<div class="modal fade" id="articleModal" tabindex="-1">
   <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-    <div class="modal-content" style="background: var(--card, #181824); border: 1px solid var(--border, #2a2a42); color: white;">
-      <div class="modal-header" style="border-bottom: 1px solid var(--border, #2a2a42);">
-        <h5 class="modal-title fw-bold" id="articleModalLabel">Article</h5>
+    <div class="modal-content text-white">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold fs-4" id="articleModalLabel">Article</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body p-4" id="articleModalBody">
+      <div class="modal-body p-4 p-md-5" id="articleModalBody" style="font-size: 1.05rem; line-height: 1.8; color: #cbd5e1;">
          <!-- Content injected via JS -->
       </div>
-      <div class="modal-footer" style="border-top: 1px solid var(--border, #2a2a42);">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close Reader</button>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary fw-bold" data-bs-dismiss="modal">Close Reader</button>
       </div>
     </div>
   </div>
 </div>
 
 <footer>
-    <p>© 2026 FresherHub. All Rights Reserved.</p>
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-4 col-md-6">
+        <div class="logo-box mb-4">
+          <div class="logo-icon">F</div>
+          <div class="logo-text">Fresher<span>Hub</span></div>
+        </div>
+        <p style="color:#94a3b8; font-size:0.95rem; line-height:1.6; margin-bottom:25px;">Connecting India's brightest fresh talent with top IT companies. We bridge the gap between education and premium tech careers.</p>
+        <div class="d-flex gap-3">
+          <a class="btn-sh" href="#"><i class="bi bi-linkedin"></i></a>
+          <a class="btn-sh" href="#"><i class="bi bi-twitter-x"></i></a>
+          <a class="btn-sh" href="#"><i class="bi bi-instagram"></i></a>
+          <a class="btn-sh" href="#"><i class="bi bi-facebook"></i></a>
+        </div>
+      </div>
+      <!-- Links -->
+      <div class="col-lg-2 col-md-3 col-6">
+        <p class="ft mb-4">Job Seekers</p>
+        <ul class="fl-links">
+          <li><a href="../jobs/jobs.html">Job Alerts</a></li>
+          <li><a href="../services/services.html">Resume Services</a></li>
+          <li><a href="resources.html">Career Advice</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-2 col-md-3 col-6">
+        <p class="ft mb-4">Employers</p>
+        <ul class="fl-links">
+          <li><a href="../auth/register.html">Browse Candidates</a></li>
+          <li><a href="#">Recruitment Solutions</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <p class="ft mb-4">Contact HQ</p>
+        <div class="fci"><i class="bi bi-geo-alt-fill"></i><span style="color:#94a3b8">Sai Complex, Temple Road,<br>Shirdi, 423109</span></div>
+        <div class="fci"><i class="bi bi-envelope-fill"></i><span style="color:#94a3b8">support@fresherhub.in</span></div>
+      </div>
+    </div>
+    <div class="fbot">
+      <p>© 2026 FresherHub Global. All rights reserved.</p>
+      <div class="d-flex gap-4">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+  </div>
 </footer>
 
 <script src="../../js/config.js"></script>

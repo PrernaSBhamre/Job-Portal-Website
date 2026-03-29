@@ -26,6 +26,10 @@ const companySchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: [true, 'Company must belong to a user/recruiter'],
+    },
+    isApproved: {
+      type: Boolean,
+      default: true
     }
   },
   { timestamps: true }

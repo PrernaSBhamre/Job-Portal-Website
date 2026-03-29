@@ -1,478 +1,273 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FresherHub - Sign Up</title>
+    <title>FresherHub Premium - Login</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
+        :root {
+            --bg: #0b0b14;
+            --card: #13131f;
+            --border: #2a2a42;
+            --purple: #7c3aed;
+            --orange: #f97316;
+            --tp: #f0f0fa;
+            --ts: #94a3b8;
         }
 
         body {
-            background: radial-gradient(circle at top left, #1a1445, #05060f);
-            color: white;
+            background: var(--bg);
+            color: var(--tp);
+            font-family: 'Inter', sans-serif;
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
-        }
-
-        a {
-            text-decoration: none;
-            color: white;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: auto;
-        }
-
-        /* NAVBAR */
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            font-weight: 600;
-            font-size: 20px;
-        }
-
-        .logo-circle {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #7a5cff, #4c2cff);
-            display: flex;
             align-items: center;
             justify-content: center;
-            margin-right: 10px;
-            font-weight: bold;
-        }
-
-        .logo-text {
-            font-size: 20px;
-            font-weight: 600;
-        }
-
-        .fresher {
-            color: white;
-        }
-
-        .hub {
-            background: linear-gradient(135deg, #7a5cff, #4c2cff);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-        }
-
-        .menu {
-            background: #0e0f1d;
-            padding: 8px 20px;
-            border-radius: 40px;
-            display: flex;
-            gap: 30px;
-        }
-
-        .menu a {
-            font-size: 14px;
-            opacity: 0.8;
-        }
-
-        .auth {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-
-        .signup-btn,
-        .login-btn {
-            padding: 10px 20px;
-            border-radius: 30px;
-            background: transparent;
-            color: white;
-            font-weight: 500;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .auth .active {
-            background: linear-gradient(135deg, #ff8a00, #ff5e3a);
-        }
-
-        /* SIGNUP CARD */
-
-        .signup-section {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 40px 0;
-        }
-
-        .card {
-            background: #0e0f1d;
-            padding: 40px;
-            border-radius: 20px;
-            width: 100%;
-            max-width: 420px;
-            position: relative;
-            z-index: 1;
-            border: 1px solid rgba(255, 255, 255, 0.05);
             overflow: hidden;
+            position: relative;
         }
 
-        .card::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
+        /* Ambient Background Glows */
+        .glow-1 { position: absolute; top: -10%; left: -10%; width: 500px; height: 500px; background: radial-gradient(circle, rgba(124, 58, 237, 0.15), transparent 70%); border-radius: 50%; z-index: -1; }
+        .glow-2 { position: absolute; bottom: -20%; right: -10%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(249, 115, 22, 0.1), transparent 70%); border-radius: 50%; z-index: -1; }
+
+        .auth-container {
             width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, #7a5cff, #ff8a00, #ff5e3a);
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
+            max-width: 440px;
+            padding: 20px;
+            z-index: 10;
         }
 
-        .card::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
+        .auth-card {
+            background: rgba(19, 19, 31, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            animation: formFadeIn 0.6s ease-out forwards;
+        }
+
+        @keyframes formFadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo-box {
+            display: flex; align-items: center; justify-content: center; gap: 12px;
+            text-decoration: none; margin-bottom: 30px;
+        }
+        .logo-icon {
+            width: 44px; height: 44px;
+            background: var(--purple);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; font-weight: 800; font-size: 1.3rem; font-family: 'Inter', sans-serif;
+            box-shadow: 0 0 20px rgba(124, 58, 237, 0.5);
+        }
+        .logo-text { font-family: 'Inter', sans-serif; font-weight: 800; font-size: 1.6rem; color: #fff; letter-spacing: -0.5px; }
+        .logo-text span { color: #a78bfa; }
+
+        .auth-header { text-align: center; margin-bottom: 30px; }
+        .auth-title { font-family: 'Inter', sans-serif; font-weight: 800; font-size: 1.8rem; margin-bottom: 8px; }
+        .auth-sub { color: var(--ts); font-size: 0.95rem; }
+
+        .form-group { margin-bottom: 22px; position: relative; }
+        .form-label { display: block; font-size: 0.85rem; font-weight: 700; color: var(--ts); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        .input-icon-wrapper { position: relative; }
+        .input-icon-wrapper i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #64748b; font-size: 1.1rem; transition: 0.3s; }
+        
+        .form-control {
             width: 100%;
-            height: 100%;
-            border-radius: 20px;
-            box-shadow: 0 0 40px rgba(122, 92, 255, 0.15);
-            z-index: -1;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 14px 14px 14px 45px;
+            color: #fff;
+            font-size: 0.95rem;
+            transition: all 0.3s;
         }
-
-        .card h2 {
-            text-align: center;
-            margin-bottom: 5px;
-        }
-
-        .card p {
-            text-align: center;
-            font-size: 14px;
-            opacity: 0.7;
-            margin-bottom: 25px;
-        }
-
-        /* TOGGLE */
-
-        .toggle {
-            display: flex;
-            background: #090a14;
-            border-radius: 40px;
-            padding: 4px;
-            margin-bottom: 25px;
-        }
-
-        .toggle button {
-            flex: 1;
-            border: none;
-            padding: 10px;
-            border-radius: 40px;
-            background: transparent;
-            color: white;
-            cursor: pointer;
-        }
-
-        .toggle .active {
-            background: linear-gradient(135deg, #7a5cff, #4c2cff);
-        }
-
-        /* FORM */
-
-        .input-group {
-            margin-bottom: 18px;
-        }
-
-        .input-group label {
-            font-size: 12px;
-            opacity: 0.7;
-            display: block;
-            margin-bottom: 6px;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-            border: none;
-            background: #05060f;
-            color: white;
+        .form-control:focus {
+            background: rgba(0, 0, 0, 0.4);
+            border-color: var(--purple);
+            box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.15);
             outline: none;
         }
+        .form-control:focus + i { color: var(--purple); }
 
-        .create-btn {
+        .btn-submit {
             width: 100%;
-            padding: 14px;
+            background: linear-gradient(135deg, var(--orange), #fb923c);
+            color: #000;
             border: none;
-            border-radius: 30px;
-            background: linear-gradient(135deg, #7a5cff, #4c2cff);
-            color: white;
-            font-weight: 500;
-            margin-top: 10px;
+            padding: 15px;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 1.05rem;
             cursor: pointer;
-        }
-
-        .divider {
-            text-align: center;
-            margin: 20px 0;
-            opacity: 0.5;
-            font-size: 12px;
-        }
-
-        .social {
-            display: flex;
-            gap: 15px;
-        }
-
-        .social a {
-            flex: 1;
-            padding: 10px;
-            border-radius: 30px;
-            background: #0a0b16;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            color: white;
-            cursor: pointer;
-            text-align: center;
-            display: block;
-        }
-
-        .login-link {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 13px;
-        }
-
-        .login-link span {
-            color: #7a5cff;
-            cursor: pointer;
-        }
-
-        /* FOOTER */
-
-        footer {
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 40px 0;
-            background: #05060f;
-        }
-
-        footer .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 30px;
-        }
-
-        .footer-title {
-            margin-bottom: 10px;
-            font-weight: 500;
-        }
-
-        .footer-links a {
-            display: block;
-            font-size: 14px;
-            opacity: 0.7;
-            margin-bottom: 6px;
-        }
-
-        .footer-desc {
-            opacity: 0.7;
-            font-size: 14px;
-            margin-top: 10px;
-        }
-
-        .footer-social {
-            display: flex;
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .footer-social a {
-            width: 42px;
-            height: 42px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.05);
-            color: white;
-            font-size: 16px;
             transition: 0.3s;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            margin-top: 10px;
+        }
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(249, 115, 22, 0.3);
         }
 
-        .footer-social a:hover {
-            background: linear-gradient(135deg, #7a5cff, #4c2cff);
-            transform: translateY(-3px);
-            box-shadow: 0 0 15px rgba(122, 92, 255, 0.6);
-        }
+        .auth-footer { text-align: center; margin-top: 25px; font-size: 0.95rem; color: var(--ts); }
+        .auth-link { color: var(--purple); font-weight: 700; text-decoration: none; transition: 0.2s; }
+        .auth-link:hover { color: #a78bfa; text-decoration: underline; }
 
-        /* MOBILE */
+        .social-btns { display: flex; gap: 15px; margin-top: 25px; }
+        .social-btn { flex: 1; padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2); color: #fff; font-weight: 600; text-align: center; cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 8px; text-decoration: none;}
+        .social-btn:hover { background: rgba(255,255,255,0.05); }
 
-        @media(max-width:768px) {
+        .divider { text-align: center; color: var(--ts); font-size: 0.8rem; margin: 25px 0; position: relative; }
+        .divider::before, .divider::after { content: ''; position: absolute; top: 50%; width: 30%; height: 1px; background: rgba(255,255,255,0.1); }
+        .divider::before { left: 0; }
+        .divider::after { right: 0; }
 
-            .menu {
-                display: none;
-            }
+        /* Return Home */
+        .btn-home { position: absolute; top: 30px; left: 30px; color: var(--ts); text-decoration: none; display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 0.95rem; transition: 0.3s; z-index: 20; }
+        .btn-home:hover { color: #fff; }
 
-            nav {
-                flex-wrap: wrap;
-                gap: 10px;
-            }
-
-            .card {
-                padding: 30px 20px;
-            }
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 18px;
-        }
-
-        .contact-icon {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.05);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #7a5cff;
-            font-size: 16px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        }
-
-        .contact-item p {
-            font-size: 14px;
-            opacity: 0.8;
-            line-height: 1.5;
-        }
+        /* Message Box */
+        #loginMessage { margin-top: 15px; text-align: center; font-size: 0.9rem; font-weight: 600; }
     </style>
 </head>
-
 <body>
 
+    <div class="glow-1"></div>
+    <div class="glow-2"></div>
 
+    <a href="../../index.html" class="btn-home"><i class="bi bi-arrow-left"></i> Back to Home</a>
 
-    <section class="signup-section">
+    <div class="auth-container">
+        <div class="auth-card">
+            <a href="../../index.html" class="logo-box">
+                <div class="logo-icon">F</div>
+                <div class="logo-text">Fresher<span>Hub</span></div>
+            </a>
 
-        <div class="card">
-
-            <h2>Welcome Back</h2>
-            <p>Log in to access your FresherHub account</p>
+            <div class="auth-header">
+                <h1 class="auth-title">Welcome Back</h1>
+                <p class="auth-sub">Enter your credentials to access your dashboard</p>
+            </div>
 
             <form id="loginForm">
-
-                <div class="input-group">
-                    <label>EMAIL ADDRESS</label>
-                    <input type="email" id="email" placeholder="john@example.com">
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <div class="input-icon-wrapper">
+                        <input type="email" id="loginEmail" class="form-control" placeholder="name@example.com" required>
+                        <i class="bi bi-envelope"></i>
+                    </div>
                 </div>
 
-                <div class="input-group">
-                    <label>PASSWORD</label>
-                    <input type="password" id="password" placeholder="Enter your password">
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <div class="input-icon-wrapper">
+                        <input type="password" id="loginPassword" class="form-control" placeholder="••••••••" required>
+                        <i class="bi bi-lock"></i>
+                    </div>
                 </div>
 
-                <button type="submit" class="create-btn">Log In →</button>
+                <div class="d-flex justify-content-end mb-3">
+                    <a href="forgot-password.html" class="auth-link" style="font-size: 0.85rem;">Forgot Password?</a>
+                </div>
 
+                <button type="submit" class="btn-submit">Secure Login</button>
+                <div id="loginMessage"></div>
             </form>
 
-            <div class="divider">OR LOG IN WITH</div>
+            <div class="divider">OR LOGIN WITH</div>
 
-            <div class="social">
-                <a href="https://github.com/login" id="githubBtn" target="_blank">Github</a>
-                <a href="https://www.linkedin.com/login" id="linkedinBtn" target="_blank">LinkedIn</a>
+            <div class="social-btns">
+                <button class="social-btn" id="githubBtn"><i class="bi bi-github"></i> GitHub</button>
+                <button class="social-btn" id="linkedinBtn"><i class="bi bi-linkedin" style="color:#0a66c2;"></i> LinkedIn</button>
             </div>
 
-            <div class="login-link">
-                Don't have an account? <a href="register.html" style="color:#7a5cff;font-weight:600">Sign Up</a>
+            <div class="auth-footer">
+                Don't have an account? <a href="register.html" class="auth-link">Create one here</a>
             </div>
-
         </div>
+    </div>
 
-    </section>
-
-
-
-<script src="../../js/config.js"></script>
-<script src="../../js/auth.js"></script>
-<script>
-    document.getElementById("loginForm").addEventListener("submit", async function (e) {
-        e.preventDefault();
-        
-        let email = document.getElementById("email").value;
-        let password = document.getElementById("password").value;
-
-        if (email === "" || password === "") {
-            alert("Please fill all fields");
-            return;
+    <!-- The Auth logic expects config.js and auth.js -->
+    <script src="../../js/config.js"></script>
+    <script src="../../js/auth.js"></script>
+    <script>
+        document.getElementById("githubBtn").onclick = (e) => {
+            e.preventDefault();
+            alert("Github Login Coming Soon");
         }
 
-        try {
-            const response = await fetch(`${CONFIG.API_URL}/auth/login`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password })
-            });
+        document.getElementById("linkedinBtn").onclick = (e) => {
+            e.preventDefault();
+            alert("LinkedIn Login Coming Soon");
+        }
 
-            const data = await response.json();
+        document.getElementById("loginForm").addEventListener("submit", async function(e){
+            e.preventDefault();
+            
+            const email = document.getElementById("loginEmail").value.trim();
+            const password = document.getElementById("loginPassword").value;
+            const msgBox = document.getElementById("loginMessage");
+            const btn = document.querySelector(".btn-submit");
 
-            if (response.ok) {
-                // Store user session data
-                setSession(
-                    { _id: data._id, fullname: data.fullname, email: data.email, role: data.role }, 
-                    data.token
-                );
-                alert("Logged In Successfully 🚀");
-                
-                if (data.role === 'admin') {
-                    window.location.href = "../admin/dashboard.html";
-                } else if (data.role === 'recruiter') {
-                    window.location.href = "../employer/dashboard.html";
-                } else {
-                    window.location.href = "../../index.html";
-                }
-            } else {
-                alert(`Login Failed: ${data.message || 'Invalid credentials'}`);
+            if(email === "" || password === ""){
+                msgBox.innerHTML = "<span style='color:var(--orange)'><i class='bi bi-exclamation-circle'></i> Please fill all fields</span>";
+                return;
             }
-        } catch (error) {
-            console.error("Error connecting to server:", error);
-            alert("Login Failed: Error connecting to server.");
-        }
-    });
 
-    document.getElementById("githubBtn").onclick = () => { alert("Github Login Coming Soon") };
-    document.getElementById("linkedinBtn").onclick = () => { alert("LinkedIn Login Coming Soon") };
-</script>
+            btn.innerHTML = "Authenticating...";
+            btn.disabled = true;
 
+            try {
+                const response = await fetch(`${CONFIG.API_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    msgBox.innerHTML = "<span style='color:#22c55e;font-weight:700;'><i class='bi bi-shield-check'></i> Secure Login Verified! Redirecting...</span>";
+                    
+                    // Call the setSession function from auth.js
+                    setSession(data, data.token);
+
+                    // Redirect based on role with Multi-Port Session Bridge (Secure Encoding)
+                    setTimeout(() => {
+                        if (data.role === 'admin') {
+                            // Safe Base64 encoding for URL passing
+                            const sessionToken = btoa(encodeURIComponent(JSON.stringify(data)));
+                            window.location.href = `http://localhost:5173/?session=${sessionToken}`;
+                        }
+                        else if (data.role === 'recruiter') window.location.href = "../employer/dashboard.html";
+                        else window.location.href = "../seeker/dashboard.html";
+                    }, 600);
+
+
+                } else {
+                    msgBox.innerHTML = `<span style='color:#ef4444;font-weight:700;'><i class='bi bi-shield-x'></i> ${data.message || 'Invalid credentials'}</span>`;
+                    btn.disabled = false;
+                    btn.innerHTML = "Secure Login";
+                }
+            } catch (error) {
+                console.error("Error connecting to server:", error);
+                msgBox.innerHTML = `<span style='color:#ef4444'><i class='bi bi-wifi-off'></i> Network Error connecting to server.</span>`;
+                btn.disabled = false;
+                btn.innerHTML = "Secure Login";
+            }
+        });
+    </script>
 </body>
-
 </html>

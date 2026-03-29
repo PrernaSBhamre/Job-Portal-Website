@@ -110,15 +110,43 @@ async function fetchMyJobs() {
                     <div class="j-title">${j.title} <span class="badge bg-secondary ms-2">${j.applications ? j.applications.length : 0} Applicants</span></div>
                     <div class="j-meta">${j.location} • ${j.jobType} • ${j.salary}</div>
                 </div>
-                <button class="btn btn-sm btn-outline-light" style="border-color: var(--purple-light); color: #fff;" onclick="viewApplicants('${j._id}')">
-                    View Applicants
-                </button>
+                <div class="d-flex gap-2 mt-2">
+                    <button class="btn btn-sm btn-outline-light" style="border-color: var(--purple-light); color: #fff;" onclick="viewApplicants('${j._id}')">
+                        View Applicants
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger" title="Delete Job" onclick="deleteJob('${j._id}')">
+                        <i class="bi bi-trash3"></i>
+                    </button>
+                </div>
             </div>
         `).join('');
 
     } catch (err) {
         console.error(err);
         document.getElementById('myJobsList').innerHTML = 'Error loading jobs.';
+    }
+}
+
+// 5. Delete Job
+async function deleteJob(jobId) {
+    if (!confirm("Are you sure you want to permanently delete this job? This will explicitly remove all associated applications.")) return;
+    
+    try {
+        const res = await fetch(`${CONFIG.API_URL}/jobs/${jobId}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${session.token}` }
+        });
+        
+        if (res.ok) {
+            alert("Job deleted successfully.");
+            fetchMyJobs(); // Refresh the layout
+        } else {
+            const data = await res.json();
+            alert(data.message || "Failed to delete job.");
+        }
+    } catch(err) {
+        console.error(err);
+        alert("Server error during deletion.");
     }
 }
 

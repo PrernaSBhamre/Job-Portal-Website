@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>FresherHub ΓÇô Find Your Dream Job</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
@@ -537,8 +537,10 @@ async function fetchJobs() {
         if(res.ok) {
             const data = await res.json();
             
-            // Map backend data to frontend structure
-            fetchedJobs = data.map(j => ({
+            // Map backend data to frontend structure securely checking for jobs array
+            const jobsArray = Array.isArray(data) ? data : (data.jobs || []);
+            
+            fetchedJobs = jobsArray.map(j => ({
                 id: j._id,
                 title: j.title,
                 co: j.company ? j.company.name : 'Unknown Company',
@@ -549,13 +551,13 @@ async function fetchJobs() {
                 expV: parseInt(j.experienceLevel) || 0,
                 sal: j.salary || 'Not Disclosed',
                 salMin: parseInt(j.salary) || 0,
-                skills: j.tags && j.tags.length ? j.tags : ['JavaScript', 'HTML'],
+                skills: Array.isArray(j.tags) ? j.tags : (typeof j.tags === 'string' ? j.tags.split(',') : ['JavaScript', 'HTML']),
                 pre: false, ceo: false, isNew: true,
                 posted: new Date(j.createdAt).toLocaleDateString() || 'Recently',
                 rating: 4.5, rc: 100, match: 85, daysLeft: 30, apps: 0,
                 color: '#6d28d9',
                 desc: j.description || '',
-                resp: j.requirements ? [j.requirements] : [],
+                resp: Array.isArray(j.requirements) ? j.requirements : (j.requirements ? [j.requirements] : []),
                 req: [],
                 process: [],
                 salary: { base: 0, var: 0, ben: 0 },
@@ -569,6 +571,58 @@ async function fetchJobs() {
     } catch (e) {
         console.error("Failed to fetch jobs:", e);
         toast("Failed to load jobs from server.");
+    }
+}
+
+// Global Paginator Tracker
+let currentPage = 1;
+
+async function loadNextPageFromBackend() {
+    try {
+        currentPage++;
+        const limit = 50; // default initial fetch limit logic
+        const queryParams = window.location.search ? `${window.location.search}&page=${currentPage}&limit=${limit}` : `?page=${currentPage}&limit=${limit}`;
+        
+        const res = await fetch(`${CONFIG.API_URL}/jobs${queryParams}`);
+        if(res.ok) {
+            const data = await res.json();
+            const jobsArray = Array.isArray(data) ? data : (data.jobs || []);
+            
+            if (jobsArray.length === 0) {
+               toast("No more jobs to load.");
+               document.getElementById('loadBtn').style.display='none';
+               return;
+            }
+            
+            const newJobs = jobsArray.map(j => ({
+                id: j._id,
+                title: j.title,
+                co: j.company ? j.company.name : 'Unknown Company',
+                ini: j.company && j.company.name ? j.company.name.charAt(0).toUpperCase() : 'C',
+                loc: j.location || 'Remote',
+                type: j.jobType || 'Full Time',
+                exp: j.experienceLevel || 'Fresher',
+                expV: parseInt(j.experienceLevel) || 0,
+                sal: j.salary || 'Not Disclosed',
+                salMin: parseInt(j.salary) || 0,
+                skills: Array.isArray(j.tags) ? j.tags : (typeof j.tags === 'string' ? j.tags.split(',') : ['JavaScript', 'HTML']),
+                pre: false, ceo: false, isNew: true,
+                posted: new Date(j.createdAt).toLocaleDateString() || 'Recently',
+                rating: 4.5, rc: 100, match: 85, daysLeft: 30, apps: 0,
+                color: '#6d28d9',
+                desc: j.description || '',
+                resp: Array.isArray(j.requirements) ? j.requirements : (j.requirements ? [j.requirements] : []),
+                req: [], process: [], salary: { base: 0, var: 0, ben: 0 }, reviews: []
+            }));
+            
+            fetchedJobs = [...fetchedJobs, ...newJobs];
+            JOBS = fetchedJobs;
+            applyF(); // Re-trigger the active filter loops to render the newly injected jobs
+            toast(`${newJobs.length} more jobs loaded.`);
+        }
+    } catch (e) {
+         console.error(e);
+         toast("Failed to load more jobs.");
     }
 }
 
@@ -705,9 +759,15 @@ function clearF(){
   toast('Filters cleared');
 }
 function loadMore(){
-  renderJobs(JOBS);
-  document.getElementById('loadBtn').style.display='none';
-  toast(`${JOBS.length-5} more jobs loaded`);
+  if (fetchedJobs.length < 50) {
+      // Local fallback if we have a tiny DB
+      renderJobs(JOBS);
+      document.getElementById('loadBtn').style.display='none';
+      toast(`${JOBS.length-5} more jobs loaded`);
+  } else {
+      // Paged backend request
+      loadNextPageFromBackend();
+  }
 }
 function bkJob(e,id){
   e.stopPropagation();

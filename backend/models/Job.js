@@ -61,7 +61,20 @@ const jobSchema = new mongoose.Schema(
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Application',
       }
-    ]
+    ],
+    isApproved: {
+      type: Boolean,
+      default: true
+    },
+    isFeatured: {
+      type: Boolean,
+      default: false
+    },
+    status: {
+      type: String,
+      enum: ['open', 'closed'],
+      default: 'open'
+    }
   },
   { timestamps: true }
 );

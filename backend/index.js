@@ -9,7 +9,6 @@ dotenv.config();
 
 // Connect to the Database
 const connectDB = require('./config/db');
-connectDB();
 
 // Initialize the express application
 const app = express();
@@ -34,7 +33,9 @@ const provisionAdmin = async () => {
         console.error('Failed to provision admin:', e);
     }
 };
-provisionAdmin();
+connectDB().then(() => {
+    provisionAdmin();
+});
 
 // --- Middleware ---
 // Enable CORS to allow requests from the frontend
@@ -42,6 +43,10 @@ app.use(cors());
 
 // Serve Static Uploads
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Serve Frontend Static Files
+app.use(express.static(path.join(__dirname, '../frontend')));
+
 // Parse incoming JSON payloads in the request body
 app.use(express.json());
 // Parse incoming URL-encoded data
@@ -68,13 +73,24 @@ app.use('/api/saved-jobs', savedJobRoutes);
 app.use('/api/resources', resourceRoutes);
 
 // --- Basic Route ---
-// A simple test route to verify the server is running
+// Serve the main frontend index.html
 app.get('/', (req, res) => {
-    res.send('Job Portal Backend Running');
+    res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 
 // --- Error Handling Middleware ---
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
+// If it's not an API call and not a file, send the main index.html for SPA-like behavior in main site
+// --- SPA Support ---
+// If it's not an API call, serve the main frontend index.html
+// Temporarily disabled to prevent crash at line 86
+// app.get('*', (req, res, next) => {
+//     if (req.originalUrl.startsWith('/api')) {
+//         return next();
+//     }
+//     res.sendFile(path.resolve(__dirname, '..', 'frontend', 'index.html'));
+// });
+
 app.use(notFound);
 app.use(errorHandler);
 

@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (session && session.user) {
         if(session.user.role === 'recruiter') targetDash = '../employer/dashboard.html';
-        else if(session.user.role === 'admin') targetDash = '../admin/dashboard.html';
+        else if(session.user.role === 'admin') targetDash = 'http://localhost:5173';
         else targetDash = '../seeker/dashboard.html';
     }
 

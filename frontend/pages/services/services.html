@@ -3,20 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Services - FresherHub</title>
+<title>Services - FresherHub Premium</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-<link rel="stylesheet" href="services.css">
-<script defer src="services.js"></script>
-</head>
 
-<body>
-
-<!-- Navbar -->
 <style>
-/* Navbar CSS */
+:root{
+  --bg:#0b0b14;--card:#13131f;--filter:#161624;--hover:#1d1d30;
+  --border:#2a2a42;--purple:#7c3aed;--ps:#5b21b6;--pg:rgba(124,58,237,.18);
+  --orange:#f97316;--od:#ea580c;
+  --tp:#f0f0fa;--tm:#8888aa;--td:#5a5a78;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--tp);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--purple);border-radius:3px}
+
+/* Navbar */
 .navbar-wrapper { border-bottom: 1px solid rgba(255, 255, 255, 0.05); background: rgba(11, 11, 20, 0.8); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 1000; }
 .navbar-custom { padding: 22px 0; display: flex; align-items: center; justify-content: space-between; }
 .logo-box { display: flex; align-items: center; gap: 12px; text-decoration: none; }
@@ -29,11 +34,114 @@
 .auth-btns { display: flex; align-items: center; gap: 25px; }
 .btn-login { color: #fff; text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: 0.3s; }
 .btn-login:hover { color: #94a3b8; }
-.btn-signup { background: linear-gradient(135deg, #f97316, #fb923c); color: #000; padding: 10px 24px; border-radius: 30px; text-decoration: none; font-weight: 800; font-size: 0.95rem; transition: 0.3s; border: none; }
+.btn-signup { background: linear-gradient(135deg, var(--orange), #fb923c); color: #000; padding: 10px 24px; border-radius: 30px; text-decoration: none; font-weight: 800; font-size: 0.95rem; transition: 0.3s; border: none; }
 .btn-signup:hover { box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3); color: #000; }
-@media(max-width:991px) { .nav-pill { display: none; } }
-@media(max-width:500px) { .auth-btns { display: none; } }
+
+/* HERO */
+.hero { padding: 80px 0 40px; text-align: center; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; top: -50%; left: 50%; transform: translateX(-50%); width: 800px; height: 800px; background: radial-gradient(circle, rgba(124, 58, 237, 0.15) 0%, transparent 60%); z-index: -1; }
+.hero-title { font-family: 'Inter', sans-serif; font-weight: 800; font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; margin-bottom: 20px; }
+.hero-title span { background: linear-gradient(135deg, var(--purple), #a78bfa); -webkit-background-clip: text;
+            background-clip: text; color: transparent; }
+.hero-sub { color: var(--tm); font-size: 1.1rem; max-width: 600px; margin: 0 auto 40px; line-height: 1.6; }
+
+/* SECTION TABS */
+.tab-container { display: flex; justify-content: center; gap: 15px; margin-bottom: 50px; flex-wrap: wrap; }
+.tab-btn { background: rgba(255,255,255,0.03); border: 1px solid var(--border); color: #cbd5e1; padding: 12px 28px; border-radius: 30px; font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: 0.3s; }
+.tab-btn:hover { background: rgba(255,255,255,0.08); }
+.tab-btn.active { background: var(--purple); border-color: var(--purple); color: #fff; box-shadow: 0 8px 20px rgba(124, 58, 237, 0.3); }
+
+/* GRID */
+.service-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; margin-bottom: 80px; }
+
+/* SERVICE CARD */
+.srv-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 35px;
+    position: relative;
+    overflow: hidden;
+    transition: 0.4s;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.srv-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(124, 58, 237, 0.4);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+}
+.srv-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 4px;
+    background: transparent;
+    transition: 0.4s;
+}
+.srv-card:hover::before { background: linear-gradient(90deg, var(--purple), var(--orange)); }
+
+.srv-icon {
+    width: 60px; height: 60px;
+    background: rgba(124, 58, 237, 0.15);
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem;
+    color: var(--purple);
+    margin-bottom: 25px;
+}
+.srv-icon.orange { background: rgba(249, 115, 22, 0.15); color: var(--orange); }
+
+.srv-title { font-family: 'Inter', sans-serif; font-weight: 800; font-size: 1.4rem; color: #fff; margin-bottom: 12px; }
+.srv-desc { color: var(--tm); font-size: 0.95rem; line-height: 1.6; margin-bottom: 30px; flex-grow: 1; }
+
+.badge-float {
+    position: absolute;
+    top: 25px; right: 25px;
+    font-size: 0.75rem; font-weight: 800; letter-spacing: 1px;
+    padding: 6px 14px; border-radius: 20px;
+}
+.badge-free { background: rgba(34, 197, 94, 0.15); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.3); }
+.badge-pro { background: rgba(249, 115, 22, 0.15); color: var(--orange); border: 1px solid rgba(249, 115, 22, 0.3); }
+
+.srv-bot {
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+}
+.srv-stat { font-size: 0.85rem; color: var(--td); font-weight: 600; display: flex; align-items: center; gap: 5px; }
+
+.btn-srv {
+    background: transparent;
+    border: none;
+    color: var(--tp);
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: 0.2s;
+    display: flex; align-items: center; gap: 6px;
+    text-decoration: none;
+}
+.btn-srv:hover { color: var(--purple); }
+
+/* FOOTER */
+footer{background:#0c0c18;border-top:1px solid var(--border);padding:80px 0 30px; margin-top: 50px;}
+.ft{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem; color:#fff;}
+.fl-links{list-style:none;padding:0;}
+.fl-links li{margin-bottom:12px;}
+.fl-links a{color:#94a3b8;text-decoration:none;font-size:.95rem;transition:color .2s; font-weight:500;}
+.fl-links a:hover{color:#fff;}
+.fci{display:flex;gap:12px;margin-bottom:18px;}
+.fci i{color:var(--purple);font-size:1.2rem;margin-top:2px;flex-shrink:0;}
+.fci span{color:#94a3b8;font-size:.95rem;line-height:1.6;}
+.fbot{border-top:1px solid var(--border);margin-top:60px;padding-top:25px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:15px;}
+.fbot p,.fbot a{color:#64748b;font-size:.85rem;text-decoration:none;font-weight:500;}
+.fbot a:hover{color:#fff;}
+.btn-sh{background:rgba(255,255,255,0.05);color:#fff;width:44px;height:44px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;transition:0.3s;text-decoration:none;font-size:1.1rem;}
+.btn-sh:hover{background:var(--purple);transform:translateY(-3px);}
 </style>
+</head>
+<body>
 
 <div class="navbar-wrapper">
   <div class="container">
@@ -42,7 +150,6 @@
         <div class="logo-icon">F</div>
         <div class="logo-text">Fresher<span>Hub</span></div>
       </a>
-
       <div class="nav-pill d-none d-lg-flex">
         <a href="../../index.html">Home</a>
         <a href="../jobs/jobs.html">Find Jobs</a>
@@ -50,8 +157,7 @@
         <a href="services.html" class="active">Services</a>
         <a href="../resources/resources.html">Resources</a>
       </div>
-
-      <div class="auth-btns">
+      <div class="auth-btns" id="navAuthArea">
         <a href="../auth/login.html" class="btn-login">Log In</a>
         <a href="../auth/register.html" class="btn-signup">Sign Up</a>
       </div>
@@ -59,146 +165,188 @@
   </div>
 </div>
 
-<!-- Hero Section -->
-<section class="hero">
-    <h1 style="color:white;">Powering Careers,</h1>
-    <h1 style="color:blueviolet;">Empowering Recruiters.</h1>
-    <p>Connecting talent with opportunity smarter and faster.</p>
-    <button class="hero-btn">Explore Services</button>
-</section>
-
-<!-- Search -->
-<section class="search-section">
-    <input type="text" placeholder="Search services...">
-    <button>Search</button>
-</section>
-
-<!-- Category Filters -->
-<section class="categories">
-    <button class="active">All</button>
-    <button>Job Seekers</button>
-    <button>Employers</button>
-    <button>Premium</button>
-</section>
-
-<!-- Job Seekers -->
-<section class="services-section">
-    <h2>For Job Seekers</h2>
-    <div class="services-container">
-
-        <div class="service-card">
-            <span class="badge free">FREE</span>
-            <div class="icon">🤖</div>
-            <h3>Smart Job Matching</h3>
-            <p>AI-powered job recommendations based on your profile.</p>
-            <div class="meta">
-                <span>⭐ 4.8</span>
-                <span>Used 2,430 times</span>
-            </div>
-            <button class="login-btn" onclick="window.location.href='../auth/login.html'">Login to Access</button>
-        </div>
-
-        <div class="service-card">
-            <span class="badge free">FREE</span>
-            <div class="icon">⚡</div>
-            <h3>Quick Apply</h3>
-            <p>Apply instantly with one click using your saved resume.</p>
-            <div class="meta">
-                <span>⭐ 4.6</span>
-                <span>Used 1,845 times</span>
-            </div>
-            <button class="login-btn" onclick="window.location.href='../auth/login.html'">Login to Access</button>
-        </div>
-
-        <div class="service-card">
-            <span class="badge pro">PRO</span>
-            <div class="icon">🎓</div>
-            <h3>Career Guidance</h3>
-            <p>Professional career advice and growth strategies.</p>
-            <div class="meta">
-                <span>⭐ 4.9</span>
-                <span>Used 3,120 times</span>
-            </div>
-            <button class="login-btn" onclick="window.location.href='../auth/login.html'">Login Required</button>
-        </div>
-
-        <div class="service-card">
-            <span class="badge free">FREE</span>
-            <div class="icon">🔔</div>
-            <h3>Skills-Based Alerts</h3>
-            <p>Get notified when jobs match your skillset.</p>
-            <div class="meta">
-                <span>⭐ 4.7</span>
-                <span>Used 1,204 times</span>
-            </div>
-            <button class="login-btn" onclick="window.location.href='../auth/login.html'">Login to Access</button>
-        </div>
-
+<section class="hero container">
+    <h1 class="hero-title">Powering Careers,<br><span>Empowering Recruiters.</span></h1>
+    <p class="hero-sub">Get access to world-class recruitment pipelines, intelligent AI parsing tools, and premium career counseling directly from our ecosystem partners.</p>
+    
+    <div class="tab-container">
+        <button class="tab-btn active" onclick="filterSrv('all')">All Services</button>
+        <button class="tab-btn" onclick="filterSrv('seeker')">For Job Seekers</button>
+        <button class="tab-btn" onclick="filterSrv('employer')">For Employers</button>
     </div>
 </section>
 
-<!-- Employers -->
-<section class="services-section">
-    <h2>For Employers</h2>
-    <div class="services-container">
-
-        <div class="service-card">
-            <span class="badge free">FREE</span>
-            <div class="icon">📝</div>
-            <h3>Post Jobs Easily</h3>
-            <p>Create job listings in minutes with smart templates.</p>
-            <div class="meta">
-                <span>⭐ 4.5</span>
-                <span>Used 980 times</span>
+<div class="container">
+    <div class="service-grid" id="srvGrid">
+        
+        <!-- Seeker 1 -->
+        <div class="srv-card" data-cat="seeker">
+            <div class="badge-float badge-free">FREE</div>
+            <div class="srv-icon"><i class="bi bi-robot"></i></div>
+            <div class="srv-title">Smart Job Matching AI</div>
+            <div class="srv-desc">Our proprietary AI algorithms scan your profile and resume deep-data to recommend exactly the jobs that fit your skillset perfectly.</div>
+            <div class="srv-bot">
+                <div class="srv-stat"><i class="bi bi-star-fill text-warning"></i> 4.9 (2k+ reviews)</div>
+                <a href="../auth/login.html" class="btn-srv srv-action">Access <i class="bi bi-arrow-right"></i></a>
             </div>
-            <button class="login-btn" onclick="window.location.href='../auth/login.html'">Login to Access</button>
         </div>
 
-        <div class="service-card">
-            <span class="badge pro">PRO</span>
-            <div class="icon">✅</div>
-            <h3>Verified Profiles</h3>
-            <p>Access trusted and verified candidate profiles.</p>
-            <div class="meta">
-                <span>⭐ 4.8</span>
-                <span>Used 2,010 times</span>
+        <!-- Seeker 2 -->
+        <div class="srv-card" data-cat="seeker">
+            <div class="badge-float badge-free">FREE</div>
+            <div class="srv-icon"><i class="bi bi-lightning-charge"></i></div>
+            <div class="srv-title">1-Click Quick Apply</div>
+            <div class="srv-desc">Store up to 5 variations of your verified Resumes and instantly pitch yourself to companies with a single click.</div>
+            <div class="srv-bot">
+                <div class="srv-stat"><i class="bi bi-star-fill text-warning"></i> 4.8 (8k+ uses)</div>
+                <a href="../auth/login.html" class="btn-srv srv-action">Access <i class="bi bi-arrow-right"></i></a>
             </div>
-            <button class="login-btn" onclick="window.location.href='../auth/login.html'">Login Required</button>
         </div>
 
-        <div class="service-card">
-            <span class="badge pro">PRO</span>
-            <div class="icon">📂</div>
-            <h3>Resume Unlock</h3>
-            <p>Unlock resumes and connect with top talent.</p>
-            <div class="meta">
-                <span>⭐ 4.9</span>
-                <span>Used 1,765 times</span>
+        <!-- Seeker 3 -->
+        <div class="srv-card" data-cat="seeker">
+            <div class="badge-float badge-pro">PREMIUM</div>
+            <div class="srv-icon orange"><i class="bi bi-mortarboard"></i></div>
+            <div class="srv-title">1:1 Career Mentorship</div>
+            <div class="srv-desc">Get matched with industry Leaders from FAANG and top product companies for realistic mock interviews and technical roadmap planning.</div>
+            <div class="srv-bot">
+                <div class="srv-stat"><i class="bi bi-star-fill text-warning"></i> 5.0 (900+ reviews)</div>
+                <a href="../auth/login.html" class="btn-srv srv-action">Upgrade <i class="bi bi-arrow-right"></i></a>
             </div>
-            <button class="login-btn" onclick="window.location.href='../auth/login.html'">Login Required</button>
         </div>
 
-        <div class="service-card">
-            <span class="badge free">FREE</span>
-            <div class="icon">🔎</div>
-            <h3>Advanced Filtering</h3>
-            <p>Filter candidates by skills, experience, and location.</p>
-            <div class="meta">
-                <span>⭐ 4.6</span>
-                <span>Used 1,300 times</span>
+        <!-- Employer 1 -->
+        <div class="srv-card" data-cat="employer">
+            <div class="badge-float badge-free">FREE</div>
+            <div class="srv-icon orange"><i class="bi bi-building-add"></i></div>
+            <div class="srv-title">Unlimited Job Posts</div>
+            <div class="srv-desc">Post as many entry-level and junior roles as your startup or enterprise needs. Zero hidden costs or monthly limits.</div>
+            <div class="srv-bot">
+                <div class="srv-stat"><i class="bi bi-people-fill" style="color:#94a3b8"></i> 14k+ active employers</div>
+                <a href="../auth/register.html" class="btn-srv srv-action">Start Hiring <i class="bi bi-arrow-right"></i></a>
             </div>
-            <button class="login-btn" onclick="window.location.href='../auth/login.html'">Login to Access</button>
+        </div>
+
+        <!-- Employer 2 -->
+        <div class="srv-card" data-cat="employer">
+            <div class="badge-float badge-pro">ENTERPRISE</div>
+            <div class="srv-icon"><i class="bi bi-bullseye"></i></div>
+            <div class="srv-title">Targeted Bulk Outreach</div>
+            <div class="srv-desc">Instantly filter our database of 200,000+ verified tech freshers and mass-mail offer packages or interview invites seamlessly.</div>
+            <div class="srv-bot">
+                <div class="srv-stat"><i class="bi bi-shield-check text-success"></i> Verified Data only</div>
+                <a href="../auth/register.html" class="btn-srv srv-action">Contact Sales <i class="bi bi-arrow-right"></i></a>
+            </div>
+        </div>
+
+        <!-- Employer 3 -->
+        <div class="srv-card" data-cat="employer">
+            <div class="badge-float badge-pro">PREMIUM</div>
+            <div class="srv-icon orange"><i class="bi bi-shield-lock"></i></div>
+            <div class="srv-title">ATS Deep Integration</div>
+            <div class="srv-desc">Connect FresherHub directly into Workday, Greenhouse, or Lever to seamlessly synchronize candidate pools via our GraphQL endpoints.</div>
+            <div class="srv-bot">
+                <div class="srv-stat"><i class="bi bi-plug"></i> Seamless Webhooks</div>
+                <a href="#" class="btn-srv">View Docs <i class="bi bi-arrow-right"></i></a>
+            </div>
         </div>
 
     </div>
-</section>
+</div>
 
-<!-- Footer -->
 <footer>
-    <p>© 2026 FresherHub. All Rights Reserved.</p>
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-4 col-md-6">
+        <div class="logo-box mb-4">
+          <div class="logo-icon">F</div>
+          <div class="logo-text">Fresher<span>Hub</span></div>
+        </div>
+        <p style="color:#94a3b8; font-size:0.95rem; line-height:1.6; margin-bottom:25px;">Connecting India's brightest
+          fresh talent with top IT companies. We bridge the gap between education and premium tech careers.</p>
+        <div class="d-flex gap-3">
+          <a class="btn-sh" href="#"><i class="bi bi-linkedin"></i></a>
+          <a class="btn-sh" href="#"><i class="bi bi-twitter-x"></i></a>
+          <a class="btn-sh" href="#"><i class="bi bi-instagram"></i></a>
+          <a class="btn-sh" href="#"><i class="bi bi-facebook"></i></a>
+        </div>
+      </div>
+
+      <div class="col-lg-2 col-md-3 col-6">
+        <p class="ft mb-4">Job Seekers</p>
+        <ul class="fl-links">
+          <li><a href="../jobs/jobs.html">Job Alerts</a></li>
+          <li><a href="services.html">Resume Services</a></li>
+          <li><a href="../resources/resources.html">Career Advice</a></li>
+          <li><a href="#">Student Discounts</a></li>
+        </ul>
+      </div>
+
+      <div class="col-lg-2 col-md-3 col-6">
+        <p class="ft mb-4">Employers</p>
+        <ul class="fl-links">
+          <li><a href="../auth/register.html">Browse Candidates</a></li>
+          <li><a href="#">Recruitment Solutions</a></li>
+          <li><a href="#">Pricing Plans</a></li>
+          <li><a href="#">Partner with Us</a></li>
+        </ul>
+      </div>
+
+      <div class="col-lg-4 col-md-6">
+        <p class="ft mb-4">Contact HQ</p>
+        <div class="fci"><i class="bi bi-geo-alt-fill"></i><span>Sai Complex, Temple Road,<br>Shirdi, Maharashtra –
+            423109</span></div>
+        <div class="fci"><i class="bi bi-telephone-fill"></i><span>+91 80 1234 5678</span></div>
+        <div class="fci"><i class="bi bi-envelope-fill"></i><span>support@fresherhub.in</span></div>
+      </div>
+    </div>
+
+    <div class="fbot">
+      <p>© 2024 FresherHub Global. All rights reserved.</p>
+      <div class="d-flex gap-4">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Sitemap</a>
+      </div>
+    </div>
+  </div>
 </footer>
 
 <script src="../../js/config.js"></script>
 <script src="../../js/auth.js"></script>
+<script>
+    function filterSrv(cat) {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+        
+        const cards = document.querySelectorAll('.srv-card');
+        cards.forEach(c => {
+            if(cat === 'all' || c.getAttribute('data-cat') === cat) {
+                c.style.display = 'flex';
+            } else {
+                c.style.display = 'none';
+            }
+        });
+    }
+
+    // Dynamic Auth Text Injection
+    document.addEventListener('DOMContentLoaded', () => {
+        const userStr = localStorage.getItem('user');
+        if (userStr) {
+            const user = JSON.parse(userStr);
+            const actBtns = document.querySelectorAll('.srv-action');
+            actBtns.forEach(btn => {
+                if(user.role === 'student' && btn.closest('.srv-card').dataset.cat === 'seeker') {
+                    btn.innerHTML = 'Go to Dashboard <i class="bi bi-arrow-right"></i>';
+                    btn.href = '../seeker/dashboard.html';
+                }
+                if(user.role === 'recruiter' && btn.closest('.srv-card').dataset.cat === 'employer') {
+                    btn.innerHTML = 'Go to Dashboard <i class="bi bi-arrow-right"></i>';
+                    btn.href = '../employer/dashboard.html';
+                }
+            });
+        }
+    });
+</script>
 </body>
 </html>

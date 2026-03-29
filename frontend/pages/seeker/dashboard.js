@@ -193,7 +193,10 @@ async function fetchMyApps() {
                         <div class="app-title">${jobTitle}</div>
                         <div class="app-co">${coName} • Applied: ${appDate}</div>
                     </div>
-                    <div class="app-status status-${a.status.toLowerCase()}">${a.status}</div>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="app-status status-${a.status.toLowerCase()}">${a.status}</div>
+                        <button onclick="withdrawApplication('${a._id}')" class="btn btn-sm btn-outline-danger" title="Withdraw Application"><i class="bi bi-trash3"></i></button>
+                    </div>
                 </div>
                 `;
             }).join('');
@@ -204,5 +207,28 @@ async function fetchMyApps() {
     } catch (err) {
         console.error(err);
         list.innerHTML = '<p class="text-danger">Error connecting to server.</p>';
+    }
+}
+
+// 4. Withdraw Application
+async function withdrawApplication(appId) {
+    if (!confirm("Are you sure you want to withdraw this application? This action cannot be undone.")) return;
+    
+    try {
+        const res = await fetch(`${CONFIG.API_URL}/applications/${appId}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${session.token}` }
+        });
+        
+        if (res.ok) {
+            alert("Application withdrawn successfully.");
+            fetchMyApps(); // Refresh the list
+        } else {
+            const data = await res.json();
+            alert(data.message || "Failed to withdraw application.");
+        }
+    } catch(err) {
+        console.error(err);
+        alert("Server error during withdrawal.");
     }
 }

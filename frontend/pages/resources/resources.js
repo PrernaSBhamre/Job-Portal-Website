@@ -50,25 +50,39 @@ function renderResources(resources) {
     const container = document.getElementById('resourceContainer');
     
     if (resources.length === 0) {
-        container.innerHTML = '<p class="text-center text-muted w-100 mt-5">No resources match your search.</p>';
+        container.innerHTML = '<div style="grid-column: 1/-1"><p class="text-center text-muted mt-5 fw-bold"><i class="bi bi-search fs-1 d-block mb-3"></i>No resources match your precise query.</p></div>';
         return;
     }
     
-    container.innerHTML = resources.map(r => `
-        <div class="resource-item" data-category="${r.category.toLowerCase()}" style="display:flex;">
-            <img src="${r.imageUrl || 'https://via.placeholder.com/120x120'}" alt="${r.title}">
-            <div class="details">
-                <span class="badge free" style="background: rgba(139, 92, 246, 0.1); color: #a78bfa; border: 1px solid rgba(139, 92, 246, 0.3); padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 700;">${r.category.toUpperCase()}</span>
-                <span style="font-size: 0.8rem; color: #94a3b8; margin-left: 10px;"><i class="bi bi-clock"></i> ${r.readTime}</span>
-                <h3 style="margin-top: 10px">${r.title}</h3>
-                <p>${r.content.substring(0, 100)}${r.content.length > 100 ? '...' : ''}</p>
-                <div class="meta" style="margin-top: 15px">
-                    <span>By ${r.author}</span>
-                </div>
-                <button class="download-btn" onclick="openResource('${r._id}')">Read Full Article</button>
+    container.innerHTML = resources.map(r => {
+        const fallImg = 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=500&auto=format&fit=crop';
+        const ini = r.author ? r.author.charAt(0).toUpperCase() : 'A';
+        
+        return `
+        <article class="res-card" data-category="${r.category.toLowerCase()}">
+            <div class="res-img-box">
+                <img src="${r.imageUrl || fallImg}" alt="${r.title}">
+                <div class="res-badge">${r.category}</div>
             </div>
-        </div>
-    `).join('');
+            <div class="res-body">
+                <div class="res-meta">
+                    <div class="d-flex align-items-center gap-2"><i class="bi bi-clock"></i> ${r.readTime || '5 min read'}</div>
+                    <div class="d-flex align-items-center gap-2"><i class="bi bi-star-fill text-warning"></i> 4.9 Premium</div>
+                </div>
+                <h3 class="res-title">${r.title}</h3>
+                <p class="res-desc">${r.content.substring(0, 120)}${r.content.length > 120 ? '...' : ''}</p>
+                
+                <div class="res-footer">
+                    <div class="res-author">
+                        <div class="res-author-av">${ini}</div>
+                        ${r.author || 'Admin'}
+                    </div>
+                    <button class="btn-read" onclick="openResource('${r._id}')">Read <i class="bi bi-arrow-right"></i></button>
+                </div>
+            </div>
+        </article>
+        `;
+    }).join('');
 }
 
 function filterResources(category) {

@@ -62,13 +62,20 @@ const getJobs = async (req, res, next) => {
     const limit = parseInt(req.query.limit, 10) || 50; 
     const startIndex = (page - 1) * limit;
 
+    const total = await Job.countDocuments(query);
+    
     const jobs = await Job.find(query)
       .populate('company', 'name logo location')
       .sort({ createdAt: -1 })
       .skip(startIndex)
       .limit(limit);
 
-    res.json(jobs);
+    res.json({
+      jobs,
+      total,
+      page,
+      pages: Math.ceil(total / limit)
+    });
   } catch (error) {
     next(error);
   }

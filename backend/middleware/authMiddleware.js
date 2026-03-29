@@ -21,8 +21,12 @@ const protect = async (req, res, next) => {
           const Admin = require('../models/Admin');
           user = await Admin.findById(decoded.id).select('-password');
       }
-      req.user = user;
 
+      if (user && user.isBlocked) {
+        return res.status(403).json({ message: 'Your account has been blocked. Please contact support.' });
+      }
+
+      req.user = user;
       next();
     } catch (error) {
       console.error(error);

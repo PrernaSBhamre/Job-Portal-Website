@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         let dashboardUrl = `${base}seeker/dashboard.html`;
         if (session.user.role === 'recruiter') dashboardUrl = `${base}employer/dashboard.html`;
-        else if (session.user.role === 'admin') dashboardUrl = `${base}admin/dashboard.html`;
+        else if (session.user.role === 'admin') dashboardUrl = `http://localhost:5173`;
 
         // User is logged in
         authDiv.innerHTML = `

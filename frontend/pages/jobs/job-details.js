@@ -322,7 +322,7 @@ function setupAuthNav() {
     if (session && session.user) {
         let dash = '../seeker/dashboard.html';
         if (session.user.role === 'recruiter') dash = '../employer/dashboard.html';
-        if (session.user.role === 'admin') dash = '../admin/dashboard.html';
+        if (session.user.role === 'admin') dash = 'http://localhost:5173';
         
         authArea.innerHTML = `
             <a href="${dash}" class="btn-signup" style="background:var(--card);color:#fff;border:1px solid var(--border);">Dashboard</a>

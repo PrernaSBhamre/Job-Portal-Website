@@ -3,29 +3,141 @@
 @tailwind utilities;
 
 :root {
-  --bg: #0b0b14;
-  --card: #181824;
-  --border: #2a2a42;
-  --purple: #6d28d9;
-  --purple-light: #8b5cf6;
-  --orange: #f97316;
-  --orange-light: #fb923c;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #09090b;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  background-color: var(--bg);
-  color: #f8fafc;
-  font-family: 'Inter', sans-serif;
+  margin: 0;
+  display: flex;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: #09090b;
 }
 
-.glass {
-  background: rgba(24, 24, 36, 0.7);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+#root {
+  width: 100%;
 }
 
-.sidebar-link-active {
-  background: rgba(109, 40, 217, 0.2);
-  color: #8b5cf6;
-  border-right: 3px solid #8b5cf6;
+/* Custom Ant Design Dark Theme Overrides */
+.admin-table-dark .ant-table {
+  background: transparent !important;
+  color: #a1a1aa !important; /* Zinc 400 */
+}
+
+.admin-table-dark .ant-table-thead > tr > th {
+  background: #18181b !important; /* Zinc 900 */
+  color: #71717a !important; /* Zinc 500 */
+  border-bottom: 1px solid #27272a !important; /* Zinc 800 */
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+}
+
+.admin-table-dark .ant-table-tbody > tr > td {
+  border-bottom: 1px solid #18181b !important;
+  padding: 16px 16px !important;
+}
+
+.admin-table-dark .ant-table-tbody > tr:hover > td {
+  background: rgba(39, 39, 42, 0.5) !important; /* Zinc 800 semi-transparent */
+}
+
+.admin-pagination .ant-pagination-item-active {
+  background: #8b5cf6 !important;
+  border-color: #8b5cf6 !important;
+}
+
+.admin-pagination .ant-pagination-item-active a {
+  color: white !important;
+}
+
+.admin-tabs .ant-tabs-nav {
+  margin-bottom: 0 !important;
+}
+
+.admin-tabs .ant-tabs-tab {
+  padding: 12px 0 !important;
+  font-weight: 600;
+  color: #71717a !important;
+}
+
+.admin-tabs .ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: #a78bfa !important;
+}
+
+.admin-tabs .ant-tabs-ink-bar {
+  background: #8b5cf6 !important;
+  height: 3px !important;
+}
+
+/* Custom Select styling for Zinc theme */
+.zinc-select .ant-select-selector {
+  background-color: #09090b !important;
+  border-color: #27272a !important;
+  border-radius: 8px !important;
+  color: #fff !important;
+}
+
+.sidebar-premium .ant-menu-item {
+  height: 48px !important;
+  line-height: 48px !important;
+  margin-bottom: 8px !important;
+  border-radius: 12px !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.sidebar-premium .ant-menu-item .ant-menu-item-icon {
+  font-size: 18px !important;
+}
+
+.sidebar-premium .ant-menu-item:hover {
+  background: rgba(139, 92, 246, 0.05) !important;
+  padding-left: 28px !important;
+}
+
+.sidebar-premium .ant-menu-item-selected {
+  background: linear-gradient(90deg, rgba(139, 92, 246, 0.15) 0%, rgba(139, 92, 246, 0) 100%) !important;
+  border-left: 3px solid #8b5cf6 !important;
+  padding-left: 24px !important;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #09090b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3f3f46;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-in {
+  animation: fadeIn 0.5s ease-out forwards;
 }

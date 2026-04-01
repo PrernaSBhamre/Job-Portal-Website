@@ -22,8 +22,13 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ['student', 'recruiter', 'admin'],
+      enum: ['jobSeeker', 'employer', 'admin', 'student', 'recruiter'],
+      default: 'jobSeeker',
       required: [true, 'Please select a role']
+    },
+    isVerified: {
+      type: Boolean,
+      default: true
     },
     profile: {
       bio: { type: String },
@@ -80,6 +85,8 @@ const userSchema = new mongoose.Schema(
     },
     resetPasswordToken: String,
     resetPasswordExpire: Date,
+    otp: String,
+    otpExpire: Date,
   },
   { timestamps: true }
 );

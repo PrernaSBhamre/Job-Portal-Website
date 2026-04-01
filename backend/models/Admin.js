@@ -14,6 +14,14 @@ const adminSchema = new mongoose.Schema(
     role: {
       type: String,
       default: 'admin'
+    },
+    fullname: {
+      type: String,
+      default: 'System Admin'
+    },
+    avatar: {
+      type: String,
+      default: ''
     }
   },
   { timestamps: true }

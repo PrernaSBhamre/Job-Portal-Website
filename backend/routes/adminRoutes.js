@@ -3,48 +3,57 @@ const router = express.Router();
 const {
   getDashboardStats,
   getAllUsers,
-  updateUserRole,
-  toggleUserBlock,
+  updateUserStatus,
   deleteUser,
   getAllJobs,
-  toggleJobApproval,
-  toggleJobFeatured,
+  updateJobStatus,
   deleteJob,
   getAllApplications,
   getAllCompanies,
+  updateCompanyStatus,
   deleteCompany,
-  getMessages,
-  resolveMessage
+  getAllResources,
+  createResource,
+  updateResource,
+  deleteResource,
+  getAdminProfile,
+  updateAdminProfile,
+  changeAdminPassword
 } = require('../controllers/adminController');
-const { protect, isAdmin } = require('../middleware/authMiddleware');
+const { adminProtect } = require('../middleware/adminAuth');
 
 // All routes are protected and restricted to admin
-router.use(protect);
-router.use(isAdmin);
+router.use(adminProtect);
 
 router.get('/stats', getDashboardStats);
 
 // User Management
 router.get('/users', getAllUsers);
-router.put('/users/:id/role', updateUserRole);
-router.put('/users/:id/block', toggleUserBlock);
+router.put('/users/:id/status', updateUserStatus);
 router.delete('/users/:id', deleteUser);
 
 // Job Management
 router.get('/jobs', getAllJobs);
-router.put('/jobs/:id/approve', toggleJobApproval);
-router.put('/jobs/:id/feature', toggleJobFeatured);
+router.put('/jobs/:id/status', updateJobStatus);
 router.delete('/jobs/:id', deleteJob);
 
 // Company Management
 router.get('/companies', getAllCompanies);
+router.put('/companies/:id/status', updateCompanyStatus);
 router.delete('/companies/:id', deleteCompany);
 
 // Application Monitoring
 router.get('/applications', getAllApplications);
 
-// Support Messages
-router.get('/messages', getMessages);
-router.put('/messages/:id/resolve', resolveMessage);
+// Resource Management
+router.get('/resources', getAllResources);
+router.post('/resources', createResource);
+router.put('/resources/:id', updateResource);
+router.delete('/resources/:id', deleteResource);
+
+// Profile & Security
+router.get('/profile', getAdminProfile);
+router.put('/profile', updateAdminProfile);
+router.put('/change-password', changeAdminPassword);
 
 module.exports = router;

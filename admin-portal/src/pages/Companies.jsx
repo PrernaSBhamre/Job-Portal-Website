@@ -1,98 +1,203 @@
-import React, { useEffect, useState } from 'react';
-import { Building2, Search, Trash2, Globe, MapPin, Calendar, Trash, MoreVertical } from 'lucide-react';
-import API from '../utils/axios';
+import React, { useState, useEffect } from 'react';
+import { 
+  Table, 
+  Tag, 
+  Space, 
+  Button, 
+  Input, 
+  Card, 
+  Typography, 
+  Avatar, 
+  Tooltip, 
+  Popconfirm, 
+  message,
+  Badge,
+  Empty
+} from 'antd';
+import { 
+  SearchOutlined, 
+  CheckCircleOutlined, 
+  StopOutlined, 
+  DeleteOutlined, 
+  GlobalOutlined,
+  ShopOutlined,
+  LinkOutlined,
+  EnvironmentOutlined
+} from '@ant-design/icons';
+import api from '../utils/api';
+import dayjs from 'dayjs';
+
+const { Title, Text } = Typography;
 
 const Companies = () => {
+  const [loading, setLoading] = useState(false);
   const [companies, setCompanies] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [total, setTotal] = useState(0);
+  const [params, setParams] = useState({
+    page: 1,
+    limit: 10,
+    search: '',
+  });
 
-  useEffect(() => {
-    const fetchCompanies = async () => {
-      try {
-        const { data } = await API.get('/admin/companies');
-        setCompanies(data);
-      } catch (err) {
-        console.error('Error fetching companies:', err);
-      } finally {
-        setLoading(false);
+  const fetchCompanies = async () => {
+    try {
+      setLoading(true);
+      const res = await api.get('/admin/companies', { params });
+      if (res.data.success) {
+        setCompanies(res.data.companies);
+        setTotal(res.data.pagination.totalCompanies);
       }
-    };
-    fetchCompanies();
-  }, []);
-
-  const handleDelete = async (id) => {
-    if (window.confirm('Delete this company and all its job postings?')) {
-      try {
-        await API.delete(`/admin/companies/${id}`);
-        setCompanies(companies.filter(c => c._id !== id));
-      } catch (err) {
-        alert('Deletion failed');
-      }
+    } catch (err) {
+      message.error('Failed to fetch companies');
+    } finally {
+      setLoading(false);
     }
   };
 
-  if (loading) return (
-    <div className="flex items-center justify-center min-h-[60vh]">
-      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
-    </div>
-  );
+  useEffect(() => {
+    fetchCompanies();
+  }, [params]);
+
+  const handleStatusUpdate = async (id, updates) => {
+    try {
+      const res = await api.put(`/admin/companies/${id}/status`, updates);
+      if (res.data.success) {
+        message.success(res.data.message);
+        fetchCompanies();
+      }
+    } catch (err) {
+      message.error('Update failed');
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      const res = await api.delete(`/admin/companies/${id}`);
+      if (res.data.success) {
+        message.success('Company deleted');
+        fetchCompanies();
+      }
+    } catch (err) {
+      message.error('Delete failed');
+    }
+  };
+
+  const columns = [
+    {
+      title: 'Partner Organization',
+      key: 'company',
+      render: (_, record) => (
+        <Space size={16}>
+          <Avatar 
+            src={record.logo} 
+            icon={<ShopOutlined />} 
+            className="bg-zinc-900 border-2 border-violet-500/10 shadow-xl" 
+            shape="square"
+            size={56}
+          />
+          <div className="flex flex-col gap-0.5">
+            <Text strong className="text-zinc-100 text-base tracking-tight">{record.name}</Text>
+            <Space size={12} className="text-zinc-500 text-[11px] font-medium uppercase tracking-wider">
+              <Space size={4}><EnvironmentOutlined className="text-violet-500/50" /> {record.location || 'Remote'}</Space>
+              {record.website && (
+                <a href={record.website} target="_blank" rel="noreferrer" className="text-violet-400 hover:text-violet-300 transition-colors">
+                  <LinkOutlined /> Official Site
+                </a>
+              )}
+            </Space>
+          </div>
+        </Space>
+      ),
+    },
+    {
+      title: 'Business Vertical',
+      dataIndex: 'industry',
+      key: 'industry',
+      render: (industry) => <Tag color="zinc" className="border-0 bg-zinc-900 text-zinc-400 text-[10px] font-bold uppercase tracking-widest">{industry || 'General'}</Tag>,
+    },
+    {
+      title: 'Trust Verified',
+      dataIndex: 'isVerified',
+      key: 'isVerified',
+      render: (verified) => (
+        <Tag color={verified ? 'purple' : 'orange'} className="rounded-lg border-0 bg-opacity-10 px-3 uppercase text-[10px] font-black tracking-widest">
+          {verified ? 'Official' : 'Pending'}
+        </Tag>
+      ),
+    },
+    {
+      title: 'Owner',
+      dataIndex: 'userId',
+      key: 'userId',
+      render: (user) => (
+        <div className="flex flex-col">
+          <Text className="text-zinc-200">{user?.fullname}</Text>
+          <Text type="secondary" style={{ fontSize: '11px' }}>{user?.email}</Text>
+        </div>
+      ),
+    },
+    {
+      title: 'Joined',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+      render: (date) => <Text type="secondary">{dayjs(date).format('MMM DD, YYYY')}</Text>,
+    },
+    {
+      title: 'Actions',
+      key: 'actions',
+      align: 'right',
+      render: (_, record) => (
+        <Space size={12}>
+          <Tooltip title={record.isVerified ? 'Unverify' : 'Verify Company'}>
+            <Button 
+              type="text" 
+              icon={record.isVerified ? <StopOutlined className="text-amber-500" /> : <CheckCircleOutlined className="text-emerald-500" />} 
+              onClick={() => handleStatusUpdate(record._id, { isVerified: !record.isVerified })}
+            />
+          </Tooltip>
+          <Popconfirm title="Delete company and its jobs?" onConfirm={() => handleDelete(record._id)} okText="Delete" cancelText="Cancel" okButtonProps={{ danger: true }}>
+            <Button type="text" icon={<DeleteOutlined className="text-zinc-500 hover:text-rose-500" />} />
+          </Popconfirm>
+        </Space>
+      ),
+    },
+  ];
 
   return (
-    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div className="space-y-6 animate-in fade-in duration-500">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-zinc-900/40 p-6 rounded-2xl border border-zinc-800/50">
         <div>
-          <h1 className="text-3xl font-black tracking-tight text-white">Registered <span className="text-purple-500">Companies</span></h1>
-          <p className="text-gray-400 font-medium tracking-tight">Enterprise partners and recruiter organizational profiles.</p>
+          <Title level={3} style={{ margin: 0, color: '#fff' }}>Company Oversight</Title>
+          <Text type="secondary" className="text-zinc-500 font-medium">Authorize and verify organizational partners on the network.</Text>
         </div>
-        <div className="relative group max-w-xs w-full">
-           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
-           <input type="text" placeholder="Search enterprise..." className="w-full bg-white/5 border border-white/5 rounded-2xl py-3 pl-10 pr-4 text-xs font-black uppercase tracking-widest focus:outline-none focus:border-purple-500/30 transition-all placeholder:text-gray-700" />
+        <div className="bg-zinc-950 p-1 rounded-xl border border-zinc-800/50">
+          <Input 
+            placeholder="Search partners..." 
+            prefix={<SearchOutlined className="text-violet-500 mr-2" />} 
+            className="w-80 bg-zinc-950 border-0 text-white placeholder:text-zinc-600 h-9"
+            onChange={(e) => setParams({ ...params, search: e.target.value, page: 1 })}
+            allowClear
+          />
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {companies.map((company) => (
-          <div key={company._id} className="glass rounded-[32px] p-6 border-white/5 hover:border-purple-500/20 transition-all group relative overflow-hidden flex flex-col justify-between shadow-2xl">
-             <div>
-                <div className="flex items-center justify-between mb-6">
-                  <div className="w-16 h-16 bg-white/5 rounded-[22px] border border-white/5 flex items-center justify-center text-2xl font-black text-purple-400 shadow-xl overflow-hidden group-hover:scale-105 transition-transform duration-500">
-                     {company.logo ? <img src={company.logo} alt="logo" className="w-full h-full object-cover" /> : company.name.charAt(0)}
-                  </div>
-                  <button 
-                    onClick={() => handleDelete(company._id)}
-                    className="p-3 bg-red-500/10 text-red-500 border border-red-500/10 rounded-xl hover:bg-red-500 transition-all hover:text-white shadow-lg"
-                  >
-                    <Trash2 size={18} />
-                  </button>
-                </div>
-
-                <h3 className="text-lg font-black text-white mb-2 group-hover:text-purple-400 transition-colors uppercase tracking-tight">{company.name}</h3>
-                <div className="space-y-3 mb-6">
-                  <div className="flex items-center gap-2 text-xs text-gray-500 font-bold uppercase tracking-widest leading-none">
-                    <Globe size={14} className="text-gray-700" /> {company.website || 'No website'}
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-gray-500 font-bold uppercase tracking-widest leading-none">
-                    <MapPin size={14} className="text-gray-700" /> {company.location || 'Remote'}
-                  </div>
-                </div>
-
-                <p className="text-sm text-gray-400 font-medium line-clamp-2 leading-relaxed italic mb-8 border-l-2 border-purple-500/20 pl-4">
-                  {company.description || 'Enterprise profile pending detailed description update...'}
-                </p>
-             </div>
-
-             <div className="flex items-center justify-between pt-6 border-t border-white/5">
-                <div className="flex items-center gap-2">
-                   <div className="text-[10px] text-gray-600 font-black uppercase tracking-[0.15em]">Admin:</div>
-                   <div className="text-[11px] text-gray-200 font-black">{company.userId?.fullname || 'System'}</div>
-                </div>
-                <div className="text-[10px] text-gray-600 font-black uppercase tracking-[0.15em] flex items-center gap-2">
-                  <Calendar size={12} /> {new Date(company.createdAt).getFullYear()}
-                </div>
-             </div>
-          </div>
-        ))}
-      </div>
+      <Card className="bg-zinc-950 border-zinc-800/50 rounded-2xl overflow-hidden" styles={{ body: { padding: 0 } }}>
+        <Table 
+          columns={columns} 
+          dataSource={companies} 
+          rowKey="_id"
+          loading={loading}
+          pagination={{
+            total: total,
+            current: params.page,
+            pageSize: params.limit,
+            onChange: (page) => setParams({ ...params, page }),
+            className: "admin-pagination px-4"
+          }}
+          className="admin-table-dark"
+          locale={{ emptyText: <Empty description="No companies found" /> }}
+        />
+      </Card>
     </div>
   );
 };

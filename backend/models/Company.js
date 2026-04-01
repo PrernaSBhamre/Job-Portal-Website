@@ -30,6 +30,10 @@ const companySchema = new mongoose.Schema(
     isApproved: {
       type: Boolean,
       default: true
+    },
+    isVerified: {
+      type: Boolean,
+      default: false
     }
   },
   { timestamps: true }

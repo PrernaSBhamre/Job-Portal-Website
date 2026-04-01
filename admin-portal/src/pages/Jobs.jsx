@@ -1,251 +1,255 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
-  Briefcase, 
-  Search, 
-  Trash2, 
-  MapPin, 
-  IndianRupee, 
-  Bookmark, 
-  Clock, 
-  Building2,
-  ChevronRight,
-  ChevronLeft,
-  Star,
-  CheckCircle,
-  XCircle,
-  AlertCircle
-} from 'lucide-react';
-import API from '../utils/axios';
+  Table, 
+  Tag, 
+  Space, 
+  Button, 
+  Input, 
+  Select, 
+  Card, 
+  Typography, 
+  Tooltip, 
+  Popconfirm, 
+  message,
+  Badge,
+} from 'antd';
+import { 
+  SearchOutlined, 
+  CheckCircleOutlined, 
+  CloseCircleOutlined, 
+  DeleteOutlined, 
+  StarOutlined,
+  StarFilled,
+  EyeOutlined,
+  BlockOutlined,
+  DollarOutlined,
+  EnvironmentOutlined,
+  ShopOutlined
+} from '@ant-design/icons';
+import api from '../utils/api';
+import dayjs from 'dayjs';
+
+const { Title, Text } = Typography;
+const { Option } = Select;
 
 const Jobs = () => {
+  const [loading, setLoading] = useState(false);
   const [jobs, setJobs] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const limit = 6;
-
-  useEffect(() => {
-    fetchJobs();
-  }, [searchTerm, currentPage]);
+  const [total, setTotal] = useState(0);
+  const [params, setParams] = useState({
+    page: 1,
+    limit: 10,
+    search: '',
+    status: 'all'
+  });
 
   const fetchJobs = async () => {
     try {
       setLoading(true);
-      const { data } = await API.get('/admin/jobs', {
-        params: {
-          page: currentPage,
-          limit,
-          search: searchTerm
-        }
-      });
-      setJobs(data.jobs);
-      setTotalPages(data.totalPages);
+      const res = await api.get('/admin/jobs', { params });
+      if (res.data.success) {
+        setJobs(res.data.jobs);
+        setTotal(res.data.pagination.totalJobs);
+      }
     } catch (err) {
-      console.error('Error fetching jobs:', err);
+      message.error(err.response?.data?.message || 'Failed to fetch jobs');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this job listing?')) {
-      try {
-        await API.delete(`/admin/jobs/${id}`);
+  useEffect(() => {
+    fetchJobs();
+  }, [params]);
+
+  const handleStatusUpdate = async (id, updates) => {
+    try {
+      const res = await api.put(`/admin/jobs/${id}/status`, updates);
+      if (res.data.success) {
+        message.success(res.data.message);
         fetchJobs();
-      } catch (err) {
-        alert('Failed to delete job');
       }
-    }
-  };
-
-  const handleToggleApproval = async (id) => {
-    try {
-      await API.put(`/admin/jobs/${id}/approve`);
-      setJobs(jobs.map(j => j._id === id ? {...j, isApproved: !j.isApproved} : j));
     } catch (err) {
-      alert('Failed to update approval status');
+      message.error('Update failed');
     }
   };
 
-  const handleToggleFeatured = async (id) => {
+  const handleDelete = async (id) => {
     try {
-      await API.put(`/admin/jobs/${id}/feature`);
-      setJobs(jobs.map(j => j._id === id ? {...j, isFeatured: !j.isFeatured} : j));
+      const res = await api.delete(`/admin/jobs/${id}`);
+      if (res.data.success) {
+        message.success('Job deleted');
+        fetchJobs();
+      }
     } catch (err) {
-      alert('Failed to update featured status');
+      message.error('Delete failed');
     }
   };
 
-  if (loading && currentPage === 1) return (
-    <div className="flex items-center justify-center min-h-[60vh]">
-      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
-    </div>
-  );
+  const columns = [
+    {
+      title: 'Job Identifier',
+      key: 'job',
+      render: (_, record) => (
+        <div className="flex flex-col gap-1">
+          <Space>
+             <Text strong className="text-zinc-100 text-base tracking-tight hover:text-violet-400 cursor-pointer transition-colors">
+               {record.title}
+             </Text>
+             {record.isFeatured && (
+               <Tag color="purple" className="border-0 bg-opacity-20 text-[9px] font-black uppercase tracking-tighter px-1.5 leading-tight">
+                 Featured
+               </Tag>
+             )}
+          </Space>
+          <Space split={<div className="w-1 h-1 bg-zinc-800 rounded-full" />} className="text-zinc-500 text-xs font-medium">
+             <Space size={4}><ShopOutlined className="text-violet-500/50" /> {record.company?.name || 'Partner Org'}</Space>
+             <Space size={4}><EnvironmentOutlined /> {record.location}</Space>
+             <Space size={4}><DollarOutlined className="text-violet-500/50" /> {record.salary}</Space>
+          </Space>
+        </div>
+      ),
+    },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+      render: (status) => {
+        let color = 'default';
+        if (status === 'approved') color = 'purple';
+        if (status === 'pending') color = 'gold';
+        if (status === 'rejected') color = 'rose';
+        if (status === 'closed') color = 'zinc';
+        
+        return (
+          <Tag color={color} className="rounded-lg border-0 bg-opacity-10 px-3 uppercase text-[10px] font-black tracking-widest">
+            {status}
+          </Tag>
+        );
+      },
+    },
+    {
+      title: 'Posted By',
+      dataIndex: 'created_by',
+      key: 'created_by',
+      render: (user) => (
+        <div className="flex flex-col">
+          <Text className="text-zinc-200">{user?.fullname}</Text>
+          <Text type="secondary" style={{ fontSize: '12px' }}>{user?.email}</Text>
+        </div>
+      ),
+    },
+    {
+      title: 'Date Posted',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+      render: (date) => (
+        <Text type="secondary">{dayjs(date).format('MMM DD, YYYY')}</Text>
+      ),
+    },
+    {
+      title: 'Moderation',
+      key: 'actions',
+      align: 'right',
+      render: (_, record) => (
+        <Space size={16}>
+          {record.status === 'pending' && (
+            <div className="flex bg-zinc-900/50 p-1 rounded-xl gap-1 border border-zinc-800/50">
+              <Tooltip title="Approve">
+                <Button 
+                  type="text" 
+                  size="small"
+                  icon={<CheckCircleOutlined className="text-violet-500" />} 
+                  onClick={() => handleStatusUpdate(record._id, { status: 'approved' })}
+                />
+              </Tooltip>
+              <Tooltip title="Reject">
+                <Button 
+                  type="text" 
+                  size="small"
+                  icon={<CloseCircleOutlined className="text-rose-500" />} 
+                  onClick={() => handleStatusUpdate(record._id, { status: 'rejected' })}
+                />
+              </Tooltip>
+            </div>
+          )}
+
+          <Tooltip title={record.isFeatured ? 'Unfeature' : 'Mark as Featured'}>
+            <Button 
+              type="text" 
+              icon={record.isFeatured ? <StarFilled className="text-amber-500" /> : <StarOutlined className="text-zinc-500" />} 
+              onClick={() => handleStatusUpdate(record._id, { isFeatured: !record.isFeatured })}
+            />
+          </Tooltip>
+
+          {record.status === 'approved' && (
+             <Tooltip title="Close Job">
+                <Button 
+                  type="text" 
+                  icon={<BlockOutlined className="text-zinc-500" />} 
+                  onClick={() => handleStatusUpdate(record._id, { status: 'closed' })}
+                />
+             </Tooltip>
+          )}
+
+          <Popconfirm title="Delete this job forever?" onConfirm={() => handleDelete(record._id)} okText="Yes, delete" cancelText="No" okButtonProps={{ danger: true }}>
+            <Button type="text" icon={<DeleteOutlined className="text-zinc-500 hover:text-rose-500" />} />
+          </Popconfirm>
+        </Space>
+      ),
+    },
+  ];
 
   return (
-    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="flex flex-col gap-2">
-          <h1 className="text-3xl font-black tracking-tight text-white">Job <span className="text-purple-500">Inventory</span> Management</h1>
-          <p className="text-gray-400 font-medium tracking-tight">Approve, feature, or remove platform career listings.</p>
+    <div className="space-y-6 animate-in fade-in duration-500">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-zinc-900/40 p-6 rounded-2xl border border-zinc-800/50">
+        <div>
+          <Title level={3} style={{ margin: 0, color: '#fff' }}>Job Management</Title>
+          <Text type="secondary" className="text-zinc-500 font-medium">Review, approve, and oversee job postings across the platform.</Text>
         </div>
-
-        <div className="relative group max-w-md w-full">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-purple-500 transition-colors" />
-          <input
-            type="text"
-            placeholder="Search by job title or keyword..."
-            value={searchTerm}
-            onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); }}
-            className="w-full bg-[#181824]/50 border border-white/5 rounded-[22px] py-4 pl-12 pr-6 text-sm font-bold focus:outline-none focus:border-purple-500/30 transition-all placeholder:text-gray-700 shadow-2xl"
+        <Space size={16} className="bg-zinc-950 p-1 rounded-xl border border-zinc-800/50">
+           <Input 
+            placeholder="Search positions..." 
+            prefix={<SearchOutlined className="text-violet-500 mr-2" />} 
+            className="w-64 bg-zinc-950 border-0 text-white placeholder:text-zinc-600 h-9"
+            onChange={(e) => setParams({ ...params, search: e.target.value, page: 1 })}
+            allowClear
           />
-        </div>
+          <Select 
+            defaultValue="all" 
+            style={{ width: 140 }} 
+            className="zinc-select"
+            onChange={(val) => setParams({ ...params, status: val, page: 1 })}
+          >
+            <Option value="all">All Jobs</Option>
+            <Option value="pending">Pending</Option>
+            <Option value="approved">Approved</Option>
+            <Option value="closed">Closed</Option>
+            <Option value="rejected">Rejected</Option>
+          </Select>
+        </Space>
       </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-        {jobs.map((job) => (
-          <div key={job._id} className="glass rounded-[40px] p-10 border-white/5 hover:border-purple-500/20 transition-all group relative overflow-hidden flex flex-col justify-between shadow-2xl">
-            {/* Action Bar */}
-            <div className="absolute top-8 right-8 flex items-center gap-3 opacity-0 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0">
-              <button 
-                onClick={() => handleToggleFeatured(job._id)}
-                className={`p-3 rounded-2xl border transition-all ${job.isFeatured ? 'bg-orange-500/20 text-orange-400 border-orange-500/30' : 'bg-white/5 text-gray-500 border-white/5 hover:bg-white/10'}`}
-                title="Toggle Featured"
-              >
-                <Star size={20} fill={job.isFeatured ? "currentColor" : "none"} />
-              </button>
-              <button 
-                onClick={() => handleToggleApproval(job._id)}
-                className={`p-3 rounded-2xl border transition-all ${job.isApproved ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' : 'bg-red-500/20 text-red-500 border-red-500/30'}`}
-                title="Toggle Approval"
-              >
-                {job.isApproved ? <CheckCircle size={20} /> : <AlertCircle size={20} />}
-              </button>
-              <button 
-                onClick={() => handleDelete(job._id)}
-                className="p-3 bg-red-500/10 text-red-400 border border-red-500/20 rounded-2xl hover:bg-red-500/20 transition-all shadow-lg"
-              >
-                <Trash2 size={20} />
-              </button>
-            </div>
-
-            <div className="flex gap-8 mb-8">
-              <div className="w-24 h-24 bg-[#0b0b14] rounded-[32px] border border-white/5 flex items-center justify-center text-4xl font-black text-purple-500 shrink-0 group-hover:scale-105 transition-transform duration-500 shadow-2xl overflow-hidden">
-                {job.company?.name.charAt(0)}
-              </div>
-              
-              <div className="flex-1 min-w-0 flex flex-col justify-center">
-                <div className="flex items-center gap-3 mb-2">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-purple-400 bg-purple-400/10 px-3 py-1.5 rounded-xl border border-purple-400/20 shadow-lg">
-                    {job.jobType || 'Full-Time'}
-                  </span>
-                  {job.isFeatured && (
-                    <span className="text-[10px] font-black uppercase tracking-widest text-orange-400 bg-orange-500/10 px-3 py-1.5 rounded-xl border border-orange-500/20 shadow-lg flex items-center gap-1.5">
-                      <Star size={10} fill="currentColor" /> Featured
-                    </span>
-                  )}
-                </div>
-                
-                <h2 className="text-2xl font-black text-white truncate mb-4 group-hover:text-purple-400 transition-colors leading-tight">
-                  {job.title}
-                </h2>
-                
-                <div className="grid grid-cols-2 gap-y-4 gap-x-6">
-                  <div className="flex items-center gap-3 text-sm text-gray-400 font-bold group-hover:text-gray-200 transition-colors">
-                    <Building2 size={18} className="text-gray-600" />
-                    <span className="truncate">{job.company?.name || 'Private Co.'}</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-sm text-gray-400 font-bold group-hover:text-gray-200 transition-colors">
-                    <MapPin size={18} className="text-gray-600" />
-                    <span className="truncate">{job.location}</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-sm text-gray-400 font-bold group-hover:text-gray-200 transition-colors">
-                    <IndianRupee size={18} className="text-emerald-500" />
-                    <span className="font-black text-emerald-400 text-base">{job.salary || 'Not Disclosed'}</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-sm text-gray-400 font-bold group-hover:text-gray-200 transition-colors">
-                    <Bookmark size={18} className="text-gray-600" />
-                    <span className="truncate">{job.experienceLevel || 'Fresher'}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-4 pt-8 border-t border-white/5 flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                 <div className="flex -space-x-3">
-                    {[1, 2, 3].map(i => (
-                      <div key={i} className="w-10 h-10 rounded-2xl border-4 border-[#181824] bg-white/5 flex items-center justify-center text-[10px] font-bold text-gray-400 overflow-hidden shadow-xl">
-                        <img src={`https://i.pravatar.cc/150?u=${i+job._id}`} alt="applicant" className="w-full h-full object-cover" />
-                      </div>
-                    ))}
-                    <div className="w-10 h-10 rounded-2xl border-4 border-[#181824] bg-purple-600 text-white flex items-center justify-center text-[11px] font-black shadow-xl">
-                      +15
-                    </div>
-                  </div>
-                  <div className="flex flex-col">
-                     <span className="text-[10px] text-gray-500 font-black uppercase tracking-widest leading-none mb-1">Total Impact</span>
-                     <span className="text-sm font-black text-gray-200">2.4k Views</span>
-                  </div>
-              </div>
-              
-              <div className="flex items-center gap-4">
-                <div className="text-right">
-                   <div className="text-[11px] text-gray-600 font-black uppercase tracking-tighter">Listed On</div>
-                   <div className="text-xs font-black text-gray-400">{new Date(job.createdAt).toLocaleDateString()}</div>
-                </div>
-                <div className="w-12 h-12 bg-white/5 border border-white/5 rounded-2xl flex items-center justify-center text-gray-600 group-hover:text-purple-500 group-hover:bg-purple-600/10 group-hover:border-purple-600/20 transition-all cursor-pointer">
-                   <ChevronRight size={24} />
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
-
-        {jobs.length === 0 && (
-          <div className="col-span-full py-40 flex flex-col items-center gap-8 justify-center">
-            <div className="w-32 h-32 bg-white/5 rounded-[48px] flex items-center justify-center text-gray-700 border border-white/5 shadow-[0_40px_80px_rgba(0,0,0,0.5)]">
-              <Briefcase size={60} />
-            </div>
-            <div className="text-center">
-              <h3 className="text-2xl font-black text-gray-100 mb-2">No listings currently tracked</h3>
-              <p className="text-gray-500 font-medium text-lg">Try adjusting your central search filters.</p>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Pagination Container */}
-      <div className="flex items-center justify-center gap-6 pt-12 pb-24">
-         <button 
-           disabled={currentPage === 1}
-           onClick={() => setCurrentPage(p => p - 1)}
-           className="p-5 rounded-3xl border border-white/10 bg-white/5 text-gray-400 disabled:opacity-10 hover:text-white hover:bg-white/10 transition-all shadow-[0_20px_40px_rgba(0,0,0,0.4)]"
-         >
-           <ChevronLeft size={24} />
-         </button>
-         
-         <div className="flex items-center gap-4">
-           {[...Array(totalPages)].map((_, i) => (
-             <button 
-                key={i} 
-                onClick={() => setCurrentPage(i + 1)}
-                className={`w-14 h-14 rounded-3xl text-sm font-black transition-all border ${currentPage === i + 1 ? 'bg-purple-600 text-white border-purple-500 shadow-[0_15px_30px_rgba(109,40,217,0.4)]' : 'bg-white/5 text-gray-500 border-white/5 hover:text-white hover:border-white/10'}`}
-             >
-                {i + 1}
-             </button>
-           ))}
-         </div>
-
-         <button 
-           disabled={currentPage === totalPages}
-           onClick={() => setCurrentPage(p => p + 1)}
-           className="p-5 rounded-3xl border border-white/10 bg-white/5 text-gray-400 disabled:opacity-10 hover:text-white hover:bg-white/10 transition-all shadow-[0_20px_40px_rgba(0,0,0,0.4)]"
-         >
-           <ChevronRight size={24} />
-         </button>
-      </div>
+      <Card 
+        className="bg-zinc-950 border-zinc-800/50 rounded-2xl shadow-xl overflow-hidden"
+        styles={{ body: { padding: 0 } }}
+      >
+        <Table 
+          columns={columns} 
+          dataSource={jobs} 
+          rowKey="_id"
+          loading={loading}
+          pagination={{
+            total: total,
+            current: params.page,
+            pageSize: params.limit,
+            onChange: (page) => setParams({ ...params, page }),
+            showTotal: (total) => <span className="text-zinc-500">{total} jobs total</span>,
+            className: "admin-pagination px-4"
+          }}
+          className="admin-table-dark"
+        />
+      </Card>
     </div>
   );
 };

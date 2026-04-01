@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>FresherHub – Welcome to Your Future</title>
+  <title>Tools and Job – Welcome to Your Future</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
     rel="stylesheet">
@@ -12,41 +12,44 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
   <style>
     :root {
-      --bg: #0b0b14;
-      --card: #181824;
-      --border: #2a2a42;
-      --purple: #6d28d9;
-      --purple-light: #8b5cf6;
-      --orange: #f97316;
-      --orange-light: #fb923c;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
+      --bg: #09090b;
+      --card: #0c0c0e;
+      --border: #1d1d21;
+      --violet: #8b5cf6;
+      --violet-hover: #7c3aed;
+      --zinc-400: #a1a1aa;
+      --zinc-500: #71717a;
+      --tp: #ffffff;
+      --ts: #71717a;
     }
 
     body {
       background-color: var(--bg);
-      color: var(--text-main);
+      color: var(--tp);
       font-family: 'Inter', sans-serif;
       min-height: 100vh;
       overflow-x: hidden;
-      background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-      background-size: 60px 60px;
-      background-position: center top;
+      position: relative;
+      background-image: radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.05), transparent 50%);
     }
+
+    /* Ambient Glows */
+    .glow-1 { position: absolute; top: -10%; left: -10%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(139, 92, 246, 0.08), transparent 70%); border-radius: 50%; z-index: -1; filter: blur(60px); pointer-events: none; }
+    .glow-2 { position: absolute; top: 20%; right: -5%; width: 500px; height: 500px; background: radial-gradient(circle, rgba(139, 92, 246, 0.04), transparent 70%); border-radius: 50%; z-index: -1; filter: blur(60px); pointer-events: none; }
 
     /* Navbar */
     .navbar-wrapper {
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      background: rgba(11, 11, 20, 0.8);
-      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      background: rgba(9, 9, 11, 0.8);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       position: sticky;
       top: 0;
       z-index: 1000;
     }
 
     .navbar-custom {
-      padding: 22px 0;
+      padding: 18px 0;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -57,91 +60,101 @@
       align-items: center;
       gap: 12px;
       text-decoration: none;
+      transition: 0.3s;
     }
 
     .logo-icon {
-      width: 36px;
-      height: 36px;
-      background: #5b21b6;
-      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      background: var(--violet);
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
       color: #fff;
-      font-weight: 800;
-      font-size: 1.1rem;
-      box-shadow: 0 0 15px rgba(91, 33, 182, 0.6);
+      font-weight: 900;
+      font-size: 1.2rem;
+      transform: rotate(-3deg);
+      box-shadow: 0 8px 16px rgba(139, 92, 246, 0.3);
     }
+    .logo-box:hover { transform: scale(1.05); }
 
     .logo-text {
-      font-weight: 700;
-      font-size: 1.35rem;
+      font-weight: 800;
+      font-size: 1.5rem;
       color: #fff;
-      letter-spacing: -0.5px;
+      letter-spacing: -0.8px;
     }
 
     .logo-text span {
-      color: #8b5cf6;
+      color: var(--violet);
     }
 
     .nav-pill {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 40px;
-      padding: 6px 8px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 4px;
       display: flex;
-      gap: 5px;
+      gap: 4px;
     }
 
     .nav-pill a {
-      color: #a1a1aa;
+      color: var(--zinc-500);
       text-decoration: none;
-      font-size: 0.88rem;
-      font-weight: 500;
+      font-size: 0.85rem;
+      font-weight: 600;
       padding: 8px 20px;
-      border-radius: 30px;
-      transition: 0.3s;
+      border-radius: 12px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .nav-pill a:hover,
+    .nav-pill a:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+    }
     .nav-pill a.active {
       color: #fff;
-      background: rgba(255, 255, 255, 0.08);
+      background: var(--violet);
+      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
     }
 
     .auth-btns {
       display: flex;
       align-items: center;
-      gap: 25px;
+      gap: 24px;
     }
 
     .btn-login {
-      color: #fff;
+      color: var(--zinc-400);
       text-decoration: none;
-      font-weight: 600;
-      font-size: 0.95rem;
+      font-weight: 700;
+      font-size: 0.9rem;
       transition: 0.3s;
     }
 
     .btn-login:hover {
-      color: var(--text-muted);
+      color: #fff;
     }
 
     .btn-signup {
-      background: linear-gradient(135deg, #f97316, #fb923c);
-      color: #000;
+      background: var(--violet);
+      color: #fff;
       padding: 10px 24px;
-      border-radius: 30px;
+      border-radius: 12px;
       text-decoration: none;
-      font-weight: 800;
-      font-size: 0.95rem;
+      font-weight: 700;
+      font-size: 0.9rem;
       transition: 0.3s;
       border: none;
+      box-shadow: 0 4px 0 0 #6d28d9;
     }
 
     .btn-signup:hover {
-      box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3);
-      color: #000;
+      background: var(--violet-hover);
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(139, 92, 246, 0.3);
     }
 
     /* ------------------- HERO ------------------- */
@@ -800,7 +813,7 @@
     }
 
     .badge-purple-star i {
-      color: #f97316;
+      color: var(--violet);
       font-size: 0.9rem;
     }
 
@@ -1026,8 +1039,8 @@
     }
 
     .pricer.pro {
-      border-color: rgba(249, 115, 22, 0.5);
-      background: linear-gradient(180deg, rgba(249, 115, 22, 0.05), var(--card));
+      border-color: rgba(139, 92, 246, 0.5);
+      background: linear-gradient(180deg, rgba(139, 92, 246, 0.05), var(--card));
       transform: scale(1.05);
       z-index: 2;
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
@@ -1038,7 +1051,7 @@
       top: -14px;
       left: 50%;
       transform: translateX(-50%);
-      background: linear-gradient(90deg, #f97316, #ea580c);
+      background: var(--violet);
       color: #fff;
       font-size: 0.75rem;
       font-weight: 800;
@@ -1330,8 +1343,8 @@
     <div class="container">
       <nav class="navbar-custom">
         <a href="index.html" class="logo-box">
-          <div class="logo-icon">F</div>
-          <div class="logo-text">Fresher<span>Hub</span></div>
+          <div class="logo-icon">T</div>
+          <div class="logo-text">Tools<span>&Job</span></div>
         </a>
 
         <div class="nav-pill d-none d-lg-flex">
@@ -1357,15 +1370,15 @@
         <div class="col-lg-6">
           <div class="badge-plate">
             <div class="badge-dot"></div>
-            <span class="badge-text">#1 PLATFORM FOR FRESHERS</span>
+            <span class="badge-text">#1 PROFESSIONAL JOB PORTAL</span>
           </div>
           <h1 class="hero-title">
             Launch Your<br>
-            <span class="gradient-text-orange">IT Career</span><br>
+            <span style="background: linear-gradient(90deg, var(--violet), #d8b4fe); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">IT Career</span><br>
             with Confidence
           </h1>
           <p class="hero-desc">
-            Access premium entry-level opportunities at top tech companies. Curated specifically for India's next
+            Access premium career opportunities at top global companies. Curated specifically for the next
             generation of developers.
           </p>
 
@@ -1427,15 +1440,15 @@
             <!-- Third Floating Card: Skill Verified -->
             <div class="card-skill">
               <div class="sk-head">
-                <div class="icon-box-orange"><i class="bi bi-code-slash"></i></div>
+                <div class="icon-box-purple"><i class="bi bi-code-slash"></i></div>
                 <div class="skill-title">Skill Verified</div>
               </div>
               <div class="sk-bar-bg">
-                <div class="sk-bar-fill"></div>
+                <div class="sk-bar-fill" style="background: var(--violet); box-shadow: 0 0 10px rgba(139, 92, 246, 0.4);"></div>
               </div>
               <div class="sk-lbls">
                 <span>React.js</span>
-                <span style="color:#f97316">90%</span>
+                <span style="color:var(--violet)">90%</span>
               </div>
             </div>
           </div>
@@ -1537,7 +1550,7 @@
             <i class="bi bi-star-fill"></i>
             <span>PREMIUM EMPLOYER FEATURE</span>
           </div>
-          <h2 class="feat-title">Unlock <span class="gradient-text-coral">Elite Tech</span><br>Talent</h2>
+          <h2 class="feat-title">Unlock <span style="background: linear-gradient(90deg, var(--violet), #d8b4fe); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">Elite Tech</span><br>Talent</h2>
           <p class="feat-sub" style="margin-bottom:40px; text-align: left;">Stop sifting through hundreds of
             applications. Access verified fresher candidates who have been shortlisted by top tech companies.</p>
 
@@ -1563,7 +1576,7 @@
             <div class="emp-glow"></div>
             <div class="restricted-card">
               <div class="emp-badge-tr">Top 1% Talent</div>
-              <div class="emp-badge-bl">Verified</div>
+              <div class="emp-badge-bl" style="background: var(--violet); color: #fff; box-shadow: 0 15px 30px rgba(139, 92, 246, 0.3);">Verified</div>
 
               <div class="emp-skel-head">
                 <div class="emp-skel-cir"></div>
@@ -1669,11 +1682,11 @@
       <div class="row g-5">
         <div class="col-lg-4 col-md-6">
           <div class="logo-box mb-4">
-            <div class="logo-icon">F</div>
-            <div class="logo-text">Fresher<span>Hub</span></div>
+            <div class="logo-icon">T</div>
+            <div class="logo-text">Tools<span>&Job</span></div>
           </div>
-          <p style="color:#94a3b8; font-size:0.95rem; line-height:1.6; margin-bottom:25px;">Connecting India's brightest
-            fresh talent with top IT companies. We bridge the gap between education and premium tech careers.</p>
+          <p style="color:#94a3b8; font-size:0.95rem; line-height:1.6; margin-bottom:25px;">Connecting the world's brightest
+            talent with top professional opportunities. We bridge the gap between passion and premium careers.</p>
           <div class="d-flex gap-3">
             <a class="btn-sh" href="#"><i class="bi bi-linkedin"></i></a>
             <a class="btn-sh" href="#"><i class="bi bi-twitter-x"></i></a>
@@ -1707,12 +1720,12 @@
           <div class="fci"><i class="bi bi-geo-alt-fill"></i><span>Sai Complex, Temple Road,<br>Shirdi, Maharashtra –
               423109</span></div>
           <div class="fci"><i class="bi bi-telephone-fill"></i><span>+91 80 1234 5678</span></div>
-          <div class="fci"><i class="bi bi-envelope-fill"></i><span>support@fresherhub.in</span></div>
+          <div class="fci"><i class="bi bi-envelope-fill"></i><span>support@toolsandjob.com</span></div>
         </div>
       </div>
 
       <div class="fbot">
-        <p>© 2024 FresherHub Global. All rights reserved.</p>
+        <p>© 2026 Tools and Job Global. All rights reserved.</p>
         <div class="d-flex gap-4">
           <a href="#">Privacy Policy</a>
           <a href="#">Terms of Service</a>

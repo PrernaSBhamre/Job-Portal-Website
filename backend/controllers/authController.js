@@ -1,5 +1,7 @@
 const User = require('../models/User');
 const generateToken = require('../utils/generateToken');
+const sendEmail = require('../utils/sendEmail');
+const mockSMS = require('../utils/mockSMS');
 
 // @desc    Register a new user
 // @route   POST /api/auth/register
@@ -21,15 +23,19 @@ const registerUser = async (req, res, next) => {
       phoneNumber,
       password,
       role,
+      isVerified: true // Auto-verify on signup
     });
 
     if (user) {
       res.status(201).json({
-        _id: user._id,
-        fullname: user.fullname,
-        email: user.email,
-        role: user.role,
-        token: generateToken(user._id),
+        success: true,
+        message: 'Account created successfully! You can now login.',
+        user: {
+            _id: user._id,
+            fullname: user.fullname,
+            email: user.email,
+            role: user.role
+        }
       });
     } else {
       res.status(400);
@@ -40,6 +46,7 @@ const registerUser = async (req, res, next) => {
   }
 };
 
+// @desc    Verify OTP
 const Admin = require('../models/Admin');
 
 // @desc    Authenticate a user
@@ -76,6 +83,7 @@ const loginUser = async (req, res, next) => {
     const user = await User.findOne({ email });
 
     if (user && (await user.matchPassword(password))) {
+      // isVerified check removed for streamlined experience (as requested)
       console.log(`User ${user.role} login success: ${email}`);
       res.json({
         _id: user._id,
@@ -155,13 +163,45 @@ const forgotPassword = async (req, res, next) => {
     const resetToken = user.getResetPasswordToken();
     await user.save({ validateBeforeSave: false });
 
-    // In a production environment with SMTP, this would be routed via nodemailer.
-    // Here, we simulate the email receipt by passing it in the JSON for the frontend to digest.
-    res.status(200).json({
-      success: true,
-      message: 'Token generated successfully. Check the console or use the direct link to reset your password.',
-      resetToken
-    });
+    // Create reset URL
+    const resetUrl = `${req.protocol}://${req.get('host')}/pages/auth/reset-password.html?token=${resetToken}`;
+
+    const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please click the link below to complete the process:\n\n${resetUrl}`;
+
+    try {
+      await sendEmail({
+        email: user.email,
+        subject: 'Tools and Job - Password Reset Request',
+        message,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px;">
+            <h2 style="color: #6d28d9; text-align: center;">Tools and Job</h2>
+            <p>Hello ${user.fullname},</p>
+            <p>You requested a password reset for your Tools and Job account. Click the button below to set a new password:</p>
+            <div style="text-align: center; margin: 30px 0;">
+              <a href="${resetUrl}" style="background-color: #6d28d9; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold;">Reset Password</a>
+            </div>
+            <p>If you did not request this, please ignore this email.</p>
+            <p>This link will expire in 10 minutes.</p>
+            <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+            <p style="font-size: 0.8rem; color: #777; text-align: center;">© 2026 Tools and Job Global. All rights reserved.</p>
+          </div>
+        `
+      });
+
+      res.status(200).json({
+        success: true,
+        message: 'A password reset link has been sent to your email.'
+      });
+    } catch (err) {
+      console.log(err);
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpire = undefined;
+      await user.save({ validateBeforeSave: false });
+
+      res.status(500);
+      throw new Error('Email could not be sent. Please try again later.');
+    }
 
   } catch (error) {
     next(error);

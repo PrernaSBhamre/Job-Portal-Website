@@ -25,7 +25,8 @@ const provisionAdmin = async () => {
             await Admin.create({
                 email: 'admin@gmail.com',
                 password: 'admin@31',
-                role: 'admin'
+                role: 'admin',
+                fullname: 'Tools & Jobs Admin'
             });
             console.log('Fixed Admin Credential Provisioned in Dedicated Admin Table.');
         }
@@ -39,7 +40,13 @@ connectDB().then(() => {
 
 // --- Middleware ---
 // Enable CORS to allow requests from the frontend
-app.use(cors());
+// Enable Permissive CORS to allow requests from the frontend and admin portal
+app.use(cors({
+    origin: true, // Dynamically allow the requester's origin
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+}));
 
 // Serve Static Uploads
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -61,6 +68,7 @@ const applicationRoutes = require('./routes/applicationRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const savedJobRoutes = require('./routes/savedJobRoutes');
 const resourceRoutes = require('./routes/resourceRoutes');
+const recruiterRoutes = require('./routes/recruiterRoutes');
 
 // --- Mount Routes ---
 app.use('/api/auth', authRoutes);
@@ -71,6 +79,7 @@ app.use('/api/applications', applicationRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/saved-jobs', savedJobRoutes);
 app.use('/api/resources', resourceRoutes);
+app.use('/api/recruiter', recruiterRoutes);
 
 // --- Basic Route ---
 // Serve the main frontend index.html

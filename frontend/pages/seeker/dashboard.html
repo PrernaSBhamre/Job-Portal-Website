@@ -3,119 +3,209 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>My Profile – FresherHub</title>
+  <title>My Dashboard | Tools and Job</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #0b0b14;
-      --card: #181824;
-      --border: #2a2a42;
-      --purple: #6d28d9;
-      --purple-light: #8b5cf6;
-      --orange: #f97316;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-    }
+    <style>
+        :root {
+            --bg: #09090b;
+            --card: #0c0c0e;
+            --border: #1d1d21;
+            --violet: #8b5cf6;
+            --violet-hover: #7c3aed;
+            --zinc-400: #a1a1aa;
+            --zinc-500: #71717a;
+            --tp: #ffffff;
+            --ts: #71717a;
+        }
 
-    body {
-      background-color: var(--bg);
-      color: var(--text-main);
-      font-family: 'Inter', sans-serif;
-      min-height: 100vh;
-      background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-      background-size: 60px 60px;
-      background-position: center top;
-    }
+        body {
+            background-color: var(--bg);
+            color: var(--tp);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            background-image: radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.05), transparent 50%);
+        }
 
-    /* Navbar styling */
-    .navbar-wrapper {
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      background: rgba(11, 11, 20, 0.8);
-      backdrop-filter: blur(12px);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-    .navbar-custom { padding: 22px 0; display: flex; align-items: center; justify-content: space-between; }
-    .logo-box { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-    .logo-icon { width: 36px; height: 36px; background: #5b21b6; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 1.1rem; font-family: 'Inter', sans-serif; box-shadow: 0 0 15px rgba(91, 33, 182, 0.6); }
-    .logo-text { font-family: 'Inter', sans-serif; font-weight: 800; font-size: 1.35rem; color: #fff; letter-spacing: -0.5px; }
-    .logo-text span { color: #8b5cf6; }
-    .nav-pill { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 40px; padding: 6px 8px; display: flex; gap: 5px; }
-    .nav-pill a { color: #a1a1aa; text-decoration: none; font-size: 0.88rem; font-weight: 500; padding: 8px 20px; border-radius: 30px; transition: 0.3s; }
-    .nav-pill a:hover, .nav-pill a.active { color: #fff; background: rgba(255, 255, 255, 0.08); }
-    .auth-btns { display: flex; align-items: center; gap: 25px; }
+        /* Deep Ambient Glows */
+        .glow-1 { position: absolute; top: -10%; left: -10%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(139, 92, 246, 0.06), transparent 70%); border-radius: 50%; z-index: -1; filter: blur(60px); pointer-events: none; }
+        .glow-2 { position: absolute; bottom: 10%; right: -5%; width: 500px; height: 500px; background: radial-gradient(circle, rgba(139, 92, 246, 0.04), transparent 70%); border-radius: 50%; z-index: -1; filter: blur(60px); pointer-events: none; }
 
-    .dashboard-container { padding: 50px 0; }
-    .panel { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 30px; margin-bottom: 30px; }
-    .panel-title { font-family: 'Inter', sans-serif; font-weight: 800; font-size: 1.5rem; margin-bottom: 20px; color: #fff; }
+        /* Navbar styling */
+        .navbar-wrapper {
+            border-bottom: 1px solid var(--border);
+            background: rgba(9, 9, 11, 0.8);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .navbar-custom { padding: 18px 0; display: flex; align-items: center; justify-content: space-between; }
+        
+        .logo-box { display: flex; align-items: center; gap: 12px; text-decoration: none; transition: 0.3s; }
+        .logo-icon { 
+            width: 40px; height: 40px; 
+            background: var(--violet); 
+            border-radius: 12px; 
+            display: flex; align-items: center; justify-content: center; 
+            color: #fff; font-weight: 900; font-size: 1.2rem; 
+            transform: rotate(-3deg);
+            box-shadow: 0 8px 16px rgba(139, 92, 246, 0.3);
+        }
+        .logo-box:hover { transform: scale(1.05); }
+        .logo-text { font-weight: 800; font-size: 1.5rem; color: #fff; letter-spacing: -0.8px; }
+        .logo-text span { color: var(--violet); }
 
-    .nav-tabs { border-bottom: 1px solid var(--border); margin-bottom: 25px; }
-    .nav-tabs .nav-link { color: var(--text-muted); border: none; font-weight: 600; padding: 12px 25px; border-bottom: 2px solid transparent; cursor: pointer; }
-    .nav-tabs .nav-link.active { color: var(--purple-light); background: transparent; border-bottom: 2px solid var(--purple-light); }
+        .nav-pill { 
+            background: rgba(255, 255, 255, 0.03); 
+            border: 1px solid var(--border); 
+            border-radius: 16px; 
+            padding: 4px; 
+            display: flex; gap: 4px; 
+        }
+        .nav-pill a { 
+            color: var(--zinc-500); 
+            text-decoration: none; 
+            font-size: 0.85rem; 
+            font-weight: 600; 
+            padding: 8px 20px; 
+            border-radius: 12px; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+        }
+        .nav-pill a:hover { color: #fff; background: rgba(255, 255, 255, 0.05); }
+        .nav-pill a.active { color: #fff; background: var(--violet); box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2); }
 
-    .form-group label { font-weight: 600; color: var(--text-muted); margin-bottom: 8px; display: block; font-size: 0.9rem; }
-    .form-control { background: rgba(0,0,0,0.2) !important; border: 1px solid var(--border) !important; color: white !important; border-radius: 10px; padding: 12px 15px; }
-    .form-control:focus { border-color: var(--purple-light) !important; box-shadow: 0 0 0 0.25rem rgba(139, 92, 246, 0.25) !important; }
-    .btn-submit { background: linear-gradient(135deg, var(--purple), var(--purple-light)); color: white; border: none; padding: 12px 30px; border-radius: 10px; font-weight: 600; transition: 0.3s; margin-top: 15px; }
-    .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(109, 40, 217, 0.3); }
+        .dashboard-container { padding: 60px 0; position: relative; z-index: 10; }
+        
+        .panel { 
+            background: var(--card); 
+            border: 1px solid var(--border); 
+            border-radius: 24px; 
+            padding: 45px; 
+            margin-bottom: 30px; 
+            box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.5);
+            animation: panelFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
 
-    .app-card { background: rgba(0,0,0,0.2); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
-    .app-title { font-weight: 700; font-size: 1.1rem; margin-bottom: 4px; }
-    .app-co { font-size: 0.9rem; color: var(--text-muted); }
-    .app-status { font-size: 0.85rem; font-weight: 700; padding: 6px 12px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
-    .status-pending { background: rgba(249, 115, 22, 0.1); color: var(--orange); border: 1px solid rgba(249, 115, 22, 0.3); }
-    .status-reviewed { background: rgba(59, 130, 246, 0.1); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.3); }
-    .status-accepted { background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
-    .status-rejected { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
+        @keyframes panelFadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
 
-    /* Mock File Upload box */
-    .file-drop {
-        border: 2px dashed rgba(255,255,255,0.15);
-        border-radius: 15px;
-        padding: 30px;
-        text-align: center;
-        background: rgba(0,0,0,0.2);
-        cursor: pointer;
-        transition: 0.3s;
-    }
-    .file-drop:hover { border-color: var(--purple-light); background: rgba(139, 92, 246, 0.05); }
-    .current-resume {
-        margin-top: 15px;
-        padding: 15px;
-        background: rgba(16, 185, 129, 0.1);
-        border: 1px solid rgba(16, 185, 129, 0.2);
-        border-radius: 10px;
-        color: #10b981;
-        display: none;
-        align-items: center;
-        gap: 10px;
-    }
-  </style>
+        .panel-title { font-weight: 800; font-size: 1.8rem; margin-bottom: 30px; color: #fff; letter-spacing: -0.5px; }
+
+        .nav-tabs { border-bottom: 1px solid var(--border); margin-bottom: 40px; gap: 30px; }
+        .nav-tabs .nav-link { 
+            background: none; border: none; color: var(--zinc-500); 
+            font-weight: 700; padding: 12px 0; 
+            border-bottom: 2px solid transparent; 
+            cursor: pointer; transition: 0.3s;
+            font-size: 0.95rem;
+        }
+        .nav-tabs .nav-link:hover { color: var(--tp); }
+        .nav-tabs .nav-link.active { color: var(--violet); border-bottom-color: var(--violet); }
+
+        .form-group label { font-size: 0.75rem; font-weight: 700; color: var(--zinc-500); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; display: block; }
+        .form-control { 
+            background: #09090b !important; 
+            border: 1px solid var(--border) !important; 
+            color: white !important; 
+            border-radius: 12px; 
+            padding: 14px 16px; 
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .form-control:focus { 
+            border-color: var(--violet) !important; 
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1) !important; 
+            background: #111113 !important;
+            transform: translateY(-2px);
+        }
+        .form-control::placeholder { color: #3f3f46; }
+
+        .btn-submit { 
+            background: var(--violet); 
+            color: white; 
+            border: none; 
+            padding: 16px 40px; 
+            border-radius: 14px; 
+            font-weight: 700; 
+            transition: all 0.3s; 
+            box-shadow: 0 4px 0 0 #6d28d9;
+        }
+        .btn-submit:hover { 
+            background: var(--violet-hover);
+            transform: translateY(-2px); 
+            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3); 
+        }
+        .btn-submit:active { transform: translateY(2px); box-shadow: 0 0 0 0 #6d28d9; }
+
+        /* Application Cards */
+        .app-card { 
+            background: rgba(255, 255, 255, 0.02); 
+            border: 1px solid var(--border); 
+            border-radius: 16px; 
+            padding: 24px; 
+            margin-bottom: 16px; 
+            display: flex; justify-content: space-between; align-items: center; 
+            transition: 0.3s;
+        }
+        .app-card:hover { border-color: var(--violet); background: rgba(255,255,255,0.04); transform: translateX(5px); }
+        .app-main { display: flex; align-items: center; gap: 18px; }
+        .app-icon { width: 44px; height: 44px; background: rgba(255, 255, 255, 0.04); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--violet); font-size: 1.2rem; }
+        .app-title { font-weight: 700; font-size: 1.1rem; margin-bottom: 2px; color: #fff; }
+        .app-co { font-size: 0.85rem; color: var(--zinc-500); font-weight: 500; }
+        
+        .app-status { font-size: 0.7rem; font-weight: 800; padding: 6px 14px; border-radius: 30px; text-transform: uppercase; letter-spacing: 1px; }
+        .status-pending { background: rgba(249, 115, 22, 0.1); color: #f97316; border: 1px solid rgba(249, 115, 22, 0.2); }
+        .status-reviewed { background: rgba(139, 92, 246, 0.1); color: var(--violet); border: 1px solid rgba(139, 92, 246, 0.2); }
+        .status-accepted { background: rgba(34, 197, 94, 0.1); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.2); }
+        .status-rejected { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); }
+
+        .current-resume {
+            margin-top: 20px; padding: 20px;
+            background: rgba(34, 197, 94, 0.05);
+            border: 1px solid rgba(34, 197, 94, 0.1);
+            border-radius: 16px;
+            color: #22c55e;
+            display: none; align-items: center; gap: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .panel { padding: 30px 20px; }
+            .navbar-custom { padding: 15px 0; }
+            .nav-tabs { overflow-x: auto; white-space: nowrap; gap: 20px; scrollbar-width: none; }
+        }
+    </style>
 </head>
 <body>
+
+  <div class="glow-1"></div>
+  <div class="glow-2"></div>
 
   <!-- Navbar -->
   <div class="navbar-wrapper">
     <div class="container">
       <nav class="navbar-custom">
         <a href="../../index.html" class="logo-box">
-          <div class="logo-icon">F</div>
-          <div class="logo-text">Fresher<span>Hub</span></div>
+          <div class="logo-icon">T</div>
+          <div class="logo-text">Tools<span>&Job</span></div>
         </a>
         <div class="nav-pill d-none d-md-flex">
           <a href="../../index.html">Home</a>
           <a href="../jobs/jobs.html">Find Jobs</a>
           <a href="../services/services.html">Services</a>
           <a href="../resources/resources.html">Resources</a>
-          <a href="#" class="active mt-1 text-purple-light">My Profile</a>
+          <a href="#" class="active">My Profile</a>
         </div>
-        <div class="auth-btns">
-          <!-- Auth logic will populate this -->
+        <div class="auth-btns" id="navbarAuth">
+          <!-- Auth logic populates this -->
         </div>
       </nav>
     </div>
@@ -132,89 +222,98 @@
       </ul>
 
       <div id="profileTab" class="panel">
-          <h2 class="panel-title">Update Profile</h2>
+          <h2 class="panel-title">Personal Identity</h2>
           <form id="profileForm">
               <div class="row">
-                  <div class="col-md-6 mb-3 form-group">
-                      <label>Full Name</label>
-                      <input type="text" id="pName" class="form-control" required>
+                  <div class="col-md-6 mb-4 form-group">
+                      <label>Full Legal Name</label>
+                      <div class="position-relative">
+                        <input type="text" id="pName" class="form-control" placeholder="Johnathan Doe" required>
+                      </div>
                   </div>
-                  <div class="col-md-6 mb-3 form-group">
-                      <label>Phone Number</label>
-                      <input type="text" id="pPhone" class="form-control" required>
-                  </div>
-                  <div class="col-md-12 mb-3 form-group">
-                      <label>Bio / Summary</label>
-                      <textarea id="pBio" class="form-control" rows="3" placeholder="Tell recruiters about yourself..."></textarea>
+                  <div class="col-md-6 mb-4 form-group">
+                      <label>Contact Number</label>
+                      <input type="text" id="pPhone" class="form-control" placeholder="+91 98765 43210" required>
                   </div>
                   <div class="col-md-12 mb-4 form-group">
-                      <label>Skills (Comma separated)</label>
-                      <input type="text" id="pSkills" class="form-control" placeholder="React, Node.js, Python">
+                      <label>Professional Bio</label>
+                      <textarea id="pBio" class="form-control" rows="4" placeholder="Craft a compelling narrative for recruiters..."></textarea>
+                  </div>
+                  <div class="col-md-12 mb-4 form-group">
+                      <label>Core Technical Skills</label>
+                      <input type="text" id="pSkills" class="form-control" placeholder="e.g. React, Node.js, AWS Cloud, Python">
                   </div>
               </div>
 
-              <h4 class="mb-3 mt-4 text-white">Social Links & Preferences</h4>
+              <h4 class="mb-4 mt-4 text-white" style="font-weight:700;">Digital Presence</h4>
               <div class="row">
-                  <div class="col-md-4 mb-3 form-group">
-                      <label>LinkedIn URL</label>
+                  <div class="col-md-4 mb-4 form-group">
+                      <label>LinkedIn Portal</label>
                       <input type="url" id="pLinkedIn" class="form-control" placeholder="https://linkedin.com/in/...">
                   </div>
-                  <div class="col-md-4 mb-3 form-group">
-                      <label>GitHub URL</label>
+                  <div class="col-md-4 mb-4 form-group">
+                      <label>GitHub Repository</label>
                       <input type="url" id="pGithub" class="form-control" placeholder="https://github.com/...">
                   </div>
-                  <div class="col-md-4 mb-3 form-group">
-                      <label>Portfolio URL</label>
-                      <input type="url" id="pPortfolio" class="form-control" placeholder="https://mywebsite.com">
+                  <div class="col-md-4 mb-4 form-group">
+                      <label>Portfolio Showcase</label>
+                      <input type="url" id="pPortfolio" class="form-control" placeholder="https://personalbrand.com">
                   </div>
-                  <div class="col-md-6 mb-3 form-group">
-                      <label>Expected Salary (LPA)</label>
-                      <input type="text" id="pSalary" class="form-control" placeholder="e.g., 5-8 LPA">
+                  <div class="col-md-6 mb-4 form-group">
+                      <label>Target Compensation (LPA)</label>
+                      <input type="text" id="pSalary" class="form-control" placeholder="e.g. 12-15 LPA">
                   </div>
-                  <div class="col-md-6 mb-3 form-group d-flex align-items-center">
-                      <input type="checkbox" id="pRelocate" class="form-check-input me-2" style="width:20px;height:20px;margin-top:0;background:rgba(0,0,0,0.2);border:1px solid var(--border);">
-                      <label class="mb-0 text-white" style="cursor:pointer;" for="pRelocate">Willing to Relocate</label>
-                  </div>
-              </div>
-
-              <h4 class="mb-3 mt-4 text-white">Upload Resume</h4>
-              <div class="form-group mb-4">
-                  <!-- Instead of actual file upload handling which requires Multer, we supply a URL entry + mock drop target for frontend UX -->
-                  <label>Resume Link (Google Drive / Portfolio URL)</label>
-                  <input type="url" id="pResume" class="form-control" placeholder="https://drive.google.com/...">
-                  
-                  <div id="currentResumeBox" class="current-resume">
-                      <i class="bi bi-file-earmark-check-fill fs-5"></i>
-                      <div>
-                          <div class="fw-bold fs-6">Resume Attached</div>
-                          <a href="#" id="currentResumeLink" target="_blank" style="color: #10b981; font-size: 0.85rem;">View Document</a>
+                  <div class="col-md-6 mb-4 form-group d-flex align-items-center">
+                      <div class="form-check form-switch p-0 d-flex align-items-center gap-3">
+                          <input type="checkbox" id="pRelocate" class="form-check-input ms-0" style="width:40px; height:20px; cursor:pointer;">
+                          <label class="mb-0 text-white" style="cursor:pointer; text-transform:none; letter-spacing:0;" for="pRelocate">Open to Global Relocation</label>
                       </div>
                   </div>
               </div>
 
-              <h4 class="mb-3 mt-4 text-white">Latest Experience</h4>
-              <div class="row">
-                  <div class="col-md-6 mb-3 form-group"><label>Company</label><input type="text" id="pExpCompany" class="form-control" placeholder="Google"></div>
-                  <div class="col-md-6 mb-3 form-group"><label>Title</label><input type="text" id="pExpTitle" class="form-control" placeholder="Software Engineer"></div>
-                  <div class="col-md-6 mb-3 form-group"><label>Start Date</label><input type="month" id="pExpStart" class="form-control"></div>
-                  <div class="col-md-6 mb-3 form-group"><label>End Date</label><input type="month" id="pExpEnd" class="form-control"></div>
+              <h4 class="mb-4 mt-4 text-white" style="font-weight:700;">Resume Artifact</h4>
+              <div class="form-group mb-4">
+                  <label>Document Hosting Link (Drive/Dropbox)</label>
+                  <input type="url" id="pResume" class="form-control" placeholder="https://drive.google.com/file/...">
+                  
+                  <div id="currentResumeBox" class="current-resume">
+                      <i class="bi bi-file-earmark-check-fill fs-4"></i>
+                      <div>
+                          <div style="font-weight: 800; font-size: 0.95rem;">Master Resume Synced</div>
+                          <a href="#" id="currentResumeLink" target="_blank" style="color: #22c55e; font-size: 0.8rem; font-weight: 700; text-decoration: underline;">Open Document</a>
+                      </div>
+                  </div>
               </div>
 
-              <h4 class="mb-3 mt-4 text-white">Primary Education</h4>
+              <h4 class="mb-4 mt-4 text-white" style="font-weight:700;">Career Trajectory</h4>
               <div class="row">
-                  <div class="col-md-6 mb-3 form-group"><label>Institution</label><input type="text" id="pEduInst" class="form-control" placeholder="MIT"></div>
-                  <div class="col-md-6 mb-3 form-group"><label>Degree</label><input type="text" id="pEduDegree" class="form-control" placeholder="B.Tech Computer Science"></div>
-                  <div class="col-md-6 mb-3 form-group"><label>Passing Year</label><input type="number" id="pEduYear" class="form-control" placeholder="2024"></div>
-                  <div class="col-md-6 mb-3 form-group"><label>Grade / CGPA</label><input type="text" id="pEduGrade" class="form-control" placeholder="9.5"></div>
+                  <div class="col-md-6 mb-4 form-group"><label>Last Organization</label><input type="text" id="pExpCompany" class="form-control" placeholder="e.g. Google India"></div>
+                  <div class="col-md-6 mb-4 form-group"><label>Designation</label><input type="text" id="pExpTitle" class="form-control" placeholder="Software Architect"></div>
+                  <div class="col-md-6 mb-4 form-group"><label>Service Start</label><input type="month" id="pExpStart" class="form-control"></div>
+                  <div class="col-md-6 mb-4 form-group"><label>Service End</label><input type="month" id="pExpEnd" class="form-control"></div>
               </div>
 
-              <button type="submit" class="btn-submit mt-4">Save Profile</button>
+              <h4 class="mb-4 mt-4 text-white" style="font-weight:700;">Educational Background</h4>
+              <div class="row">
+                  <div class="col-md-6 mb-4 form-group"><label>University / Institution</label><input type="text" id="pEduInst" class="form-control" placeholder="IIT Bombay"></div>
+                  <div class="col-md-6 mb-4 form-group"><label>Specialization</label><input type="text" id="pEduDegree" class="form-control" placeholder="B.Tech Artificial Intelligence"></div>
+                  <div class="col-md-6 mb-4 form-group"><label>Graduation Year</label><input type="number" id="pEduYear" class="form-control" placeholder="2025"></div>
+                  <div class="col-md-6 mb-4 form-group"><label>Performance Metric (GPA)</label><input type="text" id="pEduGrade" class="form-control" placeholder="9.8/10"></div>
+              </div>
+
+              <button type="submit" class="btn-submit mt-4" id="saveProfileBtn">Synchronize Credentials</button>
           </form>
       </div>
 
       <div id="applicationsTab" class="panel" style="display:none;">
-          <h2 class="panel-title">My Applied Jobs</h2>
-          <div id="myAppsList">Loading...</div>
+          <h2 class="panel-title">Applications Hub</h2>
+          <div id="myAppsList">
+            <!-- Dynamic Injection -->
+            <div class="text-center py-5">
+              <span class="spinner-border text-violet"></span>
+              <p class="mt-3 text-zinc-500">Retrieving active applications...</p>
+            </div>
+          </div>
       </div>
   </div>
 

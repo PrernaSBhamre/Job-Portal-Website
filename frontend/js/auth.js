@@ -48,16 +48,22 @@ document.addEventListener('DOMContentLoaded', () => {
         if (session.user.role === 'recruiter') dashboardUrl = `${base}employer/dashboard.html`;
         else if (session.user.role === 'admin') dashboardUrl = `http://localhost:5173`;
 
+        // Determine Settings URL
+        let settingsUrl = `${base}auth/settings.html`;
+        
         // User is logged in
         authDiv.innerHTML = `
-            <div class="user-profile" style="display: flex; align-items: center; gap: 15px;">
-                <a href="${dashboardUrl}" id="navProfileBtn" class="user-name" style="font-weight: 500; text-decoration: none; color: #fff;">
-                  <i class="bi bi-person-circle" style="font-size: 20px; color: #a78bfa; margin-right: 5px; vertical-align: middle;"></i>
+            <div class="user-profile" style="display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.03); padding: 4px 4px 4px 12px; border-radius: 30px; border: 1px solid var(--border);">
+                <a href="${dashboardUrl}" id="navProfileBtn" class="user-name" style="font-weight: 600; text-decoration: none; color: #fff; font-size: 0.9rem;">
+                  <i class="bi bi-person-circle" style="font-size: 18px; color: var(--violet); margin-right: 6px; vertical-align: middle;"></i>
                   ${escapeHTML(session.user.fullname)}
                 </a>
-                <button onclick="logout()" style="padding: 8px 15px; border-radius: 30px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.05); color: white; cursor: pointer; transition: 0.3s; font-family: 'Inter', sans-serif;">
-                  Logout
-                </button>
+                <div class="d-flex gap-2">
+                    <a href="${settingsUrl}" class="btn-settings" title="Account Settings" style="color: var(--zinc-500); transition: 0.3s; font-size: 1.1rem; display: flex; align-items: center;"><i class="bi bi-gear"></i></a>
+                    <button onclick="logout()" style="padding: 6px 16px; border-radius: 20px; background: var(--violet); border: none; color: white; cursor: pointer; transition: 0.3s; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 0.8rem;">
+                      Logout
+                    </button>
+                </div>
             </div>
         `;
     }
@@ -65,17 +71,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function logout() {
     clearSession();
-    // Redirect to home relative to current path
-    // Let's ensure it redirects properly based on standard path structure
-    let depth = window.location.pathname.split('/').length - 1;
-    let redirectUrl = '../../index.html';
+    // Redirect to home safely
+    let redirectUrl = '/'; // Defaults to root
     
-    // Simplistic handling, mostly for safety
-    if (window.location.pathname.includes('pages/auth/')) redirectUrl = '../../index.html';
-    else if (window.location.pathname.includes('pages/jobs/')) redirectUrl = '../../index.html';
-    else redirectUrl = 'index.html'; // root level
+    // Check path to ensure cross-directory compatibility
+    if (window.location.pathname.includes('/pages/')) {
+        redirectUrl = '../../index.html';
+    } else {
+        redirectUrl = 'index.html';
+    }
     
-    // Provide a neat experience
-    alert("Logged out successfully");
     window.location.href = redirectUrl;
 }

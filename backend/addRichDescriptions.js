@@ -6,7 +6,7 @@ dotenv.config();
 
 const connectDB = async () => {
     try {
-        await mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/jobportal');
+        await mongoose.connect(process.env.MONGO_URI);
         console.log('MongoDB Connected for Rich Data Synthesis...');
     } catch (err) {
         console.error(err);

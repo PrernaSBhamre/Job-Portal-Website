@@ -11,7 +11,7 @@ const Job = require('../models/Job');
 const Application = require('../models/Application');
 
 // Connect to DB locally
-mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/jobportal');
+mongoose.connect(process.env.MONGO_URI);
 
 const importData = async () => {
   try {

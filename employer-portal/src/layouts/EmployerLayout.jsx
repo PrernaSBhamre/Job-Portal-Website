@@ -27,7 +27,7 @@ const EmployerLayout = () => {
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    window.location.href = '/login.html';
+    window.location.href = 'http://localhost:5000/pages/auth/login.html';
   };
 
   const menuItems = [

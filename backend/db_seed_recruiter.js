@@ -8,7 +8,7 @@ dotenv.config();
 
 const seedRecruiter = async () => {
     try {
-        await mongoose.connect(process.env.MONGO_URI || 'mongodb+srv://Prerna:Prerna3110@jobportal.pg6wnnm.mongodb.net/jobportal');
+        await mongoose.connect(process.env.MONGO_URI);
         console.log('MongoDB Connected for Seeding...');
 
         // 1. Create Recruiter User

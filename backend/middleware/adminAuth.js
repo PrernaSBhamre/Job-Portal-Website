@@ -14,7 +14,7 @@ const adminProtect = async (req, res, next) => {
       token = req.headers.authorization.split(' ')[1];
 
       // Verify token
-      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'jobportal_secret_2024');
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
       // 1. Try finding in Admin model first (Dedicated Admin table)
       let user = await Admin.findById(decoded.id).select('-password');

@@ -5,6 +5,7 @@ const Company = require('../models/Company');
 const Support = require('../models/Support');
 const Resource = require('../models/Resource');
 const Admin = require('../models/Admin');
+const Setting = require('../models/Setting');
 
 // @desc    Get dashboard statistics with daily trends and detailed counts
 // @route   GET /api/admin/stats
@@ -486,6 +487,35 @@ const changeAdminPassword = async (req, res, next) => {
   }
 };
 
+// --- Settings Management ---
+
+// @desc    Get system settings
+// @route   GET /api/admin/settings
+const getSettings = async (req, res, next) => {
+  try {
+    const settings = await Setting.getSingleton();
+    res.json({ success: true, settings });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Update system settings
+// @route   PUT /api/admin/settings
+const updateSettings = async (req, res, next) => {
+  try {
+    const settings = await Setting.getSingleton();
+    Object.assign(settings, req.body);
+    settings.updatedAt = Date.now();
+    await settings.save();
+    res.json({ success: true, message: 'Settings updated successfully', settings });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+
 module.exports = {
   getDashboardStats,
   getAllUsers,
@@ -504,5 +534,7 @@ module.exports = {
   deleteResource,
   getAdminProfile,
   updateAdminProfile,
-  changeAdminPassword
+  changeAdminPassword,
+  getSettings,
+  updateSettings
 };

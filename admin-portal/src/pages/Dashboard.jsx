@@ -94,32 +94,42 @@ const Dashboard = () => {
     data: data?.trends || [],
     xField: '_id',
     yField: 'count',
-    smooth: true,
-    padding: 'auto',
-    areaStyle: () => ({
-      fill: `l(270) 0:#000000 0.5:#8b5cf6 1:#8b5cf6`,
-    }),
-    color: '#8b5cf6',
+    style: {
+      fill: 'linear-gradient(-90deg, #000000 0%, #8b5cf6 50%, #8b5cf6 100%)',
+      fillOpacity: 0.6,
+      lineWidth: 2,
+      stroke: '#8b5cf6',
+    },
+    axis: {
+      y: { labelFormatter: (v) => `${v}` },
+    },
   };
 
   const roleConfig = {
-    appendPadding: 10,
     data: data?.roleDistribution || [],
     angleField: 'value',
     colorField: 'type',
     radius: 0.8,
     innerRadius: 0.6,
     label: {
-      type: 'inner',
-      offset: '-50%',
-      content: '{value}',
+      text: (d) => `${d.value}`,
+      position: 'inside',
       style: {
-        textAlign: 'center',
         fontSize: 14,
-      },
+        fontWeight: 'bold',
+      }
     },
-    interactions: [{ type: 'element-active' }],
-    color: ['#8b5cf6', '#0ea5e9', '#10b981'],
+    legend: {
+      color: {
+        position: 'bottom',
+        layout: 'horizontal',
+      }
+    },
+    style: {
+      stroke: '#fff',
+      inset: 1,
+      radius: 10,
+    },
   };
 
   if (loading && !data) return <Skeleton active className="p-10" />;

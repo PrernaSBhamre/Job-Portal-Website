@@ -18,7 +18,9 @@ const {
   deleteResource,
   getAdminProfile,
   updateAdminProfile,
-  changeAdminPassword
+  changeAdminPassword,
+  getSettings,
+  updateSettings
 } = require('../controllers/adminController');
 const { adminProtect } = require('../middleware/adminAuth');
 
@@ -55,5 +57,9 @@ router.delete('/resources/:id', deleteResource);
 router.get('/profile', getAdminProfile);
 router.put('/profile', updateAdminProfile);
 router.put('/change-password', changeAdminPassword);
+
+// System Settings
+router.get('/settings', getSettings);
+router.put('/settings', updateSettings);
 
 module.exports = router;

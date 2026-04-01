@@ -3,7 +3,7 @@ require('dotenv').config();
 const Company = require('./models/Company');
 const User = require('./models/User');
 
-const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/jobportal"; // Add your local fallback if running offline
+const MONGO_URI = process.env.MONGO_URI;
 
 const companiesData = [
     { name: "TCS (Tata Consultancy Services)", location: "Mumbai, India", description: "Global leader in IT services, consulting, and business solutions with a large network of innovation and delivery centers.", website: "https://www.tcs.com" },

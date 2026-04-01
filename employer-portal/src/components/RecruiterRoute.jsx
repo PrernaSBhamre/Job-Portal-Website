@@ -9,7 +9,8 @@ const RecruiterRoute = () => {
   const location = useLocation();
 
   if (!token || !user) {
-    return <Navigate to="/login.html" replace state={{ from: location }} />;
+    window.location.href = 'http://localhost:5000/pages/auth/login.html';
+    return null;
   }
 
   if (user.role !== 'recruiter' && user.role !== 'admin') {
@@ -19,7 +20,7 @@ const RecruiterRoute = () => {
           status="403"
           title="403"
           subTitle="Sorry, only recruiters or admins can access this portal."
-          extra={<Button type="primary" onClick={() => window.location.href = '/'}>Back Home</Button>}
+          extra={<Button type="primary" onClick={() => window.location.href = 'http://localhost:5000/index.html'}>Back Home</Button>}
         />
       </div>
     );

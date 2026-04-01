@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Card, 
   Switch, 
@@ -11,7 +11,8 @@ import {
   Input, 
   Divider, 
   App,
-  Tooltip
+  Tooltip,
+  Skeleton
 } from 'antd';
 import { 
   SettingOutlined, 
@@ -24,6 +25,7 @@ import {
   BlockOutlined,
   ThunderboltOutlined
 } from '@ant-design/icons';
+import api from '../utils/api';
 
 const { Title, Text, Paragraph } = Typography;
 const { Option } = Select;
@@ -31,6 +33,7 @@ const { Option } = Select;
 const Settings = () => {
   const { notification } = App.useApp();
   const [loading, setLoading] = useState(false);
+  const [fetching, setFetching] = useState(true);
   const [settings, setSettings] = useState({
     maintenanceMode: false,
     autoVerifyEmployers: true,
@@ -42,22 +45,55 @@ const Settings = () => {
     adminEmail: 'admin@toolsjobs.com'
   });
 
+  const fetchSettings = async () => {
+    try {
+      setFetching(true);
+      const res = await api.get('/admin/settings');
+      if (res.data.success) {
+        setSettings(res.data.settings);
+      }
+    } catch (err) {
+      notification.error({
+        message: 'Load Failed',
+        description: 'Could not fetch system settings.'
+      });
+    } finally {
+      setFetching(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchSettings();
+  }, []);
+
   const handleToggle = (key, value) => {
     setSettings({ ...settings, [key]: value });
   };
 
-  const handleSave = () => {
-    setLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      setLoading(false);
-      notification.success({
-        message: 'Settings Saved',
-        description: 'System configurations have been updated and are propagating to all nodes.',
-        placement: 'bottomRight',
-        className: 'admin-notification-dark'
+  const handleInputChange = (key, value) => {
+    setSettings({ ...settings, [key]: value });
+  };
+
+  const handleSave = async () => {
+    try {
+      setLoading(true);
+      const res = await api.put('/admin/settings', settings);
+      if (res.data.success) {
+        notification.success({
+          message: 'Settings Propagated',
+          description: 'Global system configurations have been updated successfully.',
+          placement: 'bottomRight',
+          className: 'admin-notification-dark'
+        });
+      }
+    } catch (err) {
+      notification.error({
+        message: 'Update Failed',
+        description: err.response?.data?.message || 'Failed to save settings.'
       });
-    }, 1000);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const ConfigSection = ({ icon, title, description, children }) => (
@@ -79,7 +115,7 @@ const Settings = () => {
         </div>
         <Divider orientation="vertical" className="h-auto border-zinc-800/50 hidden md:block" />
         <div className="flex-1 space-y-6">
-          {children}
+          {fetching ? <Skeleton active /> : children}
         </div>
       </div>
     </Card>
@@ -174,7 +210,7 @@ const Settings = () => {
             <Space direction="vertical" className="w-full" size={16}>
               <div>
                 <Text type="secondary" className="text-xs font-bold uppercase mb-2 block tracking-wider">Currency</Text>
-                <Select className="zinc-select w-full h-11" defaultValue="USD">
+                <Select className="zinc-select w-full h-11" value={settings.currency} onChange={(val) => handleInputChange('currency', val)}>
                   <Option value="USD">USD - US Dollar</Option>
                   <Option value="INR">INR - Indian Rupee</Option>
                   <Option value="EUR">EUR - Euro</Option>
@@ -182,7 +218,7 @@ const Settings = () => {
               </div>
               <div>
                  <Text type="secondary" className="text-xs font-bold uppercase mb-2 block tracking-wider">Platform Referral Fee (%)</Text>
-                 <Input className="zinc-input h-11" defaultValue="0" />
+                 <Input className="zinc-input h-11" value={settings.platformFee} onChange={(e) => handleInputChange('platformFee', e.target.value)} />
               </div>
             </Space>
           </ConfigSection>
@@ -196,7 +232,7 @@ const Settings = () => {
             <Space direction="vertical" className="w-full" size={16}>
                <div className="flex items-center justify-between">
                 <Text strong className="text-zinc-100">Internal Alerts</Text>
-                <Switch checked className="violet-switch" />
+                <Switch checked className="violet-switch" disabled />
               </div>
               <div className="flex items-center justify-between">
                 <Text strong className="text-zinc-100">User Email Streams</Text>
@@ -204,7 +240,7 @@ const Settings = () => {
               </div>
               <div>
                  <Text type="secondary" className="text-xs font-bold uppercase mb-2 block tracking-wider">Primary System Contact</Text>
-                 <Input className="zinc-input h-11" placeholder="admin@toolsjobs.com" defaultValue={settings.adminEmail} />
+                 <Input className="zinc-input h-11" placeholder="admin@toolsjobs.com" value={settings.adminEmail} onChange={(e) => handleInputChange('adminEmail', e.target.value)} />
               </div>
             </Space>
           </ConfigSection>

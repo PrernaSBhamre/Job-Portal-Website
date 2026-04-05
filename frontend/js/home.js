@@ -28,26 +28,27 @@ async function fetchFeaturedJobs() {
                 
                 // Max 3 tags
                 const tags = (j.tags && j.tags.length > 0 ? j.tags : ['JAVASCRIPT', 'HTML', 'CSS']).slice(0, 3);
+                const detailUrl = `/pages/jobs/job-details.html?id=${j._id || j.id}`;
                 
                 return `
-                <a href="pages/jobs/job-details.html?id=${j._id || j.id}" class="job-card" style="text-decoration: none;">
-                  <div class="jc-head">
-                    <div class="co-av">${initial}</div>
-                    <div>
-                      <div class="jc-title">${j.title}</div>
-                      <div class="jc-co"><i class="bi bi-building"></i> ${companyName}</div>
+                <div class="job-card" onclick="window.location.href='${detailUrl}'" style="cursor: pointer;">
+                    <div class="jc-head">
+                      <div class="co-av">${initial}</div>
+                      <div>
+                        <div class="jc-title">${j.title}</div>
+                        <div class="jc-co"><i class="bi bi-building"></i> ${companyName}</div>
+                      </div>
                     </div>
-                  </div>
-                  <div class="jc-tags">
-                    ${tags.map(t => `<span class="j-tag">${t.toUpperCase()}</span>`).join('')}
-                  </div>
-                  <div class="jc-meta">
-                    <span><i class="bi bi-geo-alt"></i> ${j.location || 'Remote'}</span>
-                    <span><i class="bi bi-currency-dollar"></i> ${j.salary || 'Not Disclosed'}</span>
-                    <span><i class="bi bi-clock"></i> 2d ago • Full-time</span>
-                  </div>
-                  <div class="jc-btn">Apply Now <i class="bi bi-arrow-right"></i></div>
-                </a>
+                    <div class="jc-tags">
+                      ${tags.map(t => `<span class="j-tag">${t.toUpperCase()}</span>`).join('')}
+                    </div>
+                    <div class="jc-meta">
+                      <span><i class="bi bi-geo-alt"></i> ${j.location || 'Remote'}</span>
+                      <span><i class="bi bi-currency-rupee"></i> ${j.salary || 'Not Disclosed'}</span>
+                      <span><i class="bi bi-clock"></i> Recently • Full-time</span>
+                    </div>
+                    <a href="${detailUrl}" class="jc-btn" style="text-decoration: none;">View Details & Apply <i class="bi bi-arrow-right"></i></a>
+                </div>
                 `;
             }).join('');
         } else {
@@ -76,6 +77,6 @@ function setupHeroSearch() {
         
         // We could pass these as query parameters to jobs.html if jobs.html was configured to read and apply them
         // For now, redirect to jobs.html
-        window.location.href = `pages/jobs/jobs.html?keyword=${encodeURIComponent(keywordContext)}&location=${encodeURIComponent(locationContext)}`;
+        window.location.href = `/pages/jobs/jobs.html?keyword=${encodeURIComponent(keywordContext)}&location=${encodeURIComponent(locationContext)}`;
     });
 }

@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     fetchJobDetails(jobId);
-    setupAuthNav();
 });
 
 let currentJob = null;
@@ -56,6 +55,9 @@ async function fetchFallbackJob() {
 }
 
 function renderJobDetails(job) {
+    // Update Page Title
+    document.title = `${job.title} | Tools & Job`;
+
     // Hide loading
     document.getElementById('loadingArea').style.display = 'none';
     document.getElementById('jobArea').style.display = 'block';
@@ -153,12 +155,12 @@ function renderJobDetails(job) {
     const triggerModal = () => {
         const session = getSession();
         if (!session || !session.token) {
-            alert("You must be logged in as a Job Seeker to apply.");
-            window.location.href = '../auth/login.html';
+            const loginModal = new bootstrap.Modal(document.getElementById('loginRequiredModal'));
+            loginModal.show();
             return;
         }
         if (session.user.role !== 'student') {
-            alert("Only Job Seekers (Freshers) can apply for jobs.");
+            toast("Only Job Seekers (Freshers) can apply for jobs.", "e");
             return;
         }
 
@@ -172,14 +174,33 @@ function renderJobDetails(job) {
         // Setup initial user data if present
         if(session.user.fullname) document.getElementById('appyName').value = session.user.fullname;
         if(session.user.email) document.getElementById('appyEmail').value = session.user.email;
+        if(session.user.phoneNumber) document.getElementById('appyPhone').value = session.user.phoneNumber;
+        
+        // Advanced pre-fill from profile if available
+        if(session.user.profile) {
+            if(session.user.profile.education && session.user.profile.education.length > 0) {
+                const edu = session.user.profile.education[0];
+                document.getElementById('appyCollege').value = edu.institution || '';
+                document.getElementById('appyGradYear').value = edu.endYear || '';
+            }
+            if(session.user.profile.socialLinks && session.user.profile.socialLinks.portfolio) {
+                document.getElementById('appyPortfolio').value = session.user.profile.socialLinks.portfolio;
+            }
+        }
 
         // Show Bootstrap Modal
         const applyModal = new bootstrap.Modal(document.getElementById('applyModal'));
         applyModal.show();
     };
     
-    btnApp1.onclick = triggerModal;
-    btnApp2.onclick = triggerModal;
+    btnApp1.onclick = (e) => { e.preventDefault(); triggerModal(); };
+    btnApp2.onclick = (e) => { e.preventDefault(); triggerModal(); };
+    
+    // Check if user already applied
+    const session = getSession();
+    if (session && session.token && session.user.role === 'student') {
+        checkAppStatus(job._id);
+    }
     
     document.getElementById('btnSaveJob').onclick = () => saveJobLocally(job._id);
 
@@ -216,7 +237,7 @@ async function submitApplication(jobId) {
     const fileInp = document.getElementById('appyResumeFile');
 
     if (!fileInp.files || fileInp.files.length === 0) {
-        alert("Please attach your resume file.");
+        toast("Please attach your resume file.", "e");
         return;
     }
 
@@ -246,7 +267,7 @@ async function submitApplication(jobId) {
         const data = await res.json();
         
         if (res.ok) {
-            alert('Application Submitted Successfully!');
+            toast('Application Submitted Successfully!', 's');
             
             // Hide modal
             const applyModalEl = document.getElementById('applyModal');
@@ -254,30 +275,22 @@ async function submitApplication(jobId) {
             modal.hide();
 
             // Update UI Buttons
-            const btnApp1 = document.getElementById('btnQuickApply');
-            const btnApp2 = document.getElementById('btnSideApply');
-            btnApp1.innerText = 'Applied!';
-            btnApp1.style.background = '#22c55e';
-            btnApp1.onclick = null;
-            btnApp2.innerText = 'Applied!';
-            btnApp2.style.background = '#22c55e';
-            btnApp2.onclick = null;
+            setAppliedUI();
         } else {
             if (data.message && data.message.includes('Already applied')) {
-                alert('You have already applied for this job!');
+                toast('You have already applied for this job!', 'i');
                 const applyModalEl = document.getElementById('applyModal');
                 bootstrap.Modal.getInstance(applyModalEl).hide();
-                document.getElementById('btnQuickApply').innerText = 'Already Applied';
-                document.getElementById('btnSideApply').innerText = 'Already Applied';
+                setAppliedUI();
             } else {
-                alert(data.message || 'Failed to apply.');
+                toast(data.message || 'Failed to apply.', 'e');
                 btn.innerText = 'Submit Application';
                 btn.disabled = false;
             }
         }
     } catch(e) {
         console.error("Apply Error:", e);
-        alert("An error occurred during submission.");
+        toast("An error occurred during submission.", "e");
         const failBtn = document.getElementById('modalFinalApplyBtn');
         if(failBtn) {
             failBtn.innerText = 'Submit Application';
@@ -286,11 +299,49 @@ async function submitApplication(jobId) {
     }
 }
 
-async function saveJobLocally(jobId) {
+async function checkAppStatus(jobId) {
+    const session = getSession();
+    try {
+        const res = await fetch(`${CONFIG.API_URL}/applications/check/${jobId}`, {
+            headers: { 'Authorization': `Bearer ${session.token}` }
+        });
+        const data = await res.json();
+        if (data.applied) {
+            setAppliedUI();
+        }
+    } catch (e) {
+        console.error("Check status error:", e);
+    }
+}
+
+function setAppliedUI() {
+    const btnApp1 = document.getElementById('btnQuickApply');
+    const btnApp2 = document.getElementById('btnSideApply');
+    
+    if (btnApp1) {
+        btnApp1.innerText = 'Applied!';
+        btnApp1.style.background = '#22c55e';
+        btnApp1.onclick = null;
+        btnApp1.disabled = true;
+    }
+    if (btnApp2) {
+        btnApp2.innerText = 'Already Applied';
+        btnApp2.style.background = 'rgba(255,255,255,0.1)';
+        btnApp2.style.color = 'var(--ts)';
+        btnApp2.style.border = '1px solid var(--border)';
+        btnApp2.onclick = null;
+        btnApp2.disabled = true;
+    }
+}
+
+async function saveJobLocally(id) {
+    const jobId = id || (currentJob ? currentJob._id : null);
+    if (!jobId) return;
+
     const session = getSession();
     const btn = document.getElementById('btnSaveJob');
     if (!session || !session.token) {
-        alert("Please login to save jobs.");
+        toast("Please login to save jobs.", "i");
         return;
     }
     
@@ -306,9 +357,9 @@ async function saveJobLocally(jobId) {
         } else {
             const d = await res.json();
             if(d.message && d.message.includes("Already saved")) {
-                btn.innerText = 'Already Saved';
+                toast('Already Saved', 'i');
             } else {
-                alert(d.message || "Could not save.");
+                toast(d.message || "Could not save.", "e");
             }
         }
     } catch (e) {
@@ -316,17 +367,3 @@ async function saveJobLocally(jobId) {
     }
 }
 
-function setupAuthNav() {
-    const session = getSession();
-    const authArea = document.getElementById('navAuthArea');
-    if (session && session.user) {
-        let dash = '../seeker/dashboard.html';
-        if (session.user.role === 'recruiter') dash = '../employer/dashboard.html';
-        if (session.user.role === 'admin') dash = 'http://localhost:5173';
-        
-        authArea.innerHTML = `
-            <a href="${dash}" class="btn-signup" style="background:var(--card);color:#fff;border:1px solid var(--border);">Dashboard</a>
-            <button onclick="logout()" class="btn-login" style="background:none;border:none;">Logout</button>
-        `;
-    }
-}

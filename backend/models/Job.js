@@ -78,6 +78,14 @@ const jobSchema = new mongoose.Schema(
       type: Boolean,
       default: false
     },
+    reportCount: {
+      type: Number,
+      default: 0
+    },
+    isSuspicious: {
+      type: Boolean,
+      default: false
+    },
     status: {
       type: String,
       enum: ['pending', 'approved', 'rejected', 'closed'],

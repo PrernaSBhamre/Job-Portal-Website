@@ -8,11 +8,11 @@ import {
   Form, 
   Input, 
   Button, 
-  message, 
   Divider, 
   Space, 
   Tabs,
-  Skeleton
+  Skeleton,
+  App
 } from 'antd';
 import { 
   UserOutlined, 
@@ -21,15 +21,23 @@ import {
   CameraOutlined, 
   SaveOutlined,
   KeyOutlined,
-  SafetyOutlined
+  SafetyOutlined,
+  HistoryOutlined
 } from '@ant-design/icons';
+import { Timeline, List } from 'antd';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+dayjs.extend(relativeTime);
 import api from '../utils/api';
 
 const { Title, Text } = Typography;
 
 const Profile = () => {
+  const { message } = App.useApp();
   const [loading, setLoading] = useState(false);
   const [admin, setAdmin] = useState(null);
+  const [logs, setLogs] = useState([]);
+  const [logsLoading, setLogsLoading] = useState(false);
   const [form] = Form.useForm();
   const [passwordForm] = Form.useForm();
 
@@ -48,8 +56,23 @@ const Profile = () => {
     }
   };
 
+  const fetchAuditLogs = async () => {
+    try {
+      setLogsLoading(true);
+      const res = await api.get('/admin/audit-logs?limit=10');
+      if (res.data.success) {
+        setLogs(res.data.logs);
+      }
+    } catch (err) {
+      console.error('Failed to load activity logs');
+    } finally {
+      setLogsLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchProfile();
+    fetchAuditLogs();
   }, []);
 
   const onUpdateProfile = async (values) => {
@@ -217,6 +240,35 @@ const Profile = () => {
                           </Button>
                         </div>
                       </Form>
+                    </div>
+                  )
+                },
+                {
+                  key: 'activity',
+                  label: <span className="px-4 font-bold flex items-center gap-2"><HistoryOutlined /> Activity Log</span>,
+                  children: (
+                    <div className="p-6 overflow-auto max-h-[500px]">
+                      <Timeline 
+                        mode="left"
+                        className="admin-timeline text-zinc-300"
+                        pending={logsLoading ? "Fetching latest actions..." : false}
+                        items={logs.map(log => ({
+                          color: log.action.includes('delete') ? 'red' : log.action.includes('approve') ? 'green' : 'blue',
+                          label: <span className="text-zinc-500 text-[10px] uppercase font-bold">{dayjs(log.createdAt).fromNow()}</span>,
+                          children: (
+                            <div className="flex flex-col gap-1 pb-4">
+                              <Text strong className="text-zinc-100 text-sm">
+                                {log.description}
+                              </Text>
+                              <Space className="text-[10px] text-zinc-600 font-medium">
+                                <span className="bg-zinc-900 px-1.5 rounded">{log.action.replace('_', ' ')}</span>
+                                <span>•</span>
+                                <span>{log.ipAddress || 'Internal'}</span>
+                              </Space>
+                            </div>
+                          )
+                        }))}
+                      />
                     </div>
                   )
                 }

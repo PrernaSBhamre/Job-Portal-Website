@@ -65,34 +65,34 @@ const seedData = async () => {
             { 
                 title: 'Software Engineer', description: 'Build scalable web apps.', responsibilities: ['Coding', 'Unit Testing'], requirements: ['Java', 'Spring'], salary: '₹12L - ₹18L', 
                 experienceLevel: '0-2 Years', location: 'Bangalore', jobType: 'Full-Time', position: 5, tags: ['Java', 'Spring Boot'], 
-                company: companies[0]._id, created_by: employers[0]._id, status: 'approved'
+                company: companies[0]._id, created_by: employers[0]._id, status: 'approved', isApproved: true, isActive: true
             },
             { 
                 title: 'Frontend Developer', description: 'Create stunning UIs.', requirements: ['React', 'Tailwind'], salary: '₹8L - ₹12L', 
                 experienceLevel: '1-3 Years', location: 'Remote', jobType: 'Full-Time', position: 3, tags: ['React', 'CSS'], 
-                company: companies[1]._id, created_by: employers[1]._id, status: 'approved', isFeatured: true
+                company: companies[1]._id, created_by: employers[1]._id, status: 'approved', isFeatured: true, isApproved: true, isActive: true
             },
             { 
                 title: 'Data Analyst', description: 'Analyze business data.', requirements: ['SQL', 'Python'], salary: '₹6L - ₹9L', 
                 experienceLevel: 'Fresher', location: 'Hyderabad', jobType: 'Internship', position: 10, tags: ['Python', 'SQL'], 
-                company: companies[2]._id, created_by: employers[2]._id, status: 'approved'
+                company: companies[2]._id, created_by: employers[2]._id, status: 'approved', isApproved: true, isActive: true
             }
         ]);
 
-        // 7. Create Applications with required Resume
+        // 7. Create Applications with valid status
         await Application.create([
             { 
-                job: jobs[0]._id, applicant: seekers[0]._id, status: 'pending', 
+                job: jobs[0]._id, applicant: seekers[0]._id, status: 'Applied', 
                 resume: 'https://toolsandjob.com/resumes/prerna_bhamre.pdf',
                 fullName: 'Prerna Bhamre', phone: '1112223334', college: 'Tech Institute', graduationYear: 2024
             },
             { 
-                job: jobs[1]._id, applicant: seekers[1]._id, status: 'shortlisted', 
+                job: jobs[1]._id, applicant: seekers[1]._id, status: 'Shortlisted', 
                 resume: 'https://toolsandjob.com/resumes/rahul_sharma.pdf',
                 fullName: 'Rahul Sharma', phone: '2223334445', college: 'University of Engineering', graduationYear: 2023
             },
             { 
-                job: jobs[1]._id, applicant: seekers[2]._id, status: 'rejected', 
+                job: jobs[1]._id, applicant: seekers[2]._id, status: 'Rejected', 
                 resume: 'https://toolsandjob.com/resumes/ananya_iyer.pdf',
                 fullName: 'Ananya Iyer', phone: '3334445556', college: 'Global Tech College', graduationYear: 2025
             }

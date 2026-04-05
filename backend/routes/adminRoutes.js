@@ -20,7 +20,10 @@ const {
   updateAdminProfile,
   changeAdminPassword,
   getSettings,
-  updateSettings
+  updateSettings,
+  toggleUserFlag,
+  resolveReport,
+  getAuditLogs
 } = require('../controllers/adminController');
 const { adminProtect } = require('../middleware/adminAuth');
 
@@ -61,5 +64,10 @@ router.put('/change-password', changeAdminPassword);
 // System Settings
 router.get('/settings', getSettings);
 router.put('/settings', updateSettings);
+
+// Audit & Moderation
+router.get('/audit-logs', getAuditLogs);
+router.put('/users/:id/flag', toggleUserFlag);
+router.put('/reports/:id/resolve', resolveReport);
 
 module.exports = router;

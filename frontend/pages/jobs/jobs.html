@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>Find Jobs | Tools and Job</title>
+  <title>Find Jobs | Tools & Job</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
     rel="stylesheet">
@@ -194,21 +194,15 @@
     }
 
     @media(max-width:991px) {
-      .nav-pill {
-        display: none;
+      .nav-pill, .auth-btns {
+        display: none !important;
       }
     }
 
-    @media(max-width:500px) {
-      .auth-btns {
-        display: none;
-      }
-    }
-
-    /* ΓöÇΓöÇ HERO ΓöÇΓöÇ */
     .hero {
-      padding: 36px 0 20px;
-      background: radial-gradient(ellipse 700px 280px at 50% 0%, rgba(124, 58, 237, .13) 0%, transparent 70%)
+      padding: 24px 0 16px;
+      background: radial-gradient(ellipse 700px 200px at 50% 0%, rgba(124, 58, 237, .10) 0%, transparent 70%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
     }
 
     .hero-title {
@@ -277,20 +271,108 @@
       background: var(--ps)
     }
 
-    /* ΓöÇΓöÇ FILTER PANEL ΓöÇΓöÇ */
-    .fpanel {
-      background: var(--filter);
+    /* MODAL THEME */
+    .modal-content.themed {
+      background: #0f101a;
       border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px;
-      position: sticky;
-      top: 76px;
-      max-height: calc(100vh - 90px);
-      overflow-y: auto
+      border-radius: 24px;
+    }
+    .btn-purple {
+      background: var(--purple);
+      color: white;
+      border: none;
+      transition: 0.3s;
+    }
+    .btn-purple:hover {
+      background: #6d28d9;
+      color: white;
+      box-shadow: 0 5px 15px rgba(124, 58, 237, 0.4);
     }
 
-    .fpanel::-webkit-scrollbar {
-      width: 3px
+    /* FILTER DRAWER (Universal) */
+    .fov {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 100000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .fov.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .fdrawer {
+      position: fixed;
+      top: 0;
+      right: -400px;
+      left: auto !important;
+      width: 380px;
+      height: 100vh;
+      background: #11121d;
+      z-index: 100001;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 30px 24px;
+      display: flex;
+      flex-direction: column;
+      border-left: 1px solid var(--border);
+      box-shadow: -20px 0 50px rgba(0, 0, 0, 0.8);
+      visibility: hidden;
+    }
+
+    .fdrawer.open {
+      right: 0 !important;
+      left: auto !important;
+      visibility: visible;
+    }
+
+    .btn-fcoll {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+      height: 46px;
+    }
+
+    .btn-fcoll:hover {
+      background: var(--purple);
+      border-color: var(--purple);
+    }
+
+    .btn-fcoll {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+      height: 46px;
+    }
+
+    .btn-fcoll:hover {
+      background: var(--purple);
+      border-color: var(--purple);
+    }
+    .fpanel::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 10px;
     }
 
     .fp-title {
@@ -379,6 +461,97 @@
     .btn-clr:hover {
       border-color: var(--purple);
       color: var(--purple)
+    }
+
+    /* Desktop Fixed Layout Transformation */
+    @media(min-width: 992px) {
+      body {
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .navbar-wrapper {
+        flex-shrink: 0;
+      }
+
+      #pageJobs {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .hero {
+        flex-shrink: 0;
+      }
+
+      .main-content-row {
+        flex: 1;
+        overflow: hidden;
+      }
+
+      .jobs-scroll-column {
+        height: 100%;
+        overflow-y: auto;
+        padding-bottom: 100px;
+        scroll-behavior: smooth;
+      }
+
+      /* Custom scrollbar for jobs column */
+      .jobs-scroll-column::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .jobs-scroll-column::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      .jobs-scroll-column::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 10px;
+      }
+
+      .jobs-scroll-column::-webkit-scrollbar-thumb:hover {
+        background: var(--purple);
+      }
+      
+      .filter-col-desk {
+        height: 100%;
+        overflow-y: auto;
+        padding-bottom: 50px;
+        transition: padding 0.3s ease;
+      }
+      
+      /* Subtle Sidebar Scrollbar */
+      .filter-col-desk::-webkit-scrollbar {
+        width: 3px;
+      }
+      
+      .filter-col-desk::-webkit-scrollbar-thumb {
+        background: rgba(42, 42, 66, 0.2);
+        border-radius: 10px;
+      }
+      
+      .filter-col-desk:hover::-webkit-scrollbar-thumb {
+        background: var(--border);
+      }
+
+      .fpanel {
+        max-height: none !important;
+        border: none !important;
+        background: transparent !important;
+        position: relative !important;
+        top: 0 !important;
+        padding: 0 0 40px 0 !important;
+      }
+      
+      .filter-col-desk {
+        background: #0d0d18;
+        border-right: 1px solid var(--border);
+        padding: 20px !important;
+      }
     }
 
     /* ΓöÇΓöÇ SORT BAR ΓöÇΓöÇ */
@@ -1468,36 +1641,41 @@
       color: var(--border)
     }
 
+    .filter-col-desk {
+      display: none !important;
+    }
+
     @media(max-width:991px) {
-      .filter-col-desk {
-        display: none
-      }
-
       .btn-fmob {
-        display: flex
+        display: flex;
       }
-
       .sidebar {
         position: relative;
-        top: 0
+        top: 0;
       }
     }
 
     @media(max-width:767px) {
       .cbox {
-        padding: 16px 14px
+        padding: 16px 14px;
       }
-
       .jcard {
-        padding: 15px 14px
+        padding: 20px 18px;
       }
-
+      .jcard-top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+      .jcard-meta {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
       .sal-grid {
-        grid-template-columns: 1fr 1fr
+        grid-template-columns: 1fr 1fr;
       }
-
       .stat-b {
-        padding: 10px 12px
+        padding: 10px 12px;
       }
     }
   </style>
@@ -1509,30 +1687,30 @@
   <div class="navbar-wrapper">
     <div class="container">
       <nav class="navbar-custom">
-        <a href="../../index.html" class="logo-box">
+        <a href="/index.html" class="logo-box">
           <div class="logo-icon">T</div>
           <div class="logo-text">Tools<span>&Job</span></div>
         </a>
 
         <div class="nav-pill d-none d-lg-flex">
-          <a href="../../index.html">Home</a>
-          <a href="../jobs/jobs.html" class="active">Find Jobs</a>
-          <a href="../companies/companies.html">Companies</a>
-          <a href="../services/services.html">Services</a>
-          <a href="../resources/resources.html">Resources</a>
+          <a href="/index.html">Home</a>
+          <a href="/pages/jobs/jobs.html" class="active">Find Jobs</a>
+          <a href="/pages/companies/companies.html">Companies</a>
+          <a href="/pages/services/services.html">Services</a>
+          <a href="/pages/resources/resources.html">Resources</a>
         </div>
 
         <div class="auth-btns">
-          <a href="../auth/login.html" class="btn-login">Log In</a>
-          <a href="../auth/register.html" class="btn-signup">Sign Up</a>
+          <a href="/pages/auth/login.html" class="btn-login">Log In</a>
+          <a href="/pages/auth/register.html" class="btn-signup">Sign Up</a>
         </div>
       </nav>
     </div>
   </div>
 
-  <!-- ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
-     PAGE 1 ΓÇö FIND JOBS
-ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ -->
+  <!-- 
+     PAGE 1 - FIND JOBS
+  -->
   <div id="pageJobs" class="page active">
 
     <section class="hero">
@@ -1545,73 +1723,23 @@
           <div class="col-lg-6">
             <div class="search-box">
               <i class="bi bi-search"></i>
-              <input type="text" id="srch" placeholder="Search jobs, skills, companiesΓÇª"
+              <input type="text" id="srch" placeholder="Search jobs, skills, companies..."
                 onkeydown="if(event.key==='Enter')applyF()">
               <button class="btn-srch" onclick="applyF()"><i class="bi bi-search me-1"></i>Search</button>
+              <button class="btn-fcoll" onclick="openFD()" style="margin: 5px 10px 5px 0;">
+                <i class="bi bi-funnel"></i><span>Filters</span>
+              </button>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <div class="container" style="padding:0 12px 60px">
-      <div class="row g-4 pt-3">
+    <div class="container main-content-row" style="padding:0 12px 0">
+      <div class="row pt-3 align-items-start h-100">
 
-        <!-- FILTERS DESKTOP -->
-        <div class="col-lg-3 filter-col-desk">
-          <div class="fpanel" id="fpDesk">
-            <div class="fp-title"><i class="bi bi-funnel-fill" style="color:var(--purple)"></i> Filters
-              <button class="btn-clr ms-auto py-1 px-3 w-auto" onclick="clearF()">Clear</button>
-            </div>
-            <div class="fp-sec">
-              <div class="fp-label">Location</div>
-              <label class="fp-chk"><input type="checkbox" class="lf" value="Bangalore"><span>Bangalore</span></label>
-              <label class="fp-chk"><input type="checkbox" class="lf" value="Pune"><span>Pune</span></label>
-              <label class="fp-chk"><input type="checkbox" class="lf" value="Hyderabad"><span>Hyderabad</span></label>
-              <label class="fp-chk"><input type="checkbox" class="lf" value="Mumbai"><span>Mumbai</span></label>
-              <label class="fp-chk"><input type="checkbox" class="lf" value="Remote"><span>Remote</span></label>
-              <label class="fp-chk"><input type="checkbox" class="lf" value="Delhi"><span>Delhi</span></label>
-            </div>
-            <div class="fp-sec">
-              <div class="fp-label">Skills</div>
-              <div id="skillTags">
-                <span class="stag" onclick="togSk(this,'React')">React</span>
-                <span class="stag" onclick="togSk(this,'Java')">Java</span>
-                <span class="stag" onclick="togSk(this,'Python')">Python</span>
-                <span class="stag" onclick="togSk(this,'Figma')">Figma</span>
-                <span class="stag" onclick="togSk(this,'Node.js')">Node.js</span>
-                <span class="stag" onclick="togSk(this,'SQL')">SQL</span>
-                <span class="stag" onclick="togSk(this,'TypeScript')">TypeScript</span>
-              </div>
-            </div>
-            <div class="fp-sec">
-              <div class="fp-label">Salary (LPA)</div>
-              <input type="range" min="0" max="20" value="20" id="salR" oninput="updSal(this.value)"
-                style="width:100%;accent-color:var(--purple);margin-top:4px">
-              <div style="display:flex;justify-content:space-between;font-size:.73rem;color:var(--td);margin-top:3px">
-                <span>Γé╣0L</span><span id="salLbl">Any</span></div>
-            </div>
-            <div class="fp-sec">
-              <div class="fp-label">Experience</div>
-              <label class="fp-chk"><input type="radio" name="exp" class="ef" value="all"
-                  checked><span>All</span></label>
-              <label class="fp-chk"><input type="radio" name="exp" class="ef" value="0"><span>Fresher (0
-                  Yrs)</span></label>
-              <label class="fp-chk"><input type="radio" name="exp" class="ef" value="1"><span>0ΓÇô1 Years</span></label>
-              <label class="fp-chk"><input type="radio" name="exp" class="ef" value="2"><span>1ΓÇô2 Years</span></label>
-            </div>
-            <div class="fp-sec">
-              <div class="fp-label">Job Type</div>
-              <label class="fp-chk"><input type="checkbox" class="tf" value="Full Time"><span>Full Time</span></label>
-              <label class="fp-chk"><input type="checkbox" class="tf" value="Internship"><span>Internship</span></label>
-              <label class="fp-chk"><input type="checkbox" class="tf" value="Contract"><span>Contract</span></label>
-            </div>
-            <button class="btn-clr" onclick="clearF()"><i class="bi bi-x-circle me-1"></i>Clear All Filters</button>
-          </div>
-        </div>
-
-        <!-- JOBS LIST -->
-        <div class="col-lg-9">
+        <!-- JOBS LIST (Full Screen) -->
+        <div class="col-lg-12 jobs-scroll-column">
           <div class="sbar">
             <div class="d-flex align-items-center gap-2">
               <button class="btn-fmob" onclick="openFD()"><i class="bi bi-funnel"></i> Filters</button>
@@ -1621,65 +1749,52 @@
               <label style="color:var(--tm);font-size:.8rem">Sort:</label>
               <select id="sortSel" onchange="applyF()">
                 <option value="newest">Newest First</option>
-                <option value="sh">Salary: HighΓÇôLow</option>
-                <option value="sl">Salary: LowΓÇôHigh</option>
+                <option value="sh">Salary: High-Low</option>
+                <option value="sl">Salary: Low-High</option>
                 <option value="match">Best Match</option>
               </select>
             </div>
           </div>
           <div id="jc"></div>
-          <div class="text-center">
+          <div class="text-center mb-5">
             <button class="btn-load" id="loadBtn" onclick="loadMore()">Load More Jobs <i
                 class="bi bi-chevron-down"></i></button>
           </div>
+
+          <!-- FOOTER MOVED INSIDE SCROLL COLUMN -->
+          <footer>
+            <div class="container-fluid px-0">
+              <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                  <div class="d-flex align-items-center gap-2 mb-2">
+                    <div class="logo-icon">T</div><span class="ft">Tools<span>&Job</span></span>
+                  </div>
+                  <p style="color:var(--tm);font-size:.83rem;margin-top:8px;max-width:210px;line-height:1.6">Connecting the
+                    next generation of professional talent with industry leaders.</p>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                  <p class="ft mb-3">Links</p>
+                  <ul class="fl-links">
+                    <li><a href="#">Job Board</a></li>
+                    <li><a href="#">Skill Mastery</a></li>
+                    <li><a href="#">Resume Forge</a></li>
+                  </ul>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                  <p class="ft mb-3">Connect</p>
+                  <div class="fci"><i class="bi bi-geo-alt-fill"></i><span>Professional Tech Park, Hyderabad</span></div>
+                  <div class="fci"><i class="bi bi-envelope-fill"></i><span>hello@toolsandjob.com</span></div>
+                </div>
+              </div>
+              <div class="fbot mt-4">
+                <p>&copy; 2026 Tools & Job. All rights reserved.</p>
+              </div>
+            </div>
+          </footer>
         </div>
       </div>
     </div>
 
-    <!-- FOOTER -->
-    <footer>
-      <div class="container">
-        <div class="row g-4">
-          <div class="col-lg-3 col-md-6">
-            <div class="d-flex align-items-center gap-2 mb-2">
-              <div class="logo-icon">T</div><span class="ft">Tools<span>&Job</span></span>
-            </div>
-            <p style="color:var(--tm);font-size:.83rem;margin-top:8px;max-width:210px;line-height:1.6">Connecting the
-              next generation of professional talent with industry leaders.</p>
-            <div class="d-flex gap-2 mt-3">
-              <a class="btn-sh" style="padding:7px 10px;font-size:.82rem" href="#"><i class="bi bi-linkedin"></i></a>
-              <a class="btn-sh" style="padding:7px 10px;font-size:.82rem" href="#"><i class="bi bi-twitter-x"></i></a>
-            </div>
-          </div>
-          <div class="col-lg-2 col-md-6 col-6">
-            <p class="ft mb-3">Resources</p>
-            <ul class="fl-links">
-              <li><a href="#">Job Board</a></li>
-              <li><a href="#">Skill Mastery</a></li>
-              <li><a href="#">Resume Forge</a></li>
-            </ul>
-          </div>
-          <div class="col-lg-2 col-md-6 col-6">
-            <p class="ft mb-3">Enterprise</p>
-            <ul class="fl-links">
-              <li><a href="#">Hire Talent</a></li>
-              <li><a href="#">Mandate Board</a></li>
-              <li><a href="#">Pricing</a></li>
-            </ul>
-          </div>
-          <div class="col-lg-3 col-md-6">
-            <p class="ft mb-3">Connect</p>
-            <div class="fci"><i class="bi bi-geo-alt-fill"></i><span>Professional Tech Park, Cyber Hub,<br>Hyderabad,
-                India</span></div>
-            <div class="fci"><i class="bi bi-envelope-fill"></i><span>hello@toolsandjob.com</span></div>
-          </div>
-        </div>
-        <div class="fbot">
-          <p>&copy; 2026 Tools and Job. All rights reserved.</p>
-          <div class="d-flex gap-3"><a href="#">Privacy</a><a href="#">Terms</a></div>
-        </div>
-      </div>
-    </footer>
   </div>
 
   <!-- ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
@@ -1740,23 +1855,19 @@
           </div>
           <div class="col-lg-3 col-md-6">
             <p class="ft mb-3">Contact Us</p>
-            <div class="fci"><i class="bi bi-geo-alt-fill"></i><span>Sai Complex, Temple Road, Shirdi, MH ΓÇô
+            <div class="fci"><i class="bi bi-geo-alt-fill"></i><span>Sai Complex, Temple Road, Shirdi, MH -
                 423109</span></div>
             <div class="fci"><i class="bi bi-telephone-fill"></i><span>+91 80 1234 5678</span></div>
             <div class="fci"><i class="bi bi-envelope-fill"></i><span>support@fresherhub.in</span></div>
           </div>
         </div>
         <div class="fbot">
-          <p>┬⌐ 2026 FresherHub. All rights reserved.</p>
+          <p>© 2026 Tools & Job. All rights reserved.</p>
           <div class="d-flex gap-3"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a></div>
         </div>
       </div>
     </footer>
   </div>
-
-  <!-- MOBILE FILTER DRAWER -->
-  <div class="foverlay" id="fov" onclick="closeFD()"></div>
-  <div class="fdrawer" id="fdraw"></div>
 
   <!-- TOAST -->
   <div id="tc"></div>
@@ -1826,6 +1937,7 @@
 
           selSkills = [];
           JOBS = fetchedJobs;
+          renderDynamicFilters(fetchedJobs);
           renderJobs(fetchedJobs.slice(0, 5));
         }
       } catch (e) {
@@ -1894,10 +2006,10 @@
       document.title = 'Find Jobs | Tools and Job';
     }
     function goJD(id) {
-      window.location.href = `job-details.html?id=${id}`;
+      window.location.href = `/pages/jobs/job-details.html?id=${id}`;
     }
 
-    // ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ HELPERS ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+    // //////////////////// HELPERS ////////////////////
     function mkStars(r, sz = '') {
       return Array.from({ length: 5 }, (_, i) => {
         const f = i < Math.floor(r), h = !f && (r - Math.floor(r) >= .5) && i === Math.floor(r);
@@ -1969,30 +2081,89 @@
       document.getElementById('heroSub').innerHTML = `Showing <strong>${list.length} active jobs</strong> for freshers`;
     }
 
-    function applyF() {
-      const q = document.getElementById('srch').value.toLowerCase();
-      const locs = [...document.querySelectorAll('.lf:checked')].map(c => c.value.toLowerCase());
-      const types = [...document.querySelectorAll('.tf:checked')].map(c => c.value);
-      const exp = document.querySelector('.ef:checked')?.value || 'all';
-      const maxS = parseFloat(document.getElementById('salR').value);
-
-      let arr = fetchedJobs.filter(j => {
-        const mQ = !q || j.title.toLowerCase().includes(q) || j.co.toLowerCase().includes(q) || j.skills.some(s => s.toLowerCase().includes(q));
-        const mL = !locs.length || locs.some(l => j.loc.toLowerCase().includes(l));
-        const mT = !types.length || types.includes(j.type);
-        const mE = exp === 'all' || j.expV <= parseInt(exp);
-        const mS = j.salMin <= maxS;
-        const mSk = !selSkills.length || selSkills.every(s => j.skills.includes(s));
-        return mQ && mL && mT && mE && mS && mSk;
+    function renderDynamicFilters(jobs) {
+      // 1. Locations
+      const locCounts = {};
+      const typeCounts = {};
+      const skillCounts = {};
+      
+      jobs.forEach(j => {
+        const l = j.loc || 'Others';
+        locCounts[l] = (locCounts[l] || 0) + 1;
+        
+        const t = j.type || 'Full Time';
+        typeCounts[t] = (typeCounts[t] || 0) + 1;
+        
+        if(j.skills && Array.isArray(j.skills)) {
+          j.skills.forEach(s => skillCounts[s] = (skillCounts[s] || 0) + 1);
+        }
       });
+      
+      // Render Locations
+      const locList = document.getElementById('locList');
+      locList.innerHTML = Object.entries(locCounts).sort((a,b) => b[1] - a[1]).slice(0, 8).map(([l, c]) => `
+        <label class="fp-chk">
+          <input type="checkbox" class="lf" value="${l}">
+          <span>${l} <small style="color:var(--ts)">(${c})</small></span>
+        </label>
+      `).join('');
+      
+      // Render Types
+      const typeList = document.getElementById('typeList');
+      typeList.innerHTML = Object.entries(typeCounts).sort((a,b) => b[1] - a[1]).map(([t, c]) => `
+        <label class="fp-chk">
+          <input type="checkbox" class="tf" value="${t}">
+          <span>${t} <small style="color:var(--ts)">(${c})</small></span>
+        </label>
+      `).join('');
+      
+      // Render Skills
+      const skillList = document.getElementById('skillList');
+      skillList.innerHTML = Object.entries(skillCounts).sort((a,b) => b[1] - a[1]).slice(0, 10).map(([s, c]) => `
+        <span class="stag" onclick="togSk(this,'${s}')">${s} <small style="opacity:0.6">(${c})</small></span>
+      `).join('');
+    }
 
-      const s = document.getElementById('sortSel').value;
-      if (s === 'sh') arr = [...arr].sort((a, b) => b.salMin - a.salMin);
-      else if (s === 'sl') arr = [...arr].sort((a, b) => a.salMin - b.salMin);
-      else if (s === 'match') arr = [...arr].sort((a, b) => b.match - a.match);
+    function applyF() {
+      try {
+        if (!fetchedJobs) return;
+        const q = (document.getElementById('srch')?.value || '').toLowerCase();
+        const locs = [...document.querySelectorAll('.lf:checked')].map(c => c.value.toLowerCase());
+        const types = [...document.querySelectorAll('.tf:checked')].map(c => c.value.toLowerCase().replace(/[^a-z]/g, ''));
+        const exp = document.querySelector('.ef:checked')?.value || 'all';
+        const salInput = document.getElementById('salR');
+        const maxS = salInput ? parseFloat(salInput.value) : 20;
 
-      renderJobs(arr);
-      document.getElementById('loadBtn').style.display = 'none';
+        let arr = fetchedJobs.filter(j => {
+          const jLoc = (j.loc || '').toLowerCase().trim();
+          const jType = (j.type || 'Full Time').toLowerCase().replace(/[^a-z]/g, '');
+          const jExp = parseInt(j.exp) || 0;
+          const jSalaryNum = parseInt(j.salMin) || 0;
+
+          const mQ = !q || j.title.toLowerCase().includes(q) || j.co.toLowerCase().includes(q) || (j.skills && j.skills.some(s => s.toLowerCase().includes(q)));
+          const mL = !locs.length || locs.some(l => jLoc.includes(l.toLowerCase().trim()));
+          const mT = !types.length || types.some(t => jType.includes(t));
+          const mE = exp === 'all' || (exp === '0' ? jExp === 0 : (exp === '1' ? jExp <= 1 : jExp >= parseInt(exp)));
+          const mS = maxS === 20 || jSalaryNum <= (maxS * 100000);
+          const mSk = !selSkills.length || selSkills.every(s => j.skills && j.skills.includes(s));
+
+          return mQ && mL && mT && mE && mS && mSk;
+        });
+
+        const sortVal = document.getElementById('sortSel')?.value || 'newest';
+        if (sortVal === 'sh') arr = [...arr].sort((a, b) => (b.salMin || 0) - (a.salMin || 0));
+        else if (sortVal === 'sl') arr = [...arr].sort((a, b) => (a.salMin || 0) - (b.salMin || 0));
+        else if (sortVal === 'match') arr = [...arr].sort((a, b) => (b.match || 0) - (a.match || 0));
+        else if (sortVal === 'newest') arr = [...arr].sort((a, b) => new Date(b.posted || 0) - new Date(a.posted || 0));
+
+        renderJobs(arr);
+        const lb = document.getElementById('loadBtn');
+        if (lb) lb.style.display = 'none';
+        const jCntEl = document.getElementById('jcnt');
+        if (jCntEl) jCntEl.innerText = arr.length;
+      } catch (err) {
+        console.error("Filter error:", err);
+      }
     }
 
     document.addEventListener('change', e => { if (e.target.matches('.lf,.tf,.ef')) applyF() });
@@ -2382,8 +2553,8 @@
     async function submitApp() {
       const session = getSession();
       if (!session || !session.token) {
-        toast('Please login to apply for jobs.');
-        setTimeout(() => window.location.href = '../auth/login.html', 1500);
+        const loginModal = new bootstrap.Modal(document.getElementById('loginRequiredModal'));
+        loginModal.show();
         return;
       }
 
@@ -2427,14 +2598,7 @@
       document.getElementById('cvFile').value = '';
     }
 
-    // MOBILE FILTER DRAWER
     function openFD() {
-      document.getElementById('fdraw').innerHTML = `
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
-      <div style="font-family:'Syne',sans-serif;font-weight:700;display:flex;align-items:center;gap:6px"><i class="bi bi-funnel-fill" style="color:var(--purple)"></i>Filters</div>
-      <button onclick="closeFD()" style="background:none;border:none;color:var(--tm);font-size:1.2rem;cursor:pointer"><i class="bi bi-x-lg"></i></button>
-    </div>
-    ${document.getElementById('fpDesk').innerHTML}`;
       document.getElementById('fdraw').classList.add('open');
       document.getElementById('fov').classList.add('open');
     }
@@ -2442,12 +2606,103 @@
       document.getElementById('fdraw').classList.remove('open');
       document.getElementById('fov').classList.remove('open');
     }
+  </script>
 
+  <!-- UNIVERSAL FILTER DRAWER -->
+  <div id="fov" class="fov" onclick="closeFD()"></div>
+  <div id="fdraw" class="fdrawer" onclick="event.stopPropagation()">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;display:flex;align-items:center;gap:10px">
+        <i class="bi bi-funnel-fill" style="color:var(--purple)"></i>Advanced Filters
+      </div>
+      <button onclick="closeFD()" style="background:none;border:none;color:var(--tm);font-size:1.5rem;cursor:pointer">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+
+      <div class="fpanel">
+        <div class="d-flex align-items-center mb-4">
+          <span style="color:var(--tm);font-size:.85rem">Customise your search results</span>
+          <button class="btn-clr ms-auto" onclick="clearF()" style="font-size: 0.75rem; padding: 4px 10px;">Clear All</button>
+        </div>
+
+        <!-- CATEGORY: LOCATION -->
+        <div class="fp-sec">
+          <div class="fp-label d-flex justify-content-between">Location <i class="bi bi-geo-alt"></i></div>
+          <div class="fp-list" id="locList">
+            <div class="text-zinc-500" style="font-size: .8rem; padding: 10px 0;">Loading locations...</div>
+          </div>
+        </div>
+
+        <!-- CATEGORY: JOB TYPE -->
+        <div class="fp-sec">
+          <div class="fp-label d-flex justify-content-between">Job Type <i class="bi bi-briefcase"></i></div>
+          <div class="fp-list" id="typeList">
+            <div class="text-zinc-500" style="font-size: .8rem; padding: 10px 0;">Loading types...</div>
+          </div>
+        </div>
+
+        <!-- CATEGORY: EXPERIENCE -->
+        <div class="fp-sec">
+          <div class="fp-label">Experience</div>
+          <label class="fp-chk"><input type="radio" name="exp" class="ef" value="all" checked><span>All Experience</span></label>
+          <label class="fp-chk"><input type="radio" name="exp" class="ef" value="0"><span>Fresher (0 Yrs)</span></label>
+          <label class="fp-chk"><input type="radio" name="exp" class="ef" value="1"><span>0-1 Years</span></label>
+          <label class="fp-chk"><input type="radio" name="exp" class="ef" value="2"><span>1-2 Years</span></label>
+        </div>
+
+        <!-- CATEGORY: SALARY -->
+        <div class="fp-sec">
+          <div class="fp-label d-flex justify-content-between">Salary (LPA) <i class="bi bi-currency-rupee"></i></div>
+          <input type="range" min="0" max="20" value="20" id="salR" oninput="updSal(this.value)" style="width:100%;accent-color:var(--purple);margin-top:8px">
+          <div style="display:flex;justify-content:space-between;font-size:.73rem;color:var(--td);margin-top:3px">
+            <span>₹0L</span><span id="salLbl" style="font-weight:700;color:var(--purple)">Any</span><span>₹20L+</span>
+          </div>
+        </div>
+
+        <!-- CATEGORY: POPULAR SKILLS -->
+        <div class="fp-sec" style="border:none">
+          <div class="fp-label d-flex justify-content-between">Skills <i class="bi bi-stars"></i></div>
+          <div class="d-flex flex-wrap gap-2 mt-2" id="skillList">
+            <div class="text-zinc-500" style="font-size: .8rem; padding: 10px 0;">Loading skills...</div>
+          </div>
+        
+        <div class="d-flex gap-3 mt-4">
+          <button class="btn btn-outline-secondary w-50 py-2 rounded-3" style="font-size: 0.85rem;" onclick="clearF(); closeFD()">Reset</button>
+          <button class="btn-purple w-50 py-2 rounded-3" style="font-size: 0.85rem;" onclick="applyF(); closeFD()">Apply</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/config.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/main.js"></script>
+  <script>
     // INIT
     fetchJobs();
+    document.querySelector('a[href="/jobs"]').classList.add('active');
   </script>
-  <script src="../../js/config.js"></script>
-  <script src="../../js/auth.js"></script>
+
+  <!-- Login Required Modal -->
+  <div class="modal fade" id="loginRequiredModal" tabindex="-1" aria-hidden="true" style="backdrop-filter: blur(8px);">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content themed">
+        <div class="modal-body text-center p-5">
+          <div class="mb-4" style="font-size: 3.5rem; color: var(--purple);">
+            <i class="bi bi-person-lock"></i>
+          </div>
+          <h4 class="fw-800 mb-3" style="font-family: 'Syne', sans-serif; font-weight: 700; color: #fff;">Sign In to Apply</h4>
+          <p style="color: var(--ts); margin-bottom: 30px; line-height: 1.6; font-size: 0.9rem;">You need to be logged in as a Job Seeker to apply for this position and track your applications.</p>
+          <div class="d-grid gap-3">
+            <a href="../auth/login.html" class="btn btn-purple py-3 fw-bold rounded-3 text-decoration-none">Log In Now</a>
+            <a href="../auth/register.html" class="btn btn-outline-secondary py-3 rounded-3 text-decoration-none" style="border-color: rgba(255,255,255,0.1); color: #cbd5e1;">Create an Account</a>
+          </div>
+          <button type="button" class="btn btn-sm mt-4" data-bs-dismiss="modal" style="color: var(--ts); border: none; font-size: 0.8rem;">Not Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>

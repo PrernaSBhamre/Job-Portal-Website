@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    setupAuthNav();
     fetchCompanies();
 });
 
@@ -137,17 +136,3 @@ function filterCompanies() {
     renderCompanies(filtered);
 }
 
-function setupAuthNav() {
-    const session = getSession();
-    const authArea = document.getElementById('navAuthArea');
-    if (session && session.user) {
-        let dash = '../seeker/dashboard.html';
-        if (session.user.role === 'recruiter') dash = '../employer/dashboard.html';
-        if (session.user.role === 'admin') dash = 'http://localhost:5173';
-        
-        authArea.innerHTML = `
-            <a href="${dash}" class="btn-signup" style="background:var(--card);color:#fff;border:1px solid var(--border);">Dashboard</a>
-            <button onclick="logout()" class="btn-login" style="background:none;border:none;">Logout</button>
-        `;
-    }
-}

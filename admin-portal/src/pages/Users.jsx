@@ -11,10 +11,10 @@ import {
   Avatar, 
   Tooltip, 
   Popconfirm, 
-  message,
   Tabs,
   Badge,
-  Dropdown
+  Dropdown,
+  App
 } from 'antd';
 import { 
   SearchOutlined, 
@@ -27,7 +27,8 @@ import {
   MoreOutlined,
   MailOutlined,
   TeamOutlined,
-  ShopOutlined
+  ShopOutlined,
+  AlertOutlined
 } from '@ant-design/icons';
 import api from '../utils/api';
 import dayjs from 'dayjs';
@@ -36,6 +37,7 @@ const { Title, Text } = Typography;
 const { Option } = Select;
 
 const Users = () => {
+  const { message } = App.useApp();
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
   const [total, setTotal] = useState(0);
@@ -75,6 +77,24 @@ const Users = () => {
       }
     } catch (err) {
       message.error('Update failed');
+    }
+  };
+
+  const handleSuspiciousToggle = async (id, isSuspicious) => {
+    try {
+      let reason = '';
+      if (isSuspicious) {
+        reason = window.prompt('Reason for flagging:');
+        if (!reason) return;
+      }
+      
+      const res = await api.put(`/admin/users/${id}/flag`, { isSuspicious, reason });
+      if (res.data.success) {
+        message.success(res.data.message);
+        fetchUsers();
+      }
+    } catch (err) {
+      message.error('Toggle flag failed');
     }
   };
 
@@ -118,22 +138,31 @@ const Users = () => {
     },
     {
       title: 'Trust Status',
-      dataIndex: 'isVerified',
-      key: 'isVerified',
-      render: (verified) => (
-        <Tag color={verified ? 'purple' : 'orange'} className="rounded-lg border-0 bg-opacity-10 px-3 uppercase text-[10px] font-black tracking-widest">
-          {verified ? 'Trusted' : 'Unverified'}
-        </Tag>
+      key: 'trust',
+      render: (_, record) => (
+        <Space direction="vertical" size={4}>
+          <Tag color={record.isVerified ? 'purple' : 'orange'} className="rounded-lg border-0 bg-opacity-10 px-3 uppercase text-[10px] font-black tracking-widest">
+            {record.isVerified ? 'Trusted' : 'Unverified'}
+          </Tag>
+          {record.isSuspicious && (
+            <Tooltip title={record.suspensionReason || 'Automated match'}>
+              <Tag color="red" className="rounded-lg border-0 bg-opacity-10 px-3 uppercase text-[10px] font-black tracking-widest cursor-help">
+                Flagged
+              </Tag>
+            </Tooltip>
+          )}
+        </Space>
       ),
     },
     {
       title: 'Access Control',
-      dataIndex: 'isBlocked',
-      key: 'isBlocked',
-      render: (blocked) => (
-        <Tag color={blocked ? 'red' : 'blue'} className="rounded-lg border-0 bg-opacity-10 px-3 uppercase text-[10px] font-black tracking-widest">
-          {blocked ? 'Blocked' : 'Full Access'}
-        </Tag>
+      key: 'access',
+      render: (_, record) => (
+        <Space direction="vertical" size={4}>
+          <Tag color={record.isBlocked ? 'red' : 'blue'} className="rounded-lg border-0 bg-opacity-10 px-3 uppercase text-[10px] font-black tracking-widest">
+            {record.isBlocked ? 'Blocked' : 'Full Access'}
+          </Tag>
+        </Space>
       ),
     },
     {
@@ -166,6 +195,12 @@ const Users = () => {
               label: record.isBlocked ? 'Unblock' : 'Block User',
               danger: !record.isBlocked,
               onClick: () => handleStatusUpdate(record._id, { isBlocked: !record.isBlocked }),
+            },
+            {
+              key: 'flag',
+              icon: <AlertOutlined />,
+              label: record.isSuspicious ? 'Remove Flag' : 'Flag suspicious',
+              onClick: () => handleSuspiciousToggle(record._id, !record.isSuspicious),
             },
             {
               type: 'divider',
@@ -256,6 +291,7 @@ const Users = () => {
                 <Option value="verified">Verified Only</Option>
                 <Option value="unverified">Unverified</Option>
                 <Option value="blocked">Blocked</Option>
+                <Option value="suspicious">Suspicious / Flagged</Option>
               </Select>
             </Space>
             <Text type="secondary">{total} Total found</Text>

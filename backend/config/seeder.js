@@ -124,7 +124,9 @@ const importData = async () => {
         position: 5,
         tags: ['React', 'TypeScript', 'Tailwind'],
         company: techNovaId,
-        created_by: recruiterId
+        created_by: recruiterId,
+        isApproved: true,
+        status: 'approved'
       },
       {
         title: 'Fresher UI/UX Designer',
@@ -137,7 +139,9 @@ const importData = async () => {
         position: 2,
         tags: ['Figma', 'Adobe XD', 'Prototyping'],
         company: creativePulseId,
-        created_by: recruiterId
+        created_by: recruiterId,
+        isApproved: true,
+        status: 'approved'
       },
       {
         title: 'Software Engineer',
@@ -150,7 +154,9 @@ const importData = async () => {
         position: 20,
         tags: ['Java', 'Spring Boot', 'SQL'],
         company: infosysId,
-        created_by: recruiterId
+        created_by: recruiterId,
+        isApproved: true,
+        status: 'approved'
       },
       {
         title: 'Frontend Dev Intern',
@@ -163,7 +169,9 @@ const importData = async () => {
         position: 3,
         tags: ['HTML', 'CSS', 'JavaScript'],
         company: startupIncId,
-        created_by: recruiterId
+        created_by: recruiterId,
+        isApproved: true,
+        status: 'approved'
       },
       {
         title: 'Python Developer',
@@ -176,7 +184,9 @@ const importData = async () => {
         position: 4,
         tags: ['Python', 'Django', 'PostgreSQL'],
         company: dataFlowId,
-        created_by: recruiterId
+        created_by: recruiterId,
+        isApproved: true,
+        status: 'approved'
       },
       {
         title: 'QA Automation Eng.',
@@ -189,7 +199,9 @@ const importData = async () => {
         position: 5,
         tags: ['Selenium', 'Java', 'Testing'],
         company: qualityFirstId,
-        created_by: recruiterId
+        created_by: recruiterId,
+        isApproved: true,
+        status: 'approved'
       }
     ]);
 
@@ -200,12 +212,14 @@ const importData = async () => {
       {
         job: jobs[0]._id, // React Developer
         applicant: studentArjun,
-        status: 'pending' 
+        status: 'Applied',
+        resume: 'uploads/sample-resume.pdf'
       },
       {
         job: jobs[1]._id, // UI Designer
         applicant: studentPriya,
-        status: 'accepted'
+        status: 'Shortlisted',
+        resume: 'uploads/sample-resume.pdf'
       }
     ]);
 

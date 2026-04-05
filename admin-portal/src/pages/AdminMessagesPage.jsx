@@ -77,8 +77,15 @@ const AdminMessagesPage = () => {
       key: 'content',
       width: '40%',
       render: (_, record) => (
-        <div className="flex flex-col py-2">
-          <Text strong className="text-violet-400 capitalize">{record.subject}</Text>
+        <div className="flex flex-col py-2 gap-1">
+          <Space>
+            <Text strong className="text-violet-400 capitalize">{record.subject}</Text>
+            {record.type && record.type !== 'inquiry' && (
+              <Tag color="cyan" className="text-[9px] font-black uppercase border-0 bg-opacity-20 px-1.5 leading-tight">
+                {record.type.replace('_', ' ')}
+              </Tag>
+            )}
+          </Space>
           <Paragraph ellipsis={{ rows: 2, expandable: true, symbol: 'more' }} className="text-zinc-400 mb-0 italic">
             "{record.message}"
           </Paragraph>

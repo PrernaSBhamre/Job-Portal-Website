@@ -8,7 +8,11 @@ import {
   RiseOutlined, 
   FallOutlined, 
   SyncOutlined,
-  ArrowRightOutlined 
+  ArrowRightOutlined,
+  ClockCircleOutlined,
+  AuditOutlined,
+  DollarOutlined,
+  AlertOutlined 
 } from '@ant-design/icons';
 import { Area, Pie } from '@ant-design/plots';
 import api from '../utils/api';
@@ -22,32 +26,49 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
 
-  const fetchStats = async () => {
+  useEffect(() => {
+    fetchStats();
+    // Auto-refresh every 30 seconds for specific "Dynamic" behavior
+    const interval = setInterval(() => {
+      fetchStats(true); // pass true to skip full loading state if desired
+    }, 30000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const fetchStats = async (isPoll = false) => {
     try {
-      setLoading(true);
+      if (!isPoll) setLoading(true);
       const res = await api.get('/admin/stats');
       if (res.data.success) {
         setData(res.data);
+        if (isPoll && (res.data.fraudDetection?.newlyFlaggedUsers > 0 || res.data.fraudDetection?.newlyFlaggedJobs > 0)) {
+          notification.warning({
+            title: 'New Security Alerts',
+            description: `Detected ${res.data.fraudDetection.newlyFlaggedUsers} suspicious users and ${res.data.fraudDetection.newlyFlaggedJobs} suspicious jobs.`
+          });
+        }
       }
     } catch (err) {
-      notification.error({
-        message: 'Stats Loading Failed', // Using 'message' as some antd versions still use it, but antd App usually maps it.
-        description: err.response?.data?.message || 'Failed to fetch dashboard data.'
-      });
+      if (!isPoll) {
+        notification.error({
+          title: 'Stats Loading Failed',
+          description: err.response?.data?.message || 'Failed to fetch dashboard data.'
+        });
+      }
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchStats();
-  }, []);
-
   const statCards = [
     { title: 'Total Users', value: data?.totals?.users, icon: <UserOutlined />, color: '#8b5cf6', trend: '+12%', up: true },
     { title: 'Employers', value: data?.totals?.employers, icon: <ShopOutlined />, color: '#0ea5e9', trend: '+5%', up: true },
     { title: 'Active Jobs', value: data?.totals?.approvedJobs, icon: <FileTextOutlined />, color: '#10b981', trend: '+18%', up: true },
-    { title: 'Resources', value: data?.totals?.resources, icon: <BookOutlined />, color: '#f59e0b', trend: '+7%', up: true },
+    { title: 'Pending Review', value: data?.totals?.pendingJobs, icon: <ClockCircleOutlined />, color: '#f59e0b', trend: 'Waitlist', up: false },
+    { title: 'Applications', value: data?.totals?.applications, icon: <AuditOutlined />, color: '#ec4899', trend: '+24%', up: true },
+    { title: 'Revenue Total', value: `$${data?.totals?.totalRevenue?.toLocaleString()}`, icon: <DollarOutlined />, color: '#10b981', trend: 'Lifetime', up: true },
+    { title: 'Revenue Today', value: `$${data?.totals?.revenueToday?.toLocaleString()}`, icon: <RiseOutlined />, color: '#8b5cf6', trend: 'Daily', up: true },
+    { title: 'Reports', value: data?.totals?.unresolvedReports, icon: <AlertOutlined />, color: '#ef4444', trend: 'Critical', up: false },
   ];
 
   const recentUserColumns = [
@@ -205,6 +226,60 @@ const Dashboard = () => {
             className="bg-zinc-950 border-zinc-800/50 rounded-2xl h-full shadow-lg"
           >
              <Pie {...roleConfig} height={300} />
+          </Card>
+        </Col>
+      </Row>
+
+      {/* Action Queues Section */}
+      <Row gutter={[24, 24]}>
+        <Col xs={24} lg={12}>
+          <Card 
+            title={
+              <Space>
+                <ClockCircleOutlined className="text-orange-400" />
+                <Title level={4} style={{ margin: 0, color: '#fff' }}>Pending Jobs Queue</Title>
+              </Space>
+            }
+            className="bg-zinc-950 border-zinc-800/50 rounded-2xl shadow-lg"
+          >
+            <Table 
+              columns={[
+                { title: 'Job Title', dataIndex: 'title', key: 'title', render: (t) => <Text strong className="text-zinc-200">{t}</Text> },
+                { title: 'Company', dataIndex: ['company', 'name'], key: 'company' },
+                { title: 'Posted', dataIndex: 'createdAt', key: 'createdAt', render: (d) => dayjs(d).fromNow() },
+                { title: 'Action', key: 'action', render: (_, r) => <Button type="link" size="small" href={`/admin/jobs?id=${r._id}`}>Review</Button> }
+              ]} 
+              dataSource={data?.actionQueue?.pendingJobs || []} 
+              pagination={false}
+              size="small"
+              className="admin-table-dark"
+              rowKey="_id"
+            />
+          </Card>
+        </Col>
+        <Col xs={24} lg={12}>
+          <Card 
+            title={
+              <Space>
+                <AlertOutlined className="text-rose-400" />
+                <Title level={4} style={{ margin: 0, color: '#fff' }}>Reports Review Queue</Title>
+              </Space>
+            }
+            className="bg-zinc-950 border-zinc-800/50 rounded-2xl shadow-lg"
+          >
+            <Table 
+              columns={[
+                { title: 'Subject', dataIndex: 'subject', key: 'subject', render: (t) => <Text strong className="text-zinc-200">{t}</Text> },
+                { title: 'Type', dataIndex: 'type', key: 'type', render: (t) => <Tag color="error">{t}</Tag> },
+                { title: 'Date', dataIndex: 'createdAt', key: 'createdAt', render: (d) => dayjs(d).format('DD MMM') },
+                { title: 'Action', key: 'action', render: (_, r) => <Button type="link" size="small">Resolve</Button> }
+              ]} 
+              dataSource={data?.actionQueue?.pendingReports || []} 
+              pagination={false}
+              size="small"
+              className="admin-table-dark"
+              rowKey="_id"
+            />
           </Card>
         </Col>
       </Row>

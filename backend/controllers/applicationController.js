@@ -195,10 +195,31 @@ const withdrawApplication = async (req, res, next) => {
   }
 };
 
+// @desc    Check if a user has already applied for a job
+// @route   GET /api/applications/check/:jobId
+// @access  Private
+const checkApplicationStatus = async (req, res, next) => {
+  try {
+    const applicationId = await Application.findOne({ 
+      job: req.params.jobId, 
+      applicant: req.user.id 
+    });
+    
+    if (applicationId) {
+      return res.json({ applied: true, applicationId: applicationId._id });
+    }
+    
+    res.json({ applied: false });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   applyForJob,
   getAppliedJobs,
   getApplicants,
   updateStatus,
   withdrawApplication,
+  checkApplicationStatus,
 };

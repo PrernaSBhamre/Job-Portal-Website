@@ -80,6 +80,18 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: true // Default true to maintain existing users
     },
+    reportCount: {
+      type: Number,
+      default: 0
+    },
+    isSuspicious: {
+      type: Boolean,
+      default: false
+    },
+    suspensionReason: {
+      type: String,
+      default: ""
+    },
     lastLogin: {
       type: Date
     },

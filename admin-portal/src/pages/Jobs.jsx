@@ -10,8 +10,8 @@ import {
   Typography, 
   Tooltip, 
   Popconfirm, 
-  message,
   Badge,
+  App,
 } from 'antd';
 import { 
   SearchOutlined, 
@@ -24,7 +24,8 @@ import {
   BlockOutlined,
   DollarOutlined,
   EnvironmentOutlined,
-  ShopOutlined
+  ShopOutlined,
+  AlertOutlined
 } from '@ant-design/icons';
 import api from '../utils/api';
 import dayjs from 'dayjs';
@@ -33,6 +34,7 @@ const { Title, Text } = Typography;
 const { Option } = Select;
 
 const Jobs = () => {
+  const { message } = App.useApp();
   const [loading, setLoading] = useState(false);
   const [jobs, setJobs] = useState([]);
   const [total, setTotal] = useState(0);
@@ -74,6 +76,18 @@ const Jobs = () => {
     }
   };
 
+  const handleSuspiciousToggle = async (id, isSuspicious) => {
+    try {
+      const res = await api.put(`/admin/jobs/${id}/status`, { isSuspicious });
+      if (res.data.success) {
+        message.success(isSuspicious ? 'Job flagged as suspicious' : 'Flag removed');
+        fetchJobs();
+      }
+    } catch (err) {
+      message.error('Toggle flag failed');
+    }
+  };
+
   const handleDelete = async (id) => {
     try {
       const res = await api.delete(`/admin/jobs/${id}`);
@@ -112,19 +126,25 @@ const Jobs = () => {
     },
     {
       title: 'Status',
-      dataIndex: 'status',
       key: 'status',
-      render: (status) => {
+      render: (_, record) => {
         let color = 'default';
-        if (status === 'approved') color = 'purple';
-        if (status === 'pending') color = 'gold';
-        if (status === 'rejected') color = 'rose';
-        if (status === 'closed') color = 'zinc';
+        if (record.status === 'approved') color = 'purple';
+        if (record.status === 'pending') color = 'gold';
+        if (record.status === 'rejected') color = 'rose';
+        if (record.status === 'closed') color = 'zinc';
         
         return (
-          <Tag color={color} className="rounded-lg border-0 bg-opacity-10 px-3 uppercase text-[10px] font-black tracking-widest">
-            {status}
-          </Tag>
+          <Space direction="vertical" size={4}>
+            <Tag color={color} className="rounded-lg border-0 bg-opacity-10 px-3 uppercase text-[10px] font-black tracking-widest">
+              {record.status}
+            </Tag>
+            {record.isSuspicious && (
+              <Tag color="red" className="rounded-lg border-0 bg-opacity-10 px-3 uppercase text-[10px] font-black tracking-widest">
+                Suspicious
+              </Tag>
+            )}
+          </Space>
         );
       },
     },
@@ -192,6 +212,14 @@ const Jobs = () => {
              </Tooltip>
           )}
 
+          <Tooltip title={record.isSuspicious ? 'Remove Flag' : 'Flag as Suspicious'}>
+            <Button 
+              type="text" 
+              icon={<AlertOutlined className={record.isSuspicious ? 'text-rose-500' : 'text-zinc-500'} />} 
+              onClick={() => handleSuspiciousToggle(record._id, !record.isSuspicious)}
+            />
+          </Tooltip>
+
           <Popconfirm title="Delete this job forever?" onConfirm={() => handleDelete(record._id)} okText="Yes, delete" cancelText="No" okButtonProps={{ danger: true }}>
             <Button type="text" icon={<DeleteOutlined className="text-zinc-500 hover:text-rose-500" />} />
           </Popconfirm>
@@ -226,6 +254,7 @@ const Jobs = () => {
             <Option value="approved">Approved</Option>
             <Option value="closed">Closed</Option>
             <Option value="rejected">Rejected</Option>
+            <Option value="suspicious">Suspicious</Option>
           </Select>
         </Space>
       </div>

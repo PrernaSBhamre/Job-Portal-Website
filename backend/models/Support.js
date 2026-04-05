@@ -23,6 +23,15 @@ const supportSchema = new mongoose.Schema(
       enum: ['unresolved', 'resolved'],
       default: 'unresolved',
     },
+    type: {
+      type: String,
+      enum: ['inquiry', 'job_report', 'user_report', 'company_report', 'other'],
+      default: 'inquiry',
+    },
+    targetId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: false,
+    },
   },
   { timestamps: true }
 );

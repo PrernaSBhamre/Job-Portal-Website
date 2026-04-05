@@ -19,6 +19,8 @@ const createJob = async (req, res, next) => {
       tags,
       company,
       created_by: req.user.id,
+      status: 'pending',
+      isApproved: false
     });
 
     res.status(201).json(job);

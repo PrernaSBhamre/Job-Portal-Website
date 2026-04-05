@@ -94,13 +94,17 @@ const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 // If it's not an API call and not a file, send the main index.html for SPA-like behavior in main site
 // --- SPA Support ---
 // If it's not an API call, serve the main frontend index.html
-// Temporarily disabled to prevent crash at line 86
-// app.get('*', (req, res, next) => {
-//     if (req.originalUrl.startsWith('/api')) {
-//         return next();
-//     }
-//     res.sendFile(path.resolve(__dirname, '..', 'frontend', 'index.html'));
-// });
+// Using * wildcard for Express 5 compatibility, but only if the URL doesn't look like a file or sub-page
+app.get('*splat', (req, res, next) => {
+    const isApi = req.originalUrl.startsWith('/api');
+    const isAdmin = req.originalUrl.startsWith('/admin-portal');
+    const isFile = req.originalUrl.includes('.') || req.originalUrl.includes('/pages/');
+
+    if (isApi || isAdmin || isFile) {
+        return next();
+    }
+    res.sendFile(path.resolve(__dirname, '..', 'frontend', 'index.html'));
+});
 
 app.use(notFound);
 app.use(errorHandler);

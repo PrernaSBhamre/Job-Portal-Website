@@ -6,12 +6,15 @@ const {
   getApplicants,
   updateStatus,
   withdrawApplication,
+  checkApplicationStatus,
 } = require('../controllers/applicationController');
 const { protect, isRecruiter } = require('../middleware/authMiddleware');
 const uploadResume = require('../middleware/uploadMiddleware');
 
 router.route('/user')
   .get(protect, getAppliedJobs);
+
+router.get('/check/:jobId', protect, checkApplicationStatus);
 
 router.route('/job/:jobId')
   .post(protect, uploadResume.single('resume'), applyForJob)

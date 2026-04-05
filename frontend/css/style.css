@@ -1,0 +1,33 @@
+/* Utility styles and mobile overrides */
+@media (max-width: 991px) {
+  .nav-pill {
+    display: none !important;
+  }
+  .auth-btns {
+    gap: 12px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.2rem !important;
+  }
+  .hero-search {
+    flex-direction: column;
+    padding: 15px !important;
+  }
+  .search-blk {
+    width: 100%;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .s-divider {
+    display: none;
+  }
+  .btn-search {
+    width: 100%;
+    margin-top: 15px;
+  }
+  .job-grid {
+    grid-template-columns: 1fr !important;
+  }
+}

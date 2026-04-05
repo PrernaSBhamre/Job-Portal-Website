@@ -6,6 +6,86 @@ const Support = require('../models/Support');
 const Resource = require('../models/Resource');
 const Admin = require('../models/Admin');
 const Setting = require('../models/Setting');
+const Transaction = require('../models/Transaction');
+const AuditLog = require('../models/AuditLog');
+
+// Helper to log admin actions
+const logAdminAction = async (req, action, targetType, targetId, description) => {
+  try {
+    await AuditLog.create({
+      adminId: req.user?._id,
+      action,
+      targetType,
+      targetId,
+      description,
+      ipAddress: req.ip,
+      userAgent: req.get('User-Agent')
+    });
+  } catch (err) {
+    console.error('Audit Log Error:', err);
+  }
+};
+
+/**
+ * @desc    Automated Fraud Detection Engine
+ * Checks for patterns like application spam, fake jobs, or high report counts
+ */
+const runFraudDetection = async () => {
+  const flags = {
+    suspiciousUsers: [],
+    suspiciousJobs: [],
+  };
+
+  try {
+    // Rule 1: High Report Count (> 5) -> auto-flag user
+    const highlyReportedUsers = await User.find({ reportCount: { $gt: 5 }, isSuspicious: false });
+    for (const user of highlyReportedUsers) {
+      user.isSuspicious = true;
+      user.suspensionReason = "Automated Flag: High report count (>5)";
+      await user.save();
+      flags.suspiciousUsers.push(user._id);
+    }
+
+    // Rule 2: Employer posting too many jobs (> 10 in 24h) -> flag employer
+    const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+    const aggressiveEmployers = await Job.aggregate([
+      { $match: { createdAt: { $gte: oneDayAgo } } },
+      { $group: { _id: "$created_by", count: { $sum: 1 } } },
+      { $match: { count: { $gt: 10 } } }
+    ]);
+
+    for (const emp of aggressiveEmployers) {
+      const user = await User.findById(emp._id);
+      if (user && !user.isSuspicious) {
+        user.isSuspicious = true;
+        user.suspensionReason = `Automated Flag: Rapid job posting (${emp.count} in 24h)`;
+        await user.save();
+        flags.suspiciousUsers.push(user._id);
+      }
+    }
+
+    // Rule 3: Job with missing company data or suspicious keywords
+    const suspiciousKeywords = ['urgent money', 'whatsapp only', 'pay to join'];
+    const suspiciousJobs = await Job.find({
+      $or: [
+        { description: { $regex: suspiciousKeywords.join('|'), $options: 'i' } },
+        { eligibility: { $regex: suspiciousKeywords.join('|'), $options: 'i' } }
+      ],
+      isSuspicious: false
+    });
+
+    for (const job of suspiciousJobs) {
+      job.isSuspicious = true;
+      await job.save();
+      flags.suspiciousJobs.push(job._id);
+    }
+
+    return flags;
+  } catch (err) {
+    console.error('Fraud Detection Error:', err);
+    return flags;
+  }
+};
 
 // @desc    Get dashboard statistics with daily trends and detailed counts
 // @route   GET /api/admin/stats
@@ -37,18 +117,27 @@ const getDashboardStats = async (req, res, next) => {
     const verifiedCompanies = await Company.countDocuments({ isVerified: true });
     
     const resourceCount = await Resource.countDocuments();
+    const unresolvedReports = await Support.countDocuments({ status: 'unresolved' });
+    const suspiciousUsersCount = await User.countDocuments({ isSuspicious: true });
+    const suspiciousJobsCount = await Job.countDocuments({ isSuspicious: true });
+
+    // Revenue Calculation (Mock/Real from Transactions)
+    const revenueStats = await Transaction.aggregate([
+      { $group: { _id: null, total: { $sum: "$amount" } } }
+    ]);
+    const totalRevenue = revenueStats.length > 0 ? revenueStats[0].total : 0;
+
+    const todayRevenueStats = await Transaction.aggregate([
+      { $match: { createdAt: { $gte: today } } },
+      { $group: { _id: null, total: { $sum: "$amount" } } }
+    ]);
+    const revenueToday = todayRevenueStats.length > 0 ? todayRevenueStats[0].total : 0;
 
     // Growth Trends (Last 7 days)
     const last7Days = await Job.aggregate([
       {
         $match: {
           createdAt: { $gte: new Date(new Date().setDate(new Date().getDate() - 7)) }
-        }
-      },
-      {
-        $group: {
-          _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
-          count: { $sum: 1 }
         }
       },
       { $sort: { _id: 1 } }
@@ -78,6 +167,16 @@ const getDashboardStats = async (req, res, next) => {
       .populate('job', 'title')
       .populate('applicant', 'fullname email profilePhoto');
 
+    // Run Automated Fraud Detection
+    const fraudFlags = await runFraudDetection();
+
+    // Action Queue Data (Pending specific actions)
+    const actionQueue = {
+      pendingJobs: await Job.find({ status: 'pending' }).sort({ createdAt: -1 }).limit(10).populate('company', 'name'),
+      pendingReports: await Support.find({ status: 'unresolved' }).sort({ createdAt: -1 }).limit(10),
+      flaggedUsers: await User.find({ isSuspicious: true }).limit(10).select('fullname email suspensionReason'),
+    };
+
     res.json({
       success: true,
       totals: {
@@ -92,9 +191,13 @@ const getDashboardStats = async (req, res, next) => {
         jobsToday,
         applications: applicationCount,
         appsToday,
-        companies: companyCount,
         verifiedCompanies,
-        resources: resourceCount
+        resources: resourceCount,
+        unresolvedReports,
+        suspiciousUsers: suspiciousUsersCount,
+        suspiciousJobs: suspiciousJobsCount,
+        totalRevenue,
+        revenueToday
       },
       trends: last7Days,
       roleDistribution: roleDist,
@@ -102,6 +205,12 @@ const getDashboardStats = async (req, res, next) => {
         users: recentUsers,
         jobs: recentJobs,
         applications: recentApplications,
+        unresolvedReports: await Support.find({ status: 'unresolved' }).sort({ createdAt: -1 }).limit(5)
+      },
+      actionQueue,
+      fraudDetection: {
+        newlyFlaggedUsers: fraudFlags.suspiciousUsers.length,
+        newlyFlaggedJobs: fraudFlags.suspiciousJobs.length
       }
     });
   } catch (error) {
@@ -170,6 +279,10 @@ const updateUserStatus = async (req, res, next) => {
     if (role !== undefined) user.role = role;
 
     await user.save();
+    
+    // Log Activity
+    await logAdminAction(req, 'update_user_status', 'User', user._id, `Updated status for ${user.fullname}: Verified=${isVerified}, Blocked=${isBlocked}, Role=${role}`);
+
     res.json({ success: true, message: 'User status updated successfully', user });
   } catch (error) {
     next(error);
@@ -237,6 +350,9 @@ const updateJobStatus = async (req, res, next) => {
     if (isFeatured !== undefined) job.isFeatured = isFeatured;
 
     await job.save();
+
+    // Log Activity
+    await logAdminAction(req, 'update_job_status', 'Job', job._id, `Updated job '${job.title}' status to ${status}, featured=${isFeatured}`);
 
     // Create Notification for the Job Owner (Employer)
     if (status === 'approved') {
@@ -322,6 +438,10 @@ const updateCompanyStatus = async (req, res, next) => {
 
     company.isVerified = isVerified;
     await company.save();
+    
+    // Log Activity
+    await logAdminAction(req, 'update_company_status', 'Company', company._id, `Updated verification status for ${company.name} to ${isVerified}`);
+
     res.json({ success: true, message: 'Company verification updated' });
   } catch (error) {
     next(error);
@@ -334,7 +454,13 @@ const deleteUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id);
     if (!user) return res.status(404).json({ success: false, message: 'User not found' });
+    
+    const userName = user.fullname;
     await User.deleteOne({ _id: user._id });
+    
+    // Log Activity
+    await logAdminAction(req, 'delete_user', 'User', user._id, `Deleted user account: ${userName} (${user.email})`);
+
     res.json({ success: true, message: 'User removed' });
   } catch (error) {
     next(error);
@@ -345,7 +471,13 @@ const deleteJob = async (req, res, next) => {
   try {
     const job = await Job.findById(req.params.id);
     if (!job) return res.status(404).json({ success: false, message: 'Job not found' });
+    
+    const jobTitle = job.title;
     await Job.deleteOne({ _id: job._id });
+    
+    // Log Activity
+    await logAdminAction(req, 'delete_job', 'Job', job._id, `Deleted job post: ${jobTitle}`);
+
     res.json({ success: true, message: 'Job removed' });
   } catch (error) {
     next(error);
@@ -411,6 +543,10 @@ const updateResource = async (req, res, next) => {
       { new: true, runValidators: true }
     );
     if (!resource) return res.status(404).json({ success: false, message: 'Resource not found' });
+    
+    // Log Activity
+    await logAdminAction(req, 'update_resource', 'Resource', resource._id, `Updated resource: ${resource.title}`);
+
     res.json({ success: true, message: 'Resource updated successfully', resource });
   } catch (error) {
     next(error);
@@ -423,7 +559,13 @@ const deleteResource = async (req, res, next) => {
   try {
     const resource = await Resource.findById(req.params.id);
     if (!resource) return res.status(404).json({ success: false, message: 'Resource not found' });
+    
+    const title = resource.title;
     await resource.deleteOne();
+    
+    // Log Activity
+    await logAdminAction(req, 'delete_resource', 'Resource', resource._id, `Deleted resource: ${title}`);
+
     res.json({ success: true, message: 'Resource removed successfully' });
   } catch (error) {
     next(error);
@@ -516,22 +658,96 @@ const getSettings = async (req, res, next) => {
     next(error);
   }
 };
-
 // @desc    Update system settings
 // @route   PUT /api/admin/settings
 const updateSettings = async (req, res, next) => {
   try {
-    const settings = await Setting.getSingleton();
-    Object.assign(settings, req.body);
-    settings.updatedAt = Date.now();
-    await settings.save();
+    const settings = await Setting.findOneAndUpdate({}, req.body, {
+      new: true,
+      upsert: true,
+      runValidators: true
+    });
+
+    // Log Activity
+    await logAdminAction(req, 'update_settings', 'Setting', settings._id, 'Updated system-wide settings');
+
     res.json({ success: true, message: 'Settings updated successfully', settings });
   } catch (error) {
     next(error);
   }
 };
 
+// --- Action Queue Resolutions ---
 
+// @desc    Resolve a support report
+// @route   PUT /api/admin/reports/:id/resolve
+const resolveReport = async (req, res, next) => {
+  try {
+    const report = await Support.findById(req.params.id);
+    if (!report) return res.status(404).json({ success: false, message: 'Report not found' });
+
+    report.status = 'resolved';
+    await report.save();
+
+    // Log Activity
+    await logAdminAction(req, 'resolve_report', 'Report', report._id, `Resolved support report: ${report.subject}`);
+
+    res.json({ success: true, message: 'Report marked as resolved' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Toggle user suspicious flag
+// @route   PUT /api/admin/users/:id/flag
+const toggleUserFlag = async (req, res, next) => {
+  try {
+    const { isSuspicious, reason } = req.body;
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ success: false, message: 'User not found' });
+
+    user.isSuspicious = isSuspicious;
+    if (reason) user.suspensionReason = reason;
+    
+    await user.save();
+
+    // Log Activity
+    await logAdminAction(req, 'toggle_user_flag', 'User', user._id, `${isSuspicious ? 'Flagged' : 'Unflagged'} user account: ${user.fullname}. Reason: ${reason || 'N/A'}`);
+
+    res.json({ success: true, message: `User ${isSuspicious ? 'flagged' : 'unflagged'} successfully`, user });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+
+// @desc    Get all audit logs
+// @route   GET /api/admin/audit-logs
+const getAuditLogs = async (req, res, next) => {
+  try {
+    const { page = 1, limit = 20 } = req.query;
+    const logs = await AuditLog.find()
+      .populate('adminId', 'fullname email avatar')
+      .sort({ createdAt: -1 })
+      .limit(limit * 1)
+      .skip((page - 1) * limit);
+
+    const count = await AuditLog.countDocuments();
+
+    res.json({
+      success: true,
+      logs,
+      pagination: {
+        totalPages: Math.ceil(count / limit),
+        currentPage: Number(page),
+        totalLogs: count
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 module.exports = {
   getDashboardStats,
@@ -553,5 +769,8 @@ module.exports = {
   updateAdminProfile,
   changeAdminPassword,
   getSettings,
-  updateSettings
+  updateSettings,
+  resolveReport,
+  toggleUserFlag,
+  getAuditLogs
 };

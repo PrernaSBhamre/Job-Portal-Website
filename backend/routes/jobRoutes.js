@@ -2,20 +2,30 @@ const express = require('express');
 const router = express.Router();
 const {
   createJob,
-  getJobs,
+  getMyJobs,
   getJobById,
   updateJob,
-  deleteJob,
+  pauseJob,
+  closeJob,
+  deleteJob
 } = require('../controllers/jobController');
-const { protect, isRecruiter } = require('../middleware/authMiddleware');
+const { protect, isEmployer } = require('../middleware/authMiddleware');
 
 router.route('/')
-  .post(protect, isRecruiter, createJob)
-  .get(getJobs);
+  .post(protect, isEmployer, createJob);
+
+router.route('/mine')
+  .get(protect, isEmployer, getMyJobs);
 
 router.route('/:id')
-  .get(getJobById)
-  .put(protect, isRecruiter, updateJob)
-  .delete(protect, isRecruiter, deleteJob);
+  .get(protect, isEmployer, getJobById)
+  .put(protect, isEmployer, updateJob)
+  .delete(protect, isEmployer, deleteJob);
+
+router.route('/:id/pause')
+  .patch(protect, isEmployer, pauseJob);
+
+router.route('/:id/close')
+  .patch(protect, isEmployer, closeJob);
 
 module.exports = router;

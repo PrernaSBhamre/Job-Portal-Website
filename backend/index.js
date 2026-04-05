@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
+const cookieParser = require('cookie-parser');
 
 // Load environment variables from the .env file
 dotenv.config();
@@ -12,6 +13,37 @@ const connectDB = require('./config/db');
 
 // Initialize the express application
 const app = express();
+const http = require('http');
+const { Server } = require('socket.io');
+
+const server = http.createServer(app);
+
+const io = new Server(server, {
+    cors: {
+        origin: true,
+        credentials: true
+    }
+});
+
+io.on('connection', (socket) => {
+    console.log('New client connected: ' + socket.id);
+    
+    // Join employer specific room
+    socket.on('join_employer_room', (employerId) => {
+        socket.join(`employer_${employerId}`);
+        console.log(`Socket ${socket.id} joined room: employer_${employerId}`);
+    });
+
+    socket.on('disconnect', () => {
+        console.log('Client disconnected: ' + socket.id);
+    });
+});
+
+// Inject io into request objects for triggering events natively from controllers
+app.use((req, res, next) => {
+    req.io = io;
+    next();
+});
 
 // Automatically provision fixed admin credentials in the separate Admin table
 const Admin = require('./models/Admin');
@@ -48,6 +80,9 @@ app.use(cors({
     credentials: true
 }));
 
+// Setup cookie parsing
+app.use(cookieParser());
+
 // Serve Static Uploads
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
@@ -70,13 +105,15 @@ const savedJobRoutes = require('./routes/savedJobRoutes');
 const resourceRoutes = require('./routes/resourceRoutes');
 const recruiterRoutes = require('./routes/recruiterRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
+const interviewRoutes = require('./routes/interviewRoutes');
 
 // --- Mount Routes ---
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
-app.use('/api/companies', companyRoutes);
+app.use('/api/company', companyRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/applications', applicationRoutes);
+app.use('/api/interviews', interviewRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/saved-jobs', savedJobRoutes);
 app.use('/api/resources', resourceRoutes);
@@ -110,6 +147,6 @@ app.use(errorHandler);
 const PORT = process.env.PORT || 5000;
 
 // Tell the server to listen on the specified port
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`Server is running successfully on port ${PORT}`);
 });

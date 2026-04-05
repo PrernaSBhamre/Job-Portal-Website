@@ -2,38 +2,39 @@ const mongoose = require('mongoose');
 
 const companySchema = new mongoose.Schema(
   {
+    employerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: [true, 'Company must belong to an employer'],
+    },
     name: {
       type: String,
       required: [true, 'Please add a company name'],
-      unique: true,
     },
-    description: {
-      type: String,
+    logo: {
+      type: String, // URL to company logo
     },
     website: {
+      type: String,
+    },
+    industry: { 
+      type: String 
+    },
+    size: { 
+      type: String 
+    },
+    description: {
       type: String,
     },
     location: {
       type: String,
     },
-    logo: {
-      type: String, // URL to company logo
-    },
-    industry: { type: String, default: 'Technology & Services' },
-    companySize: { type: String, default: '500-10,000+' },
-    founded: { type: String, default: '2010' },
-    userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      required: [true, 'Company must belong to a user/recruiter'],
-    },
-    isApproved: {
-      type: Boolean,
-      default: true
-    },
     isVerified: {
       type: Boolean,
       default: false
+    },
+    verifiedAt: {
+      type: Date
     }
   },
   { timestamps: true }

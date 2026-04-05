@@ -3,24 +3,29 @@ const router = express.Router();
 const {
   applyForJob,
   getAppliedJobs,
-  getApplicants,
-  updateStatus,
   withdrawApplication,
+  getApplicants,
+  updateStatus
 } = require('../controllers/applicationController');
-const { protect, isRecruiter } = require('../middleware/authMiddleware');
+const { protect, isEmployer } = require('../middleware/authMiddleware');
 const uploadResume = require('../middleware/uploadMiddleware');
+
+// --- STUDENT ROUTES ---
 
 router.route('/user')
   .get(protect, getAppliedJobs);
 
 router.route('/job/:jobId')
   .post(protect, uploadResume.single('resume'), applyForJob)
-  .get(protect, isRecruiter, getApplicants);
-
-router.route('/:id/status')
-  .put(protect, isRecruiter, updateStatus);
+  // --- EMPLOYER ROUTE ---
+  .get(protect, isEmployer, getApplicants);
 
 router.route('/:id')
   .delete(protect, withdrawApplication);
+
+// --- EMPLOYER ROUTES ---
+
+router.route('/:id/status')
+  .patch(protect, isEmployer, updateStatus);
 
 module.exports = router;

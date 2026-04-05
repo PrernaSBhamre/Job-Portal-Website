@@ -4,14 +4,17 @@ const User = require('../models/User');
 const protect = async (req, res, next) => {
   let token;
 
-  if (
+  if (req.cookies && req.cookies.token) {
+    token = req.cookies.token;
+  } else if (
     req.headers.authorization &&
     req.headers.authorization.startsWith('Bearer')
   ) {
-    try {
-      // Get token from header
-      token = req.headers.authorization.split(' ')[1];
+    token = req.headers.authorization.split(' ')[1];
+  }
 
+  if (token) {
+    try {
       // Verify token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
@@ -32,9 +35,7 @@ const protect = async (req, res, next) => {
       console.error(error);
       res.status(401).json({ message: 'Not authorized, token failed' });
     }
-  }
-
-  if (!token) {
+  } else {
     res.status(401).json({ message: 'Not authorized, no token' });
   }
 };
@@ -55,4 +56,12 @@ const isAdmin = (req, res, next) => {
   }
 };
 
-module.exports = { protect, isRecruiter, isAdmin };
+const isEmployer = (req, res, next) => {
+  if (req.user && req.user.role === 'employer') {
+    next();
+  } else {
+    res.status(403).json({ message: 'Not authorized as an employer' });
+  }
+};
+
+module.exports = { protect, isRecruiter, isAdmin, isEmployer };

@@ -2,20 +2,18 @@ const express = require('express');
 const router = express.Router();
 const {
   createCompany,
-  getCompanies,
-  getCompanyById,
-  updateCompany,
-  deleteCompany,
+  getMyCompany,
+  updateCompany
 } = require('../controllers/companyController');
-const { protect, isRecruiter } = require('../middleware/authMiddleware');
+const { protect, isEmployer } = require('../middleware/authMiddleware');
 
 router.route('/')
-  .post(protect, isRecruiter, createCompany)
-  .get(getCompanies);
+  .post(protect, isEmployer, createCompany);
+
+router.route('/mine')
+  .get(protect, isEmployer, getMyCompany);
 
 router.route('/:id')
-  .get(getCompanyById)
-  .put(protect, isRecruiter, updateCompany)
-  .delete(protect, isRecruiter, deleteCompany);
+  .put(protect, isEmployer, updateCompany);
 
 module.exports = router;

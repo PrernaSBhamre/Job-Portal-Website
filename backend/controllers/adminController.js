@@ -242,11 +242,19 @@ const updateJobStatus = async (req, res, next) => {
     if (status === 'approved') {
       const Notification = require('../models/Notification');
       await Notification.create({
-        userId: job.created_by,
+        toUserId: job.employerId,
+        fromUserId: req.user._id, // admin
         message: `Your job post '${job.title}' has been approved by the admin and is now live!`,
-        type: 'job_approval',
-        link: '/employer/jobs'
+        type: 'general'
       });
+
+      // --- Socket.IO Event Delivery ---
+      if (req.io && job.employerId) {
+        req.io.to(`employer_${job.employerId.toString()}`).emit('job_approved', {
+            jobId: job._id,
+            jobTitle: job.title
+        });
+      }
     }
 
     res.json({ success: true, message: `Job updated successfully`, job });

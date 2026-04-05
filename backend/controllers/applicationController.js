@@ -2,9 +2,11 @@ const Application = require('../models/Application');
 const Job = require('../models/Job');
 const Notification = require('../models/Notification');
 
+// --- STUDENT ROUTES ---
+
 // @desc    Apply for a job
 // @route   POST /api/applications/:jobId
-// @access  Private/Student
+// @access  Private
 const applyForJob = async (req, res, next) => {
   try {
     const jobId = req.params.jobId;
@@ -22,48 +24,50 @@ const applyForJob = async (req, res, next) => {
     }
 
     // Check if user has already applied
-    const existingApplication = await Application.findOne({ job: jobId, applicant: userId });
+    const existingApplication = await Application.findOne({ jobId, userId });
     if (existingApplication) {
       res.status(400);
       throw new Error('You have already applied for this job');
     }
 
-    // Extract file path from Multer upload
     if (!req.file) {
       res.status(400);
       throw new Error('Please upload a resume file (PDF, DOCX).');
     }
     const resumeUrl = `/uploads/resumes/${req.file.filename}`;
 
-    const { coverLetter, fullName, phone, college, graduationYear, portfolio } = req.body;
+    const { coverLetter } = req.body;
 
-    // Create the application
     const application = await Application.create({
-      job: jobId,
-      applicant: userId,
-      resume: resumeUrl,
+      jobId,
+      userId,
+      employerId: job.employerId,
+      resumeUrl,
       coverLetter,
-      fullName,
-      phone,
-      college,
-      graduationYear,
-      portfolio,
-      status: 'Applied',
-      statusTimeline: [{ status: 'Applied', comment: 'Application submitted successfully' }]
+      status: 'applied',
+      statusTimeline: [
+        { status: 'applied', date: Date.now() }
+      ]
     });
 
-    // Push the application ID to the job's applications array
-    job.applications.push(application._id);
-    job.applicationsCount = (job.applicationsCount || 0) + 1;
-    await job.save();
-
-    // Create Notification for the Recruiter (job owner)
+    // Notify the employer
     await Notification.create({
-      userId: job.created_by,
-      message: `${req.user.fullname || 'A candidate'} has applied for the position of ${job.title}.`,
-      type: 'application',
-      link: `/recruiter/jobs/${jobId}/applicants`
+      toUserId: job.employerId,
+      fromUserId: userId,
+      type: 'new_application',
+      relatedJobId: jobId,
+      relatedApplicationId: application._id,
+      message: `A new candidate has applied for ${job.title}.`
     });
+
+    // --- Socket.IO Event Delivery ---
+    if (req.io) {
+        req.io.to(`employer_${job.employerId.toString()}`).emit('application_received', {
+            jobId: job._id,
+            jobTitle: job.title,
+            applicationId: application._id
+        });
+    }
 
     res.status(201).json(application);
   } catch (error) {
@@ -76,14 +80,8 @@ const applyForJob = async (req, res, next) => {
 // @access  Private
 const getAppliedJobs = async (req, res, next) => {
   try {
-    const applications = await Application.find({ applicant: req.user.id })
-      .populate({
-        path: 'job',
-        populate: {
-          path: 'company',
-          select: 'name logo'
-        }
-      })
+    const applications = await Application.find({ userId: req.user.id })
+      .populate('jobId')
       .sort({ createdAt: -1 });
 
     res.json(applications);
@@ -92,99 +90,19 @@ const getAppliedJobs = async (req, res, next) => {
   }
 };
 
-// @desc    Retrieve applicants for a job
-// @route   GET /api/applications/job/:jobId
-// @access  Private/Recruiter
-const getApplicants = async (req, res, next) => {
-  try {
-    const job = await Job.findById(req.params.jobId);
-
-    if (!job) {
-      res.status(404);
-      throw new Error('Job not found');
-    }
-
-    // Check if the current user is the owner of the job or an admin
-    if (job.created_by.toString() !== req.user.id && req.user.role !== 'admin') {
-      res.status(403);
-      throw new Error('Not authorized to view these applications');
-    }
-
-    const applications = await Application.find({ job: req.params.jobId })
-      .populate('applicant', 'fullname email phoneNumber profile');
-
-    res.json(applications);
-  } catch (error) {
-    next(error);
-  }
-};
-
-// @desc    Update application status
-// @route   PUT /api/applications/:id/status
-// @access  Private/Recruiter
-const updateStatus = async (req, res, next) => {
-  try {
-    const { status } = req.body;
-    const application = await Application.findById(req.params.id);
-
-    if (!application) {
-      res.status(404);
-      throw new Error('Application not found');
-    }
-
-    const job = await Job.findById(application.job);
-
-    if (!job || (job.created_by.toString() !== req.user.id && req.user.role !== 'admin')) {
-      res.status(403);
-      throw new Error('Not authorized to update this application');
-    }
-
-    const oldStatus = application.status;
-    application.status = status;
-    application.statusTimeline.push({
-      status: status,
-      comment: req.body.comment || `Status updated from ${oldStatus} to ${status}`
-    });
-    
-    const updatedApplication = await application.save();
-
-    // Create Notification for the Applicant
-    await Notification.create({
-      userId: application.applicant,
-      message: `Your application status for '${job.title}' has been updated to ${status}.`,
-      type: 'status_update',
-      link: `/user/applications`
-    });
-
-    res.json(updatedApplication);
-  } catch (error) {
-    next(error);
-  }
-};
-
 // @desc    Withdraw application
 // @route   DELETE /api/applications/:id
-// @access  Private/Student
+// @access  Private
 const withdrawApplication = async (req, res, next) => {
   try {
     const application = await Application.findById(req.params.id);
 
     if (!application) {
-      res.status(404);
-      throw new Error('Application not found');
+      return res.status(404).json({ message: 'Application not found' });
     }
 
-    // Only the applicant can withdraw
-    if (application.applicant.toString() !== req.user.id && req.user.role !== 'admin') {
-      res.status(403);
-      throw new Error('Not authorized to withdraw this application');
-    }
-
-    const job = await Job.findById(application.job);
-    if (job) {
-      // Remove application reference from Job
-      job.applications = job.applications.filter((appId) => appId.toString() !== application._id.toString());
-      await job.save();
+    if (application.userId.toString() !== req.user.id) {
+      return res.status(403).json({ message: 'Forbidden' });
     }
 
     await Application.deleteOne({ _id: application._id });
@@ -195,10 +113,95 @@ const withdrawApplication = async (req, res, next) => {
   }
 };
 
+
+// --- EMPLOYER ROUTES ---
+
+// @desc    Retrieve applicants for a job
+// @route   GET /api/applications/job/:jobId
+// @access  Private/Employer
+const getApplicants = async (req, res, next) => {
+  try {
+    const job = await Job.findById(req.params.jobId);
+
+    if (!job) {
+      return res.status(404).json({ message: 'Job not found' });
+    }
+
+    if (job.employerId.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: 'Forbidden: Cannot view applicants for a job you do not own' });
+    }
+
+    const applications = await Application.find({ jobId: req.params.jobId })
+      .populate('userId', 'name email profile')
+      .sort({ appliedAt: -1 });
+
+    res.json(applications);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Update application status with strict transitions
+// @route   PATCH /api/applications/:id/status
+// @access  Private/Employer
+const updateStatus = async (req, res, next) => {
+  try {
+    const { status } = req.body;
+    const application = await Application.findById(req.params.id);
+
+    if (!application) {
+      return res.status(404).json({ message: 'Application not found' });
+    }
+
+    // Role strict check: Ensure employer owns this application's associated job
+    if (application.employerId.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: 'Forbidden' });
+    }
+
+    const currentStatus = application.status;
+    const validTransitions = {
+      applied: ['viewed'],
+      viewed: ['shortlisted', 'rejected'],
+      shortlisted: ['interview_scheduled', 'rejected'],
+      interview_scheduled: ['hired', 'rejected'],
+      hired: [],
+      rejected: []
+    };
+
+    if (!validTransitions[currentStatus] || !validTransitions[currentStatus].includes(status)) {
+      return res.status(400).json({ 
+        message: `Invalid status transition. Cannot transition from ${currentStatus} to ${status}` 
+      });
+    }
+
+    application.status = status;
+    application.statusTimeline.push({
+      status: status,
+      date: Date.now()
+    });
+
+    const updatedApplication = await application.save();
+
+    // Create Notification for the Applicant
+    await Notification.create({
+      toUserId: application.userId,
+      fromUserId: req.user._id,
+      type: 'application_status',
+      relatedJobId: application.jobId,
+      relatedApplicationId: application._id,
+      message: `Your application status has been updated to ${status}.`
+    });
+
+    res.json(updatedApplication);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   applyForJob,
   getAppliedJobs,
-  getApplicants,
-  updateStatus,
   withdrawApplication,
+  getApplicants,
+  updateStatus
 };

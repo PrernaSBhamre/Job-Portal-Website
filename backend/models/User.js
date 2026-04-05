@@ -6,6 +6,9 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Please add a name'],
     },
+    name: {
+      type: String, // Added to perfectly match the Employer blueprint
+    },
     email: {
       type: String,
       required: [true, 'Please add an email'],
@@ -29,6 +32,10 @@ const userSchema = new mongoose.Schema(
     isVerified: {
       type: Boolean,
       default: true
+    },
+    isEmailVerified: {
+      type: Boolean,
+      default: false
     },
     profile: {
       bio: { type: String },

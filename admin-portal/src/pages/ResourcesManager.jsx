@@ -8,14 +8,14 @@ import {
   Select, 
   Card, 
   Typography, 
-  Modal, 
   Form, 
-  message, 
+  App, 
   Popconfirm,
   Tooltip,
   Empty,
   Row,
-  Col
+  Col,
+  Modal
 } from 'antd';
 import { 
   PlusOutlined, 
@@ -45,6 +45,7 @@ const CATEGORIES = [
 ];
 
 const ResourcesManager = () => {
+  const { message, modal } = App.useApp();
   const [loading, setLoading] = useState(false);
   const [resources, setResources] = useState([]);
   const [total, setTotal] = useState(0);
@@ -179,7 +180,7 @@ const ResourcesManager = () => {
                 icon={<EyeOutlined />} 
                 className="text-zinc-400 hover:text-violet-400"
                 onClick={() => {
-                  Modal.info({
+                  modal.info({
                     title: record.title,
                     width: 700,
                     content: (

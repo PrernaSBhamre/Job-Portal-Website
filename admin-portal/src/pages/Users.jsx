@@ -11,7 +11,7 @@ import {
   Avatar, 
   Tooltip, 
   Popconfirm, 
-  message,
+  App,
   Tabs,
   Badge,
   Dropdown
@@ -36,6 +36,7 @@ const { Title, Text } = Typography;
 const { Option } = Select;
 
 const Users = () => {
+  const { message } = App.useApp();
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
   const [total, setTotal] = useState(0);

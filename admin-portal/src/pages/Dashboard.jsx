@@ -31,7 +31,7 @@ const Dashboard = () => {
       }
     } catch (err) {
       notification.error({
-        message: 'Stats Loading Failed', // Using 'message' as some antd versions still use it, but antd App usually maps it.
+        title: 'Stats Loading Failed', 
         description: err.response?.data?.message || 'Failed to fetch dashboard data.'
       });
     } finally {

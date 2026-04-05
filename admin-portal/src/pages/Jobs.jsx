@@ -10,7 +10,7 @@ import {
   Typography, 
   Tooltip, 
   Popconfirm, 
-  message,
+  App,
   Badge,
 } from 'antd';
 import { 
@@ -33,6 +33,7 @@ const { Title, Text } = Typography;
 const { Option } = Select;
 
 const Jobs = () => {
+  const { message } = App.useApp();
   const [loading, setLoading] = useState(false);
   const [jobs, setJobs] = useState([]);
   const [total, setTotal] = useState(0);

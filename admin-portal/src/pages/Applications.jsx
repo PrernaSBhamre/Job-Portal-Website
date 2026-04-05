@@ -8,6 +8,7 @@ import {
   Avatar, 
   Tooltip, 
   message,
+  App,
   Badge,
   Empty,
   Select,
@@ -29,6 +30,7 @@ const { Title, Text } = Typography;
 const { Option } = Select;
 
 const Applications = () => {
+  const { message } = App.useApp();
   const [loading, setLoading] = useState(false);
   const [applications, setApplications] = useState([]);
   const [total, setTotal] = useState(0);

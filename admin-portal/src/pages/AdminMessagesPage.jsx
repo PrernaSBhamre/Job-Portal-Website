@@ -9,7 +9,7 @@ import {
   Card, 
   Badge, 
   Empty, 
-  message,
+  App,
   Tabs,
   Skeleton
 } from 'antd';
@@ -26,6 +26,7 @@ import dayjs from 'dayjs';
 const { Title, Text, Paragraph } = Typography;
 
 const AdminMessagesPage = () => {
+  const { message } = App.useApp();
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState('all');

@@ -54,7 +54,7 @@ const Settings = () => {
       }
     } catch (err) {
       notification.error({
-        message: 'Load Failed',
+        title: 'Load Failed',
         description: 'Could not fetch system settings.'
       });
     } finally {
@@ -80,7 +80,7 @@ const Settings = () => {
       const res = await api.put('/admin/settings', settings);
       if (res.data.success) {
         notification.success({
-          message: 'Settings Propagated',
+          title: 'Settings Propagated',
           description: 'Global system configurations have been updated successfully.',
           placement: 'bottomRight',
           className: 'admin-notification-dark'
@@ -88,7 +88,7 @@ const Settings = () => {
       }
     } catch (err) {
       notification.error({
-        message: 'Update Failed',
+        title: 'Update Failed',
         description: err.response?.data?.message || 'Failed to save settings.'
       });
     } finally {

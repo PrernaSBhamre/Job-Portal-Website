@@ -301,7 +301,7 @@ const getAllCompanies = async (req, res, next) => {
     if (search) query.name = { $regex: search, $options: 'i' };
 
     const companies = await Company.find(query)
-      .populate('userId', 'fullname email')
+      .populate('employerId', 'fullname email')
       .sort({ createdAt: -1 })
       .limit(limit * 1)
       .skip((page - 1) * limit);
@@ -443,7 +443,7 @@ const deleteCompany = async (req, res, next) => {
     const company = await Company.findById(req.params.id);
     if (!company) return res.status(404).json({ success: false, message: 'Company not found' });
     await Company.deleteOne({ _id: company._id });
-    await Job.deleteMany({ company: company._id });
+    await Job.deleteMany({ companyId: company._id });
     res.json({ success: true, message: 'Company and its jobs removed' });
   } catch (error) {
     next(error);

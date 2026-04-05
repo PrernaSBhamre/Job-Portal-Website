@@ -8,7 +8,7 @@ import {
   Form, 
   Input, 
   Button, 
-  message, 
+  App, 
   Divider, 
   Space, 
   Tabs,
@@ -28,6 +28,7 @@ import api from '../utils/api';
 const { Title, Text } = Typography;
 
 const Profile = () => {
+  const { message } = App.useApp();
   const [loading, setLoading] = useState(false);
   const [admin, setAdmin] = useState(null);
   const [form] = Form.useForm();

@@ -23,11 +23,17 @@ async function fetchFeaturedJobs() {
             const colors = ['#5b21b6', '#1d4ed8', '#be185d', '#c2410c', '#047857', '#0f766e', '#b45309', '#e11d48'];
 
             grid.innerHTML = jobsToDisplay.map((j, index) => {
-                const companyName = j.company && j.company.name ? j.company.name : 'Unknown Company';
+                const company = j.companyId || j.company || {};
+                const companyName = company.name || 'Unknown Company';
                 const initial = companyName.charAt(0).toUpperCase() + (companyName.length > 1 ? companyName.charAt(1).toUpperCase() : '');
                 
+                // Salary display
+                const salary = j.salaryMin && j.salaryMax 
+                    ? `₹${(j.salaryMin/100000).toFixed(1)}L - ₹${(j.salaryMax/100000).toFixed(1)}L` 
+                    : (j.salary || 'Not Disclosed');
+
                 // Max 3 tags
-                const tags = (j.tags && j.tags.length > 0 ? j.tags : ['JAVASCRIPT', 'HTML', 'CSS']).slice(0, 3);
+                const tags = (j.tags && j.tags.length > 0 ? j.tags : ['IT', 'TECH', 'FRESHER']).slice(0, 3);
                 
                 return `
                 <a href="pages/jobs/job-details.html?id=${j._id || j.id}" class="job-card" style="text-decoration: none;">
@@ -42,9 +48,9 @@ async function fetchFeaturedJobs() {
                     ${tags.map(t => `<span class="j-tag">${t.toUpperCase()}</span>`).join('')}
                   </div>
                   <div class="jc-meta">
-                    <span><i class="bi bi-geo-alt"></i> ${j.location || 'Remote'}</span>
-                    <span><i class="bi bi-currency-dollar"></i> ${j.salary || 'Not Disclosed'}</span>
-                    <span><i class="bi bi-clock"></i> 2d ago • Full-time</span>
+                    <span><i class="bi bi-geo-alt"></i> ${j.location || (j.isRemote ? 'Remote' : 'On-site')}</span>
+                    <span><i class="bi bi-currency-rupee"></i> ${salary}</span>
+                    <span><i class="bi bi-clock"></i> 2d ago • ${j.type || 'Full-time'}</span>
                   </div>
                   <div class="jc-btn">Apply Now <i class="bi bi-arrow-right"></i></div>
                 </a>

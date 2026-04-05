@@ -49,18 +49,18 @@ app.use((req, res, next) => {
 const Admin = require('./models/Admin');
 const provisionAdmin = async () => {
     try {
-        const existingAdmin = await Admin.findOne({ email: 'admin@gmail.com' });
-        if (!existingAdmin) {
-            // Remove old admin if exists to prevent duplicates
-            await Admin.deleteOne({ email: 'admin@jobportal.com' }).catch(()=>{});
-            
-            await Admin.create({
-                email: 'admin@gmail.com',
-                password: 'admin@31',
-                role: 'admin',
-                fullname: 'Tools & Jobs Admin'
-            });
-            console.log('Fixed Admin Credential Provisioned in Dedicated Admin Table.');
+        const adminEmails = ['admin@gmail.com', 'admin@fresherhub.in'];
+        for (const email of adminEmails) {
+            const existingAdmin = await Admin.findOne({ email });
+            if (!existingAdmin) {
+                await Admin.create({
+                    email: email,
+                    password: email === 'admin@gmail.com' ? 'admin@31' : 'password123',
+                    role: 'admin',
+                    fullname: email === 'admin@gmail.com' ? 'Tools & Jobs Admin' : 'System Admin'
+                });
+                console.log(`Fixed Admin Credential Provisioned: ${email}`);
+            }
         }
     } catch (e) {
         console.error('Failed to provision admin:', e);
@@ -147,6 +147,6 @@ app.use(errorHandler);
 const PORT = process.env.PORT || 5000;
 
 // Tell the server to listen on the specified port
-server.listen(PORT, () => {
+server.listen(PORT, '0.0.0.0', () => {
     console.log(`Server is running successfully on port ${PORT}`);
 });

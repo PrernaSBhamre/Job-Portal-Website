@@ -183,10 +183,12 @@ const AdminLayout = ({ children }) => {
         placement="left"
         onClose={() => setMobileVisible(false)}
         open={mobileVisible}
-        width={280}
-        styles={{ body: { padding: 0 } }}
+        styles={{ 
+          header: { display: 'none' },
+          body: { padding: 0 },
+          wrapper: { width: 280 }
+        }}
         className="sidebar-premium-drawer"
-        headerStyle={{ display: 'none' }}
       >
         <div style={{ background: '#09090b', height: '100%', borderRight: '1px solid #18181b' }}>
           <div className="flex items-center px-8 py-10 gap-4 mb-4">

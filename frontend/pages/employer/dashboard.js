@@ -3,7 +3,7 @@ let companyId = null;
 
 document.addEventListener('DOMContentLoaded', () => {
     session = getSession();
-    if (!session || session.user.role !== 'recruiter') {
+    if (!session || (session.user.role || '').toLowerCase() !== 'recruiter') {
         alert('Access denied. Employers only.');
         window.location.href = '../auth/login.html';
         return;

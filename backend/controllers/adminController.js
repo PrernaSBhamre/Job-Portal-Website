@@ -228,10 +228,27 @@ const updateJobStatus = async (req, res, next) => {
     const job = await Job.findById(req.params.id);
     if (!job) return res.status(404).json({ success: false, message: 'Job not found' });
 
-    if (status !== undefined) job.status = status;
+    if (status !== undefined) {
+      job.status = status;
+      if (status === 'approved') {
+        job.isApproved = true;
+      }
+    }
     if (isFeatured !== undefined) job.isFeatured = isFeatured;
 
     await job.save();
+
+    // Create Notification for the Job Owner (Employer)
+    if (status === 'approved') {
+      const Notification = require('../models/Notification');
+      await Notification.create({
+        userId: job.created_by,
+        message: `Your job post '${job.title}' has been approved by the admin and is now live!`,
+        type: 'job_approval',
+        link: '/employer/jobs'
+      });
+    }
+
     res.json({ success: true, message: `Job updated successfully`, job });
   } catch (error) {
     next(error);

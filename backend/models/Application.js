@@ -14,9 +14,16 @@ const applicationSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['pending', 'shortlisted', 'interviewing', 'offered', 'rejected'],
-      default: 'pending',
+      enum: ['Applied', 'Under Review', 'Shortlisted', 'Rejected', 'Hired'],
+      default: 'Applied',
     },
+    statusTimeline: [
+      {
+        status: { type: String },
+        date: { type: Date, default: Date.now },
+        comment: { type: String }
+      }
+    ],
     resume: {
       type: String,
       required: [true, 'Please attach a resume PDF or DOCX file'],

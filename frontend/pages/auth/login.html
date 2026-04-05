@@ -294,16 +294,21 @@
                     // Call the setSession function from auth.js
                     setSession(data, data.token);
 
-                    // Redirect based on role with simplified Session Bridge
+                    // Redirect based on role
                     setTimeout(() => {
-                        if (data.role === 'admin') {
-                            // Only pass token and role to avoid large object encoding issues
+                        const role = data.role.toLowerCase();
+                        if (role === 'admin') {
+                            // Still point to admin if applicable, or fallback
                             window.location.href = `http://localhost:5173/?token=${data.token}&role=${data.role}`;
                         }
-                        else if (data.role === 'recruiter') {
-                            window.location.href = `http://localhost:5001/?token=${data.token}&role=${data.role}`;
+                        else if (role === 'recruiter') {
+                            // LOCAL REDIRECT TO NEW VANILLA JS DASHBOARD
+                            window.location.href = "../employer/dashboard.html";
                         }
-                        else window.location.href = "../seeker/dashboard.html";
+                        else {
+                            // DEFAULT TO SEEKER DASHBOARD
+                            window.location.href = "../seeker/dashboard.html";
+                        }
                     }, 800);
 
                 } else {

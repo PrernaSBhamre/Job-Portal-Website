@@ -62,9 +62,17 @@ const jobSchema = new mongoose.Schema(
         ref: 'Application',
       }
     ],
+    applicationsCount: {
+      type: Number,
+      default: 0
+    },
+    viewsCount: {
+      type: Number,
+      default: 0
+    },
     isApproved: {
       type: Boolean,
-      default: true
+      default: false
     },
     isFeatured: {
       type: Boolean,
@@ -75,9 +83,9 @@ const jobSchema = new mongoose.Schema(
       enum: ['pending', 'approved', 'rejected', 'closed'],
       default: 'pending'
     },
-    isFeatured: {
+    isActive: {
       type: Boolean,
-      default: false
+      default: true
     }
   },
   { timestamps: true }

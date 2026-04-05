@@ -214,98 +214,11 @@
   <div class="container dashboard-container">
       <ul class="nav-tabs d-flex list-unstyled">
           <li class="nav-item">
-              <a class="nav-link active" onclick="switchTab('profile', this)">Profile & Resume</a>
-          </li>
-          <li class="nav-item">
-              <a class="nav-link" onclick="switchTab('applications', this)">My Applications</a>
+              <a class="nav-link active" onclick="switchTab('applications', this)">My Applications</a>
           </li>
       </ul>
 
-      <div id="profileTab" class="panel">
-          <h2 class="panel-title">Personal Identity</h2>
-          <form id="profileForm">
-              <div class="row">
-                  <div class="col-md-6 mb-4 form-group">
-                      <label>Full Legal Name</label>
-                      <div class="position-relative">
-                        <input type="text" id="pName" class="form-control" placeholder="Johnathan Doe" required>
-                      </div>
-                  </div>
-                  <div class="col-md-6 mb-4 form-group">
-                      <label>Contact Number</label>
-                      <input type="text" id="pPhone" class="form-control" placeholder="+91 98765 43210" required>
-                  </div>
-                  <div class="col-md-12 mb-4 form-group">
-                      <label>Professional Bio</label>
-                      <textarea id="pBio" class="form-control" rows="4" placeholder="Craft a compelling narrative for recruiters..."></textarea>
-                  </div>
-                  <div class="col-md-12 mb-4 form-group">
-                      <label>Core Technical Skills</label>
-                      <input type="text" id="pSkills" class="form-control" placeholder="e.g. React, Node.js, AWS Cloud, Python">
-                  </div>
-              </div>
-
-              <h4 class="mb-4 mt-4 text-white" style="font-weight:700;">Digital Presence</h4>
-              <div class="row">
-                  <div class="col-md-4 mb-4 form-group">
-                      <label>LinkedIn Portal</label>
-                      <input type="url" id="pLinkedIn" class="form-control" placeholder="https://linkedin.com/in/...">
-                  </div>
-                  <div class="col-md-4 mb-4 form-group">
-                      <label>GitHub Repository</label>
-                      <input type="url" id="pGithub" class="form-control" placeholder="https://github.com/...">
-                  </div>
-                  <div class="col-md-4 mb-4 form-group">
-                      <label>Portfolio Showcase</label>
-                      <input type="url" id="pPortfolio" class="form-control" placeholder="https://personalbrand.com">
-                  </div>
-                  <div class="col-md-6 mb-4 form-group">
-                      <label>Target Compensation (LPA)</label>
-                      <input type="text" id="pSalary" class="form-control" placeholder="e.g. 12-15 LPA">
-                  </div>
-                  <div class="col-md-6 mb-4 form-group d-flex align-items-center">
-                      <div class="form-check form-switch p-0 d-flex align-items-center gap-3">
-                          <input type="checkbox" id="pRelocate" class="form-check-input ms-0" style="width:40px; height:20px; cursor:pointer;">
-                          <label class="mb-0 text-white" style="cursor:pointer; text-transform:none; letter-spacing:0;" for="pRelocate">Open to Global Relocation</label>
-                      </div>
-                  </div>
-              </div>
-
-              <h4 class="mb-4 mt-4 text-white" style="font-weight:700;">Resume Artifact</h4>
-              <div class="form-group mb-4">
-                  <label>Document Hosting Link (Drive/Dropbox)</label>
-                  <input type="url" id="pResume" class="form-control" placeholder="https://drive.google.com/file/...">
-                  
-                  <div id="currentResumeBox" class="current-resume">
-                      <i class="bi bi-file-earmark-check-fill fs-4"></i>
-                      <div>
-                          <div style="font-weight: 800; font-size: 0.95rem;">Master Resume Synced</div>
-                          <a href="#" id="currentResumeLink" target="_blank" style="color: #22c55e; font-size: 0.8rem; font-weight: 700; text-decoration: underline;">Open Document</a>
-                      </div>
-                  </div>
-              </div>
-
-              <h4 class="mb-4 mt-4 text-white" style="font-weight:700;">Career Trajectory</h4>
-              <div class="row">
-                  <div class="col-md-6 mb-4 form-group"><label>Last Organization</label><input type="text" id="pExpCompany" class="form-control" placeholder="e.g. Google India"></div>
-                  <div class="col-md-6 mb-4 form-group"><label>Designation</label><input type="text" id="pExpTitle" class="form-control" placeholder="Software Architect"></div>
-                  <div class="col-md-6 mb-4 form-group"><label>Service Start</label><input type="month" id="pExpStart" class="form-control"></div>
-                  <div class="col-md-6 mb-4 form-group"><label>Service End</label><input type="month" id="pExpEnd" class="form-control"></div>
-              </div>
-
-              <h4 class="mb-4 mt-4 text-white" style="font-weight:700;">Educational Background</h4>
-              <div class="row">
-                  <div class="col-md-6 mb-4 form-group"><label>University / Institution</label><input type="text" id="pEduInst" class="form-control" placeholder="IIT Bombay"></div>
-                  <div class="col-md-6 mb-4 form-group"><label>Specialization</label><input type="text" id="pEduDegree" class="form-control" placeholder="B.Tech Artificial Intelligence"></div>
-                  <div class="col-md-6 mb-4 form-group"><label>Graduation Year</label><input type="number" id="pEduYear" class="form-control" placeholder="2025"></div>
-                  <div class="col-md-6 mb-4 form-group"><label>Performance Metric (GPA)</label><input type="text" id="pEduGrade" class="form-control" placeholder="9.8/10"></div>
-              </div>
-
-              <button type="submit" class="btn-submit mt-4" id="saveProfileBtn">Synchronize Credentials</button>
-          </form>
-      </div>
-
-      <div id="applicationsTab" class="panel" style="display:none;">
+      <div id="applicationsTab" class="panel">
           <h2 class="panel-title">Applications Hub</h2>
           <div id="myAppsList">
             <!-- Dynamic Injection -->

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>My Professional Profile | Tools and Job</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #09090b;
+            --card: #0c0c0e;
+            --border: #1d1d21;
+            --violet: #8b5cf6;
+            --violet-hover: #7c3aed;
+            --zinc-400: #a1a1aa;
+            --zinc-500: #71717a;
+            --tp: #ffffff;
+            --ts: #71717a;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--tp);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            background-image: radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.05), transparent 50%);
+        }
+
+        /* Deep Ambient Glows */
+        .glow-1 { position: absolute; top: -10%; left: -10%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(139, 92, 246, 0.06), transparent 70%); border-radius: 50%; z-index: -1; filter: blur(60px); pointer-events: none; }
+        .glow-2 { position: absolute; bottom: 10%; right: -5%; width: 500px; height: 500px; background: radial-gradient(circle, rgba(139, 92, 246, 0.04), transparent 70%); border-radius: 50%; z-index: -1; filter: blur(60px); pointer-events: none; }
+
+        /* Navbar styling */
+        .navbar-wrapper {
+            border-bottom: 1px solid var(--border);
+            background: rgba(9, 9, 11, 0.8);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .navbar-custom { padding: 18px 0; display: flex; align-items: center; justify-content: space-between; }
+        
+        .logo-box { display: flex; align-items: center; gap: 12px; text-decoration: none; transition: 0.3s; }
+        .logo-icon { 
+            width: 40px; height: 40px; 
+            background: var(--violet); 
+            border-radius: 12px; 
+            display: flex; align-items: center; justify-content: center; 
+            color: #fff; font-weight: 900; font-size: 1.2rem; 
+            transform: rotate(-3deg);
+            box-shadow: 0 8px 16px rgba(139, 92, 246, 0.3);
+        }
+        .logo-box:hover { transform: scale(1.05); }
+        .logo-text { font-weight: 800; font-size: 1.5rem; color: #fff; letter-spacing: -0.8px; }
+        .logo-text span { color: var(--violet); }
+
+        .nav-pill { 
+            background: rgba(255, 255, 255, 0.03); 
+            border: 1px solid var(--border); 
+            border-radius: 16px; 
+            padding: 4px; 
+            display: flex; gap: 4px; 
+        }
+        .nav-pill a { 
+            color: var(--zinc-500); 
+            text-decoration: none; 
+            font-size: 0.85rem; 
+            font-weight: 600; 
+            padding: 8px 20px; 
+            border-radius: 12px; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+        }
+        .nav-pill a:hover { color: #fff; background: rgba(255, 255, 255, 0.05); }
+        .nav-pill a.active { color: #fff; background: var(--violet); box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2); }
+
+        .profile-container { padding: 60px 0; position: relative; z-index: 10; max-width: 1000px; margin: 0 auto; }
+        
+        .profile-header {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        .profile-header::before {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            width: 200px; height: 200px;
+            background: radial-gradient(circle at top right, rgba(139, 92, 246, 0.1), transparent 70%);
+            pointer-events: none;
+        }
+
+        .large-avatar {
+            width: 120px;
+            height: 120px;
+            background: var(--violet);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 900;
+            color: white;
+            box-shadow: 0 15px 35px rgba(139, 92, 246, 0.3);
+            border: 4px solid rgba(255,255,255,0.1);
+        }
+
+        .header-content h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 5px; letter-spacing: -1px; }
+        .header-content p { color: var(--zinc-400); font-weight: 500; margin-bottom: 15px; }
+        
+        .header-badges { display: flex; gap: 10px; }
+        .h-badge { 
+            background: rgba(255, 255, 255, 0.05); 
+            border: 1px solid var(--border); 
+            padding: 4px 14px; 
+            border-radius: 30px; 
+            font-size: 0.75rem; 
+            font-weight: 700; 
+            color: var(--zinc-400); 
+        }
+
+        .panel { 
+            background: var(--card); 
+            border: 1px solid var(--border); 
+            border-radius: 24px; 
+            padding: 45px; 
+            margin-bottom: 30px; 
+            box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .section-title { font-weight: 800; font-size: 1.4rem; margin-bottom: 30px; color: #fff; display: flex; align-items: center; gap: 12px; }
+        .section-title i { color: var(--violet); }
+
+        .form-group label { font-size: 0.75rem; font-weight: 700; color: var(--zinc-500); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; display: block; }
+        .form-control { 
+            background: #09090b !important; 
+            border: 1px solid var(--border) !important; 
+            color: white !important; 
+            border-radius: 12px; 
+            padding: 14px 16px; 
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .form-control:focus { 
+            border-color: var(--violet) !important; 
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1) !important; 
+            background: #111113 !important;
+        }
+
+        .btn-submit { 
+            background: var(--violet); 
+            color: white; 
+            border: none; 
+            padding: 16px 40px; 
+            border-radius: 14px; 
+            font-weight: 700; 
+            transition: all 0.3s; 
+            box-shadow: 0 4px 0 0 #6d28d9;
+            width: 100%;
+        }
+        .btn-submit:hover { 
+            background: var(--violet-hover);
+            transform: translateY(-2px); 
+            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3); 
+        }
+
+        .current-resume {
+            margin-top: 20px; padding: 20px;
+            background: rgba(34, 197, 94, 0.05);
+            border: 1px solid rgba(34, 197, 94, 0.1);
+            border-radius: 16px;
+            color: #22c55e;
+            display: none; align-items: center; gap: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .profile-header { flex-direction: column; text-align: center; }
+            .header-badges { justify-content: center; }
+            .panel { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+  <div class="glow-1"></div>
+  <div class="glow-2"></div>
+
+  <!-- Navbar -->
+  <div class="navbar-wrapper">
+    <div class="container">
+      <nav class="navbar-custom">
+        <a href="../../index.html" class="logo-box">
+          <div class="logo-icon">T</div>
+          <div class="logo-text">Tools<span>&Job</span></div>
+        </a>
+        <div class="nav-pill d-none d-md-flex">
+          <a href="../../index.html">Home</a>
+          <a href="../jobs/jobs.html">Find Jobs</a>
+          <a href="../services/services.html">Services</a>
+          <a href="../resources/resources.html">Resources</a>
+          <a href="dashboard.html">Dashboard</a>
+        </div>
+        <div class="auth-btns" id="navbarAuth">
+          <!-- Auth logic will inject profile dropdown here -->
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <div class="container profile-container">
+      <div class="profile-header">
+          <div class="large-avatar" id="avatarBox">??</div>
+          <div class="header-content">
+              <h1 id="displayName">Loading Profile...</h1>
+              <p id="displayBio">Synchronizing your professional identity...</p>
+              <div class="header-badges">
+                  <div class="h-badge"><i class="bi bi-patch-check-fill text-violet me-1"></i> Verified Seeker</div>
+                  <div class="h-badge" id="displayLocation"><i class="bi bi-geo-alt-fill me-1"></i> Global Pool</div>
+              </div>
+          </div>
+      </div>
+
+      <div class="panel">
+          <h2 class="section-title"><i class="bi bi-person-circle"></i> Personal Identity</h2>
+          <form id="profileForm">
+              <div class="row">
+                  <div class="col-md-6 mb-4 form-group">
+                      <label>Full Legal Name</label>
+                      <input type="text" id="pName" class="form-control" placeholder="Johnathan Doe" required>
+                  </div>
+                  <div class="col-md-6 mb-4 form-group">
+                      <label>Contact Number</label>
+                      <input type="text" id="pPhone" class="form-control" placeholder="+91 98765 43210" required>
+                  </div>
+                  <div class="col-md-12 mb-4 form-group">
+                      <label>Professional Bio</label>
+                      <textarea id="pBio" class="form-control" rows="4" placeholder="Craft a compelling narrative for recruiters..."></textarea>
+                  </div>
+                  <div class="col-md-12 mb-4 form-group">
+                      <label>Core Technical Skills</label>
+                      <input type="text" id="pSkills" class="form-control" placeholder="e.g. React, Node.js, AWS Cloud, Python">
+                  </div>
+              </div>
+
+              <h2 class="section-title mt-5"><i class="bi bi-globe"></i> Digital Presence</h2>
+              <div class="row">
+                  <div class="col-md-4 mb-4 form-group">
+                      <label>LinkedIn Portal</label>
+                      <input type="url" id="pLinkedIn" class="form-control" placeholder="https://linkedin.com/in/...">
+                  </div>
+                  <div class="col-md-4 mb-4 form-group">
+                      <label>GitHub Repository</label>
+                      <input type="url" id="pGithub" class="form-control" placeholder="https://github.com/...">
+                  </div>
+                  <div class="col-md-4 mb-4 form-group">
+                      <label>Portfolio Showcase</label>
+                      <input type="url" id="pPortfolio" class="form-control" placeholder="https://personalbrand.com">
+                  </div>
+                  <div class="col-md-6 mb-4 form-group">
+                      <label>Target Compensation (LPA)</label>
+                      <input type="text" id="pSalary" class="form-control" placeholder="e.g. 12-15 LPA">
+                  </div>
+                  <div class="col-md-6 mb-4 form-group d-flex align-items-center">
+                      <div class="form-check form-switch p-0 d-flex align-items-center gap-3">
+                          <input type="checkbox" id="pRelocate" class="form-check-input ms-0" style="width:40px; height:20px; cursor:pointer;">
+                          <label class="mb-0 text-white" style="cursor:pointer; text-transform:none; letter-spacing:0;" for="pRelocate">Open to Global Relocation</label>
+                      </div>
+                  </div>
+              </div>
+
+              <h2 class="section-title mt-5"><i class="bi bi-file-earmark-pdf"></i> Resume Artifact</h2>
+              <div class="form-group mb-4">
+                  <label>Document Hosting Link (Drive/Dropbox)</label>
+                  <input type="url" id="pResume" class="form-control" placeholder="https://drive.google.com/file/...">
+                  
+                  <div id="currentResumeBox" class="current-resume">
+                      <i class="bi bi-file-earmark-check-fill fs-4"></i>
+                      <div>
+                          <div style="font-weight: 800; font-size: 0.95rem;">Master Resume Synced</div>
+                          <a href="#" id="currentResumeLink" target="_blank" style="color: #22c55e; font-size: 0.8rem; font-weight: 700; text-decoration: underline;">Open Document</a>
+                      </div>
+                  </div>
+              </div>
+
+              <h2 class="section-title mt-5"><i class="bi bi-briefcase"></i> Career Trajectory</h2>
+              <div class="row">
+                  <div class="col-md-6 mb-4 form-group"><label>Last Organization</label><input type="text" id="pExpCompany" class="form-control" placeholder="e.g. Google India"></div>
+                  <div class="col-md-6 mb-4 form-group"><label>Designation</label><input type="text" id="pExpTitle" class="form-control" placeholder="Software Architect"></div>
+                  <div class="col-md-6 mb-4 form-group"><label>Service Start</label><input type="month" id="pExpStart" class="form-control"></div>
+                  <div class="col-md-6 mb-4 form-group"><label>Service End</label><input type="month" id="pExpEnd" class="form-control"></div>
+              </div>
+
+              <h2 class="section-title mt-5"><i class="bi bi-mortarboard"></i> Educational Background</h2>
+              <div class="row">
+                  <div class="col-md-6 mb-4 form-group"><label>University / Institution</label><input type="text" id="pEduInst" class="form-control" placeholder="IIT Bombay"></div>
+                  <div class="col-md-6 mb-4 form-group"><label>Specialization</label><input type="text" id="pEduDegree" class="form-control" placeholder="B.Tech Artificial Intelligence"></div>
+                  <div class="col-md-6 mb-4 form-group"><label>Graduation Year</label><input type="number" id="pEduYear" class="form-control" placeholder="2025"></div>
+                  <div class="col-md-6 mb-4 form-group"><label>Performance Metric (GPA)</label><input type="text" id="pEduGrade" class="form-control" placeholder="9.8/10"></div>
+              </div>
+
+              <button type="submit" class="btn-submit mt-5" id="saveProfileBtn">Synchronize Professional Identity</button>
+          </form>
+      </div>
+  </div>
+
+  <script src="../../js/config.js"></script>
+  <script src="../../js/auth.js"></script>
+  <script src="profile.js"></script>
+</body>
+</html>

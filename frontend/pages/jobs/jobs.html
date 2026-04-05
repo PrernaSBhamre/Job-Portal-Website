@@ -1,661 +1,1924 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>Find Jobs | Tools and Job</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Find Jobs | Tools and Job</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
-<style>
-:root{
-  --bg:#0b0b14;--card:#13131f;--filter:#161624;--hover:#1d1d30;
-  --border:#2a2a42;--purple:#7c3aed;--ps:#5b21b6;--pg:rgba(124,58,237,.18);
-  --orange:#f97316;--od:#ea580c;
-  --tp:#f0f0fa;--tm:#8888aa;--td:#5a5a78;
-  --tag:#1e1e38;--tagb:#3a3a5c;
-  --green:#22c55e;--yellow:#eab308;--red:#f87171;
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--tp);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden}
-::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--purple);border-radius:3px}
+  <style>
+    :root {
+      --bg: #0b0b14;
+      --card: #13131f;
+      --filter: #161624;
+      --hover: #1d1d30;
+      --border: #2a2a42;
+      --purple: #7c3aed;
+      --ps: #5b21b6;
+      --pg: rgba(124, 58, 237, .18);
+      --orange: #f97316;
+      --od: #ea580c;
+      --tp: #f0f0fa;
+      --tm: #8888aa;
+      --td: #5a5a78;
+      --tag: #1e1e38;
+      --tagb: #3a3a5c;
+      --green: #22c55e;
+      --yellow: #eab308;
+      --red: #f87171;
+    }
 
-/* ΓöÇΓöÇ PAGE TRANSITIONS ΓöÇΓöÇ */
-.page{display:none;animation:fadeUp .35s ease both}
-.page.active{display:block}
-@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
 
-/* Navbar */
-.navbar-wrapper { border-bottom: 1px solid rgba(255, 255, 255, 0.05); background: rgba(11, 11, 20, 0.8); backdrop-filter: blur(12px); position: sticky; top: 0; z-index: 1000; }
-.navbar-custom { padding: 22px 0; display: flex; align-items: center; justify-content: space-between; }
-.logo-box { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-.logo-icon { width: 36px; height: 36px; background: #5b21b6; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 1.1rem; box-shadow: 0 0 15px rgba(91, 33, 182, 0.6); }
-.logo-text { font-weight: 700; font-size: 1.35rem; color: #fff; letter-spacing: -0.5px; }
-.logo-text span { color: #8b5cf6; }
-.nav-pill { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 40px; padding: 6px 8px; display: flex; gap: 5px; }
-.nav-pill a { color: #a1a1aa; text-decoration: none; font-size: 0.88rem; font-weight: 500; padding: 8px 20px; border-radius: 30px; transition: 0.3s; }
-.nav-pill a:hover, .nav-pill a.active { color: #fff; background: rgba(255, 255, 255, 0.08); }
-.auth-btns { display: flex; align-items: center; gap: 25px; }
-.btn-login { color: #fff; text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: 0.3s; }
-.btn-login:hover { color: #94a3b8; }
-.btn-signup { background: linear-gradient(135deg, #f97316, #fb923c); color: #000; padding: 10px 24px; border-radius: 30px; text-decoration: none; font-weight: 800; font-size: 0.95rem; transition: 0.3s; border: none; }
-.btn-signup:hover { box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3); color: #000; }
-@media(max-width:991px) { .nav-pill { display: none; } }
-@media(max-width:500px) { .auth-btns { display: none; } }
+    body {
+      background: var(--bg);
+      color: var(--tp);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden
+    }
 
-/* ΓöÇΓöÇ HERO ΓöÇΓöÇ */
-.hero{padding:36px 0 20px;background:radial-gradient(ellipse 700px 280px at 50% 0%,rgba(124,58,237,.13) 0%,transparent 70%)}
-.hero-title{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(1.55rem,3vw,2.3rem)}
-.hero-sub{color:var(--tm);font-size:.88rem;margin-top:4px}
-.search-box{background:var(--card);border:1px solid var(--border);border-radius:13px;display:flex;align-items:center;overflow:hidden;transition:border-color .2s}
-.search-box:focus-within{border-color:var(--purple);box-shadow:0 0 0 3px var(--pg)}
-.search-box i{padding:0 13px;color:var(--td);font-size:1rem}
-.search-box input{flex:1;background:transparent;border:none;outline:none;color:var(--tp);padding:13px 0;font-size:.92rem;font-family:'DM Sans',sans-serif}
-.search-box input::placeholder{color:var(--td)}
-.btn-srch{background:var(--purple);color:#fff;border:none;padding:9px 20px;margin:5px;border-radius:9px;font-weight:600;font-size:.82rem;cursor:pointer;transition:all .2s;white-space:nowrap}
-.btn-srch:hover{background:var(--ps)}
+    ::-webkit-scrollbar {
+      width: 5px
+    }
 
-/* ΓöÇΓöÇ FILTER PANEL ΓöÇΓöÇ */
-.fpanel{background:var(--filter);border:1px solid var(--border);border-radius:16px;padding:20px;position:sticky;top:76px;max-height:calc(100vh - 90px);overflow-y:auto}
-.fpanel::-webkit-scrollbar{width:3px}
-.fp-title{font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem;display:flex;align-items:center;gap:7px;margin-bottom:18px}
-.fp-sec{margin-bottom:20px}
-.fp-label{font-size:.68rem;font-weight:700;letter-spacing:.1em;color:var(--td);text-transform:uppercase;margin-bottom:10px}
-.fp-chk{display:flex;align-items:center;gap:9px;margin-bottom:9px;cursor:pointer}
-.fp-chk input{width:15px;height:15px;accent-color:var(--purple);cursor:pointer}
-.fp-chk span{font-size:.85rem;color:var(--tm);transition:color .15s}
-.fp-chk:hover span{color:var(--tp)}
-.stag{background:var(--tag);border:1px solid var(--tagb);padding:5px 11px;border-radius:20px;font-size:.75rem;cursor:pointer;transition:all .2s;color:var(--tm);user-select:none;display:inline-block;margin:3px}
-.stag:hover,.stag.on{background:var(--pg);border-color:var(--purple);color:var(--tp)}
-.btn-clr{width:100%;background:transparent;border:1px solid var(--border);color:var(--tm);padding:8px;border-radius:9px;font-size:.8rem;cursor:pointer;transition:all .2s;margin-top:4px;font-family:'DM Sans',sans-serif}
-.btn-clr:hover{border-color:var(--purple);color:var(--purple)}
+    ::-webkit-scrollbar-track {
+      background: var(--bg)
+    }
 
-/* ΓöÇΓöÇ SORT BAR ΓöÇΓöÇ */
-.sbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px}
-.sbar select{background:var(--card);border:1px solid var(--border);color:var(--tp);padding:6px 11px;border-radius:8px;font-size:.8rem;cursor:pointer;font-family:'DM Sans',sans-serif}
-.sbar select:focus{outline:none;border-color:var(--purple)}
-.jcount{color:var(--tm);font-size:.83rem}
-.jcount b{color:var(--tp)}
-.btn-fmob{background:var(--card);border:1px solid var(--border);color:var(--tm);padding:7px 14px;border-radius:9px;font-size:.83rem;cursor:pointer;display:none;align-items:center;gap:6px;transition:all .2s;font-family:'DM Sans',sans-serif}
-.btn-fmob:hover{border-color:var(--purple);color:var(--purple)}
+    ::-webkit-scrollbar-thumb {
+      background: var(--purple);
+      border-radius: 3px
+    }
 
-/* ΓöÇΓöÇ JOB CARD ΓöÇΓöÇ */
-.jcard{background:var(--card);border:1px solid var(--border);border-radius:15px;padding:20px 22px;transition:all .25s;cursor:pointer;position:relative;overflow:hidden;margin-bottom:14px;animation:fadeUp .35s ease both}
-.jcard::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:transparent;transition:background .25s;border-radius:3px 0 0 3px}
-.jcard:hover{border-color:var(--purple);transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.3)}
-.jcard:hover::before{background:var(--purple)}
-.jcard:nth-child(2){animation-delay:.06s}
-.jcard:nth-child(3){animation-delay:.12s}
-.jcard:nth-child(4){animation-delay:.18s}
-.jcard:nth-child(5){animation-delay:.24s}
+    /* ΓöÇΓöÇ PAGE TRANSITIONS ΓöÇΓöÇ */
+    .page {
+      display: none;
+      animation: fadeUp .35s ease both
+    }
 
-.badge-pre{background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;font-size:.68rem;font-weight:700;padding:4px 9px;border-radius:20px;display:inline-flex;align-items:center;gap:3px}
-.badge-ceo{background:rgba(234,179,8,.15);border:1px solid rgba(234,179,8,.4);color:var(--yellow);font-size:.68rem;font-weight:700;padding:4px 9px;border-radius:20px;display:inline-flex;align-items:center;gap:3px}
-.badge-new{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.4);color:var(--green);font-size:.68rem;font-weight:700;padding:4px 9px;border-radius:20px}
-.badge-urg{background:rgba(248,113,113,.12);border:1px solid rgba(248,113,113,.3);color:var(--red);font-size:.68rem;font-weight:700;padding:4px 9px;border-radius:20px;display:inline-flex;align-items:center;gap:3px}
+    .page.active {
+      display: block
+    }
 
-.clogo{width:50px;height:50px;border-radius:12px;background:var(--hover);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:1.05rem;flex-shrink:0}
-.jt{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem}
-.jco{color:var(--tm);font-size:.82rem;margin-top:2px}
-.jmeta{display:flex;flex-wrap:wrap;gap:12px;margin-top:10px}
-.jmeta span{display:flex;align-items:center;gap:5px;font-size:.8rem;color:var(--tm)}
-.jmeta i{font-size:.85rem;color:var(--td)}
-.jtag{background:var(--tag);border:1px solid var(--tagb);padding:4px 11px;border-radius:20px;font-size:.74rem;color:#a78bfa;display:inline-block;margin:3px}
-.salary{font-weight:700;font-size:.97rem}
-.ptime{font-size:.73rem;color:var(--td)}
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(18px)
+      }
 
-.match-bar{width:55px;height:5px;background:var(--border);border-radius:3px;overflow:hidden;display:inline-block;vertical-align:middle}
-.match-fill{height:100%;background:linear-gradient(90deg,var(--green),#86efac);border-radius:3px}
-.match-text{font-size:.74rem;color:var(--green)}
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
 
-.btn-apply{background:var(--orange);color:#fff;border:none;padding:9px 20px;border-radius:9px;font-weight:700;font-size:.82rem;cursor:pointer;transition:all .2s}
-.btn-apply:hover{background:var(--od);transform:scale(1.04);box-shadow:0 4px 16px rgba(249,115,22,.4)}
-.btn-bk{background:transparent;border:1px solid var(--border);color:var(--tm);width:34px;height:34px;border-radius:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.95rem;transition:all .2s;flex-shrink:0}
-.btn-bk:hover,.btn-bk.on{border-color:var(--orange);color:var(--orange)}
-.btn-bk.on{background:rgba(249,115,22,.12)}
+    /* Navbar */
+    .navbar-wrapper {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      background: rgba(11, 11, 20, 0.8);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
 
-.btn-load{background:var(--card);border:1px solid var(--border);color:var(--tm);padding:12px 34px;border-radius:11px;font-weight:600;font-size:.88rem;cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:7px;margin:6px auto 0;font-family:'DM Sans',sans-serif}
-.btn-load:hover{border-color:var(--purple);color:var(--purple);background:var(--pg)}
+    .navbar-custom {
+      padding: 22px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
-/* ΓöÇΓöÇ JD PAGE ΓöÇΓöÇ */
-.jd-wrap{padding:24px 0 60px}
-.bc a{color:var(--tm);text-decoration:none;font-size:.82rem}
-.bc a:hover{color:var(--purple)}
-.bc span{color:var(--td);font-size:.82rem}
+    .logo-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
 
-.cbox{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:16px}
-.jd-topbar{border-top:4px solid var(--purple);border-radius:16px 16px 0 0}
-.clogo-lg{width:68px;height:68px;border-radius:14px;background:var(--hover);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:1.5rem;flex-shrink:0}
-.jd-title{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(1.25rem,3vw,1.65rem)}
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: #5b21b6;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 800;
+      font-size: 1.1rem;
+      box-shadow: 0 0 15px rgba(91, 33, 182, 0.6);
+    }
 
-.stat-b{background:var(--filter);border:1px solid var(--border);border-radius:11px;padding:13px 16px;flex:1;min-width:90px}
-.stat-l{font-size:.67rem;font-weight:700;letter-spacing:.08em;color:var(--td);text-transform:uppercase}
-.stat-v{font-family:'Syne',sans-serif;font-weight:700;font-size:1.05rem;margin-top:3px}
+    .logo-text {
+      font-weight: 700;
+      font-size: 1.35rem;
+      color: #fff;
+      letter-spacing: -0.5px;
+    }
 
-.sec-h{font-family:'Syne',sans-serif;font-weight:700;font-size:.98rem;display:flex;align-items:center;gap:8px;margin-bottom:14px}
-.sec-h i{color:var(--purple)}
+    .logo-text span {
+      color: #8b5cf6;
+    }
 
-.pill{background:var(--tag);border:1px solid var(--tagb);padding:6px 13px;border-radius:20px;font-size:.78rem;color:#a78bfa;display:inline-block;margin:3px}
+    .nav-pill {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 40px;
+      padding: 6px 8px;
+      display: flex;
+      gap: 5px;
+    }
 
-.chk-li{display:flex;align-items:flex-start;gap:9px;margin-bottom:9px;font-size:.88rem;color:var(--tm);line-height:1.6}
-.chk-li i{color:var(--green);font-size:.95rem;margin-top:2px;flex-shrink:0}
-.chk-li.purple i{color:var(--purple)}
+    .nav-pill a {
+      color: #a1a1aa;
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 500;
+      padding: 8px 20px;
+      border-radius: 30px;
+      transition: 0.3s;
+    }
 
-.proc-step{background:var(--filter);border:1px solid var(--border);padding:8px 14px;border-radius:9px;font-size:.8rem;font-weight:600;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+    .nav-pill a:hover,
+    .nav-pill a.active {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+    }
 
-.sal-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:11px}
-.sal-item{background:var(--filter);border:1px solid var(--border);border-radius:11px;padding:13px;text-align:center}
-.sal-item.tot{border-color:var(--purple);background:var(--pg)}
-.sal-lab{font-size:.68rem;text-transform:uppercase;letter-spacing:.07em;color:var(--td);margin-bottom:5px}
-.sal-val{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem}
-.sal-item.tot .sal-val{color:var(--purple)}
+    .auth-btns {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+    }
 
-/* sidebar */
-.sidebar{position:sticky;top:76px}
-.ov-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:.85rem}
-.ov-row:last-child{border-bottom:none}
-.ov-l{color:var(--tm);display:flex;align-items:center;gap:7px}
-.ov-l i{color:var(--td);font-size:.9rem}
-.ov-v{font-weight:600;color:var(--tp)}
+    .btn-login {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: 0.3s;
+    }
 
-.prem-box{background:linear-gradient(135deg,#1a0f2e,#251040);border:1px solid rgba(124,58,237,.35);border-radius:15px;padding:20px;margin-top:14px;text-align:center}
-.prem-icon{width:46px;height:46px;border-radius:50%;background:rgba(124,58,237,.22);display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin:0 auto 10px}
-.btn-upg{width:100%;background:linear-gradient(135deg,var(--purple),#a855f7);color:#fff;border:none;padding:10px;border-radius:9px;font-weight:700;font-size:.83rem;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif}
-.btn-upg:hover{opacity:.9;transform:scale(1.02)}
+    .btn-login:hover {
+      color: #94a3b8;
+    }
 
-/* ΓöÇΓöÇ APPLY FORM PANEL ΓöÇΓöÇ */
-.apply-panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;margin-top:14px}
-.ap-title{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;margin-bottom:16px;display:flex;align-items:center;gap:7px}
-.ap-title i{color:var(--orange)}
-.fl{font-size:.78rem;font-weight:600;color:var(--tm);margin-bottom:5px;display:block}
-.fi{background:var(--filter);border:1px solid var(--border);color:var(--tp);border-radius:9px;padding:9px 12px;width:100%;font-size:.85rem;font-family:'DM Sans',sans-serif;transition:border-color .2s;outline:none}
-.fi:focus{border-color:var(--purple);background:var(--hover)}
-.fi::placeholder{color:var(--td)}
-textarea.fi{resize:vertical;min-height:80px}
-.upload-z{border:2px dashed var(--border);border-radius:10px;padding:20px;text-align:center;cursor:pointer;transition:all .2s;color:var(--td);font-size:.82rem}
-.upload-z:hover{border-color:var(--purple);color:var(--purple)}
-.upload-z i{display:block;font-size:1.8rem;margin-bottom:6px}
-.btn-sub{width:100%;background:var(--orange);color:#fff;border:none;padding:12px;border-radius:10px;font-weight:700;font-size:.9rem;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px}
-.btn-sub:hover{background:var(--od);transform:translateY(-1px);box-shadow:0 6px 20px rgba(249,115,22,.4)}
+    .btn-signup {
+      background: linear-gradient(135deg, #f97316, #fb923c);
+      color: #000;
+      padding: 10px 24px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 0.95rem;
+      transition: 0.3s;
+      border: none;
+    }
 
-/* CTA btns */
-.btn-qa{background:var(--orange);color:#fff;border:none;padding:12px 26px;border-radius:11px;font-weight:700;font-size:.9rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:7px;font-family:'DM Sans',sans-serif}
-.btn-qa:hover{background:var(--od);transform:translateY(-2px);box-shadow:0 7px 24px rgba(249,115,22,.4)}
-.btn-sj{background:transparent;border:1px solid var(--border);color:var(--tm);padding:12px 20px;border-radius:11px;font-weight:600;font-size:.88rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:7px;font-family:'DM Sans',sans-serif}
-.btn-sj:hover,.btn-sj.on{border-color:var(--orange);color:var(--orange)}
-.btn-sj.on{background:rgba(249,115,22,.1)}
-.btn-sh{background:transparent;border:1px solid var(--border);color:var(--tm);padding:12px 18px;border-radius:11px;font-size:.88rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px;font-family:'DM Sans',sans-serif}
-.btn-sh:hover{border-color:var(--border);color:var(--tp)}
+    .btn-signup:hover {
+      box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3);
+      color: #000;
+    }
 
-/* similar jobs */
-.sim-card{background:var(--filter);border:1px solid var(--border);border-radius:11px;padding:13px;cursor:pointer;transition:all .2s;margin-bottom:8px}
-.sim-card:hover{border-color:var(--purple);transform:translateX(3px)}
-.sim-t{font-family:'Syne',sans-serif;font-weight:700;font-size:.85rem}
-.sim-m{font-size:.76rem;color:var(--tm);margin-top:3px}
+    @media(max-width:991px) {
+      .nav-pill {
+        display: none;
+      }
+    }
 
-/* reviews */
-.rv-card{background:var(--filter);border:1px solid var(--border);border-radius:12px;padding:15px;margin-bottom:11px}
-.rv-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--purple),#a855f7);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem;flex-shrink:0}
+    @media(max-width:500px) {
+      .auth-btns {
+        display: none;
+      }
+    }
 
-/* stars helper */
-.stars{display:inline-flex;gap:2px}
-.stars i{font-size:.8rem}
+    /* ΓöÇΓöÇ HERO ΓöÇΓöÇ */
+    .hero {
+      padding: 36px 0 20px;
+      background: radial-gradient(ellipse 700px 280px at 50% 0%, rgba(124, 58, 237, .13) 0%, transparent 70%)
+    }
 
-/* tabs */
-.tab-bar{display:flex;gap:4px;border-bottom:1px solid var(--border);margin-bottom:18px;flex-wrap:wrap}
-.tab-btn{background:none;border:none;color:var(--tm);padding:9px 16px;border-radius:8px 8px 0 0;font-size:.85rem;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;font-family:'DM Sans',sans-serif}
-.tab-btn.on{color:var(--purple);border-bottom-color:var(--purple);background:var(--pg)}
-.tab-content{display:none}
-.tab-content.on{display:block}
+    .hero-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.55rem, 3vw, 2.3rem)
+    }
 
-/* progress ring */
-.prog-ring{display:flex;align-items:center;gap:8px}
-.prog-circle{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;font-size:.78rem;flex-shrink:0}
+    .hero-sub {
+      color: var(--tm);
+      font-size: .88rem;
+      margin-top: 4px
+    }
 
-/* success state */
-.success-box{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);border-radius:12px;padding:20px;text-align:center;display:none}
-.success-box.show{display:block}
+    .search-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      transition: border-color .2s
+    }
 
-/* mobile filter drawer */
-.fdrawer{position:fixed;left:0;top:0;bottom:0;width:min(310px,88vw);background:var(--filter);border-right:1px solid var(--border);z-index:1051;padding:22px;overflow-y:auto;transform:translateX(-100%);transition:transform .3s ease}
-.fdrawer.open{transform:translateX(0)}
-.foverlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:1050;display:none;backdrop-filter:blur(3px)}
-.foverlay.open{display:block}
+    .search-box:focus-within {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 3px var(--pg)
+    }
 
-/* sticky mobile apply bar */
-.mob-apply-bar{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--border);padding:10px 14px;z-index:998;display:none;gap:10px;align-items:center}
-@media(max-width:991px){.mob-apply-bar{display:flex;}}
+    .search-box i {
+      padding: 0 13px;
+      color: var(--td);
+      font-size: 1rem
+    }
 
-/* tooltip badge */
-.skill-known{position:relative}
-.skill-known::after{content:'Γ£ô You have this';position:absolute;bottom:calc(100% + 5px);left:50%;transform:translateX(-50%);background:var(--green);color:#000;font-size:.65rem;font-weight:700;padding:3px 7px;border-radius:5px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .2s}
-.skill-known:hover::after{opacity:1}
+    .search-box input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--tp);
+      padding: 13px 0;
+      font-size: .92rem;
+      font-family: 'DM Sans', sans-serif
+    }
 
-/* footer */
-footer{background:#0c0c18;border-top:1px solid var(--border);padding:46px 0 22px}
-.ft{font-family:'Syne',sans-serif;font-weight:700;font-size:.92rem}
-.ft span{color:var(--purple)}
-.fl-links{list-style:none;padding:0}
-.fl-links li{margin-bottom:8px}
-.fl-links a{color:var(--tm);text-decoration:none;font-size:.84rem;transition:color .2s}
-.fl-links a:hover{color:var(--tp)}
-.fci{display:flex;gap:11px;margin-bottom:11px}
-.fci i{color:var(--purple);font-size:.95rem;margin-top:2px;flex-shrink:0}
-.fci span{color:var(--tm);font-size:.82rem;line-height:1.5}
-.fbot{border-top:1px solid var(--border);margin-top:32px;padding-top:16px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}
-.fbot p,.fbot a{color:var(--td);font-size:.77rem;text-decoration:none}
+    .search-box input::placeholder {
+      color: var(--td)
+    }
 
-/* toast */
-#tc{position:fixed;bottom:22px;right:22px;z-index:9999;display:flex;flex-direction:column;gap:8px}
-.toast-i{background:var(--card);border:1px solid var(--border);border-radius:11px;padding:11px 16px;display:flex;align-items:center;gap:9px;font-size:.83rem;animation:slideIn .3s ease;box-shadow:0 8px 28px rgba(0,0,0,.4);min-width:220px}
-.toast-i.s{border-left:3px solid var(--green)}
-.toast-i.n{border-left:3px solid var(--purple)}
-@keyframes slideIn{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:translateX(0)}}
-@keyframes fadeO{to{opacity:0;transform:translateX(28px)}}
+    .btn-srch {
+      background: var(--purple);
+      color: #fff;
+      border: none;
+      padding: 9px 20px;
+      margin: 5px;
+      border-radius: 9px;
+      font-weight: 600;
+      font-size: .82rem;
+      cursor: pointer;
+      transition: all .2s;
+      white-space: nowrap
+    }
 
-/* no results */
-.nores{text-align:center;padding:50px 20px;color:var(--td)}
-.nores i{font-size:2.8rem;display:block;margin-bottom:13px;color:var(--border)}
+    .btn-srch:hover {
+      background: var(--ps)
+    }
 
-@media(max-width:991px){
-  .filter-col-desk{display:none}
-  .btn-fmob{display:flex}
-  .sidebar{position:relative;top:0}
-}
-@media(max-width:767px){
-  .cbox{padding:16px 14px}
-  .jcard{padding:15px 14px}
-  .sal-grid{grid-template-columns:1fr 1fr}
-  .stat-b{padding:10px 12px}
-}
-</style>
+    /* ΓöÇΓöÇ FILTER PANEL ΓöÇΓöÇ */
+    .fpanel {
+      background: var(--filter);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      position: sticky;
+      top: 76px;
+      max-height: calc(100vh - 90px);
+      overflow-y: auto
+    }
+
+    .fpanel::-webkit-scrollbar {
+      width: 3px
+    }
+
+    .fp-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: .95rem;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 18px
+    }
+
+    .fp-sec {
+      margin-bottom: 20px
+    }
+
+    .fp-label {
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      color: var(--td);
+      text-transform: uppercase;
+      margin-bottom: 10px
+    }
+
+    .fp-chk {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 9px;
+      cursor: pointer
+    }
+
+    .fp-chk input {
+      width: 15px;
+      height: 15px;
+      accent-color: var(--purple);
+      cursor: pointer
+    }
+
+    .fp-chk span {
+      font-size: .85rem;
+      color: var(--tm);
+      transition: color .15s
+    }
+
+    .fp-chk:hover span {
+      color: var(--tp)
+    }
+
+    .stag {
+      background: var(--tag);
+      border: 1px solid var(--tagb);
+      padding: 5px 11px;
+      border-radius: 20px;
+      font-size: .75rem;
+      cursor: pointer;
+      transition: all .2s;
+      color: var(--tm);
+      user-select: none;
+      display: inline-block;
+      margin: 3px
+    }
+
+    .stag:hover,
+    .stag.on {
+      background: var(--pg);
+      border-color: var(--purple);
+      color: var(--tp)
+    }
+
+    .btn-clr {
+      width: 100%;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--tm);
+      padding: 8px;
+      border-radius: 9px;
+      font-size: .8rem;
+      cursor: pointer;
+      transition: all .2s;
+      margin-top: 4px;
+      font-family: 'DM Sans', sans-serif
+    }
+
+    .btn-clr:hover {
+      border-color: var(--purple);
+      color: var(--purple)
+    }
+
+    /* ΓöÇΓöÇ SORT BAR ΓöÇΓöÇ */
+    .sbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 14px
+    }
+
+    .sbar select {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--tp);
+      padding: 6px 11px;
+      border-radius: 8px;
+      font-size: .8rem;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif
+    }
+
+    .sbar select:focus {
+      outline: none;
+      border-color: var(--purple)
+    }
+
+    .jcount {
+      color: var(--tm);
+      font-size: .83rem
+    }
+
+    .jcount b {
+      color: var(--tp)
+    }
+
+    .btn-fmob {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--tm);
+      padding: 7px 14px;
+      border-radius: 9px;
+      font-size: .83rem;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      gap: 6px;
+      transition: all .2s;
+      font-family: 'DM Sans', sans-serif
+    }
+
+    .btn-fmob:hover {
+      border-color: var(--purple);
+      color: var(--purple)
+    }
+
+    /* ΓöÇΓöÇ JOB CARD ΓöÇΓöÇ */
+    .jcard {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 20px 22px;
+      transition: all .25s;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 14px;
+      animation: fadeUp .35s ease both
+    }
+
+    .jcard::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: transparent;
+      transition: background .25s;
+      border-radius: 3px 0 0 3px
+    }
+
+    .jcard:hover {
+      border-color: var(--purple);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, .3)
+    }
+
+    .jcard:hover::before {
+      background: var(--purple)
+    }
+
+    .jcard:nth-child(2) {
+      animation-delay: .06s
+    }
+
+    .jcard:nth-child(3) {
+      animation-delay: .12s
+    }
+
+    .jcard:nth-child(4) {
+      animation-delay: .18s
+    }
+
+    .jcard:nth-child(5) {
+      animation-delay: .24s
+    }
+
+    .badge-pre {
+      background: linear-gradient(135deg, #7c3aed, #a855f7);
+      color: #fff;
+      font-size: .68rem;
+      font-weight: 700;
+      padding: 4px 9px;
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px
+    }
+
+    .badge-ceo {
+      background: rgba(234, 179, 8, .15);
+      border: 1px solid rgba(234, 179, 8, .4);
+      color: var(--yellow);
+      font-size: .68rem;
+      font-weight: 700;
+      padding: 4px 9px;
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px
+    }
+
+    .badge-new {
+      background: rgba(34, 197, 94, .15);
+      border: 1px solid rgba(34, 197, 94, .4);
+      color: var(--green);
+      font-size: .68rem;
+      font-weight: 700;
+      padding: 4px 9px;
+      border-radius: 20px
+    }
+
+    .badge-urg {
+      background: rgba(248, 113, 113, .12);
+      border: 1px solid rgba(248, 113, 113, .3);
+      color: var(--red);
+      font-size: .68rem;
+      font-weight: 700;
+      padding: 4px 9px;
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px
+    }
+
+    .clogo {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      background: var(--hover);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.05rem;
+      flex-shrink: 0
+    }
+
+    .jt {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1rem
+    }
+
+    .jco {
+      color: var(--tm);
+      font-size: .82rem;
+      margin-top: 2px
+    }
+
+    .jmeta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 10px
+    }
+
+    .jmeta span {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: .8rem;
+      color: var(--tm)
+    }
+
+    .jmeta i {
+      font-size: .85rem;
+      color: var(--td)
+    }
+
+    .jtag {
+      background: var(--tag);
+      border: 1px solid var(--tagb);
+      padding: 4px 11px;
+      border-radius: 20px;
+      font-size: .74rem;
+      color: #a78bfa;
+      display: inline-block;
+      margin: 3px
+    }
+
+    .salary {
+      font-weight: 700;
+      font-size: .97rem
+    }
+
+    .ptime {
+      font-size: .73rem;
+      color: var(--td)
+    }
+
+    .match-bar {
+      width: 55px;
+      height: 5px;
+      background: var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+      display: inline-block;
+      vertical-align: middle
+    }
+
+    .match-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--green), #86efac);
+      border-radius: 3px
+    }
+
+    .match-text {
+      font-size: .74rem;
+      color: var(--green)
+    }
+
+    .btn-apply {
+      background: var(--orange);
+      color: #fff;
+      border: none;
+      padding: 9px 20px;
+      border-radius: 9px;
+      font-weight: 700;
+      font-size: .82rem;
+      cursor: pointer;
+      transition: all .2s
+    }
+
+    .btn-apply:hover {
+      background: var(--od);
+      transform: scale(1.04);
+      box-shadow: 0 4px 16px rgba(249, 115, 22, .4)
+    }
+
+    .btn-bk {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--tm);
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .95rem;
+      transition: all .2s;
+      flex-shrink: 0
+    }
+
+    .btn-bk:hover,
+    .btn-bk.on {
+      border-color: var(--orange);
+      color: var(--orange)
+    }
+
+    .btn-bk.on {
+      background: rgba(249, 115, 22, .12)
+    }
+
+    .btn-load {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--tm);
+      padding: 12px 34px;
+      border-radius: 11px;
+      font-weight: 600;
+      font-size: .88rem;
+      cursor: pointer;
+      transition: all .25s;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin: 6px auto 0;
+      font-family: 'DM Sans', sans-serif
+    }
+
+    .btn-load:hover {
+      border-color: var(--purple);
+      color: var(--purple);
+      background: var(--pg)
+    }
+
+    /* ΓöÇΓöÇ JD PAGE ΓöÇΓöÇ */
+    .jd-wrap {
+      padding: 24px 0 60px
+    }
+
+    .bc a {
+      color: var(--tm);
+      text-decoration: none;
+      font-size: .82rem
+    }
+
+    .bc a:hover {
+      color: var(--purple)
+    }
+
+    .bc span {
+      color: var(--td);
+      font-size: .82rem
+    }
+
+    .cbox {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 16px
+    }
+
+    .jd-topbar {
+      border-top: 4px solid var(--purple);
+      border-radius: 16px 16px 0 0
+    }
+
+    .clogo-lg {
+      width: 68px;
+      height: 68px;
+      border-radius: 14px;
+      background: var(--hover);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.5rem;
+      flex-shrink: 0
+    }
+
+    .jd-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.25rem, 3vw, 1.65rem)
+    }
+
+    .stat-b {
+      background: var(--filter);
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding: 13px 16px;
+      flex: 1;
+      min-width: 90px
+    }
+
+    .stat-l {
+      font-size: .67rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      color: var(--td);
+      text-transform: uppercase
+    }
+
+    .stat-v {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      margin-top: 3px
+    }
+
+    .sec-h {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: .98rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px
+    }
+
+    .sec-h i {
+      color: var(--purple)
+    }
+
+    .pill {
+      background: var(--tag);
+      border: 1px solid var(--tagb);
+      padding: 6px 13px;
+      border-radius: 20px;
+      font-size: .78rem;
+      color: #a78bfa;
+      display: inline-block;
+      margin: 3px
+    }
+
+    .chk-li {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      margin-bottom: 9px;
+      font-size: .88rem;
+      color: var(--tm);
+      line-height: 1.6
+    }
+
+    .chk-li i {
+      color: var(--green);
+      font-size: .95rem;
+      margin-top: 2px;
+      flex-shrink: 0
+    }
+
+    .chk-li.purple i {
+      color: var(--purple)
+    }
+
+    .proc-step {
+      background: var(--filter);
+      border: 1px solid var(--border);
+      padding: 8px 14px;
+      border-radius: 9px;
+      font-size: .8rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap
+    }
+
+    .sal-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 11px
+    }
+
+    .sal-item {
+      background: var(--filter);
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding: 13px;
+      text-align: center
+    }
+
+    .sal-item.tot {
+      border-color: var(--purple);
+      background: var(--pg)
+    }
+
+    .sal-lab {
+      font-size: .68rem;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--td);
+      margin-bottom: 5px
+    }
+
+    .sal-val {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1rem
+    }
+
+    .sal-item.tot .sal-val {
+      color: var(--purple)
+    }
+
+    /* sidebar */
+    .sidebar {
+      position: sticky;
+      top: 76px
+    }
+
+    .ov-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: .85rem
+    }
+
+    .ov-row:last-child {
+      border-bottom: none
+    }
+
+    .ov-l {
+      color: var(--tm);
+      display: flex;
+      align-items: center;
+      gap: 7px
+    }
+
+    .ov-l i {
+      color: var(--td);
+      font-size: .9rem
+    }
+
+    .ov-v {
+      font-weight: 600;
+      color: var(--tp)
+    }
+
+    .prem-box {
+      background: linear-gradient(135deg, #1a0f2e, #251040);
+      border: 1px solid rgba(124, 58, 237, .35);
+      border-radius: 15px;
+      padding: 20px;
+      margin-top: 14px;
+      text-align: center
+    }
+
+    .prem-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: rgba(124, 58, 237, .22);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      margin: 0 auto 10px
+    }
+
+    .btn-upg {
+      width: 100%;
+      background: linear-gradient(135deg, var(--purple), #a855f7);
+      color: #fff;
+      border: none;
+      padding: 10px;
+      border-radius: 9px;
+      font-weight: 700;
+      font-size: .83rem;
+      cursor: pointer;
+      transition: all .2s;
+      font-family: 'DM Sans', sans-serif
+    }
+
+    .btn-upg:hover {
+      opacity: .9;
+      transform: scale(1.02)
+    }
+
+    /* ΓöÇΓöÇ APPLY FORM PANEL ΓöÇΓöÇ */
+    .apply-panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px;
+      margin-top: 14px
+    }
+
+    .ap-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 7px
+    }
+
+    .ap-title i {
+      color: var(--orange)
+    }
+
+    .fl {
+      font-size: .78rem;
+      font-weight: 600;
+      color: var(--tm);
+      margin-bottom: 5px;
+      display: block
+    }
+
+    .fi {
+      background: var(--filter);
+      border: 1px solid var(--border);
+      color: var(--tp);
+      border-radius: 9px;
+      padding: 9px 12px;
+      width: 100%;
+      font-size: .85rem;
+      font-family: 'DM Sans', sans-serif;
+      transition: border-color .2s;
+      outline: none
+    }
+
+    .fi:focus {
+      border-color: var(--purple);
+      background: var(--hover)
+    }
+
+    .fi::placeholder {
+      color: var(--td)
+    }
+
+    textarea.fi {
+      resize: vertical;
+      min-height: 80px
+    }
+
+    .upload-z {
+      border: 2px dashed var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all .2s;
+      color: var(--td);
+      font-size: .82rem
+    }
+
+    .upload-z:hover {
+      border-color: var(--purple);
+      color: var(--purple)
+    }
+
+    .upload-z i {
+      display: block;
+      font-size: 1.8rem;
+      margin-bottom: 6px
+    }
+
+    .btn-sub {
+      width: 100%;
+      background: var(--orange);
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: .9rem;
+      cursor: pointer;
+      transition: all .2s;
+      font-family: 'DM Sans', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 4px
+    }
+
+    .btn-sub:hover {
+      background: var(--od);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(249, 115, 22, .4)
+    }
+
+    /* CTA btns */
+    .btn-qa {
+      background: var(--orange);
+      color: #fff;
+      border: none;
+      padding: 12px 26px;
+      border-radius: 11px;
+      font-weight: 700;
+      font-size: .9rem;
+      cursor: pointer;
+      transition: all .2s;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-family: 'DM Sans', sans-serif
+    }
+
+    .btn-qa:hover {
+      background: var(--od);
+      transform: translateY(-2px);
+      box-shadow: 0 7px 24px rgba(249, 115, 22, .4)
+    }
+
+    .btn-sj {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--tm);
+      padding: 12px 20px;
+      border-radius: 11px;
+      font-weight: 600;
+      font-size: .88rem;
+      cursor: pointer;
+      transition: all .2s;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-family: 'DM Sans', sans-serif
+    }
+
+    .btn-sj:hover,
+    .btn-sj.on {
+      border-color: var(--orange);
+      color: var(--orange)
+    }
+
+    .btn-sj.on {
+      background: rgba(249, 115, 22, .1)
+    }
+
+    .btn-sh {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--tm);
+      padding: 12px 18px;
+      border-radius: 11px;
+      font-size: .88rem;
+      cursor: pointer;
+      transition: all .2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'DM Sans', sans-serif
+    }
+
+    .btn-sh:hover {
+      border-color: var(--border);
+      color: var(--tp)
+    }
+
+    /* similar jobs */
+    .sim-card {
+      background: var(--filter);
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding: 13px;
+      cursor: pointer;
+      transition: all .2s;
+      margin-bottom: 8px
+    }
+
+    .sim-card:hover {
+      border-color: var(--purple);
+      transform: translateX(3px)
+    }
+
+    .sim-t {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: .85rem
+    }
+
+    .sim-m {
+      font-size: .76rem;
+      color: var(--tm);
+      margin-top: 3px
+    }
+
+    /* reviews */
+    .rv-card {
+      background: var(--filter);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 11px
+    }
+
+    .rv-av {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple), #a855f7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: .85rem;
+      flex-shrink: 0
+    }
+
+    /* stars helper */
+    .stars {
+      display: inline-flex;
+      gap: 2px
+    }
+
+    .stars i {
+      font-size: .8rem
+    }
+
+    /* tabs */
+    .tab-bar {
+      display: flex;
+      gap: 4px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 18px;
+      flex-wrap: wrap
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      color: var(--tm);
+      padding: 9px 16px;
+      border-radius: 8px 8px 0 0;
+      font-size: .85rem;
+      font-weight: 500;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: all .2s;
+      font-family: 'DM Sans', sans-serif
+    }
+
+    .tab-btn.on {
+      color: var(--purple);
+      border-bottom-color: var(--purple);
+      background: var(--pg)
+    }
+
+    .tab-content {
+      display: none
+    }
+
+    .tab-content.on {
+      display: block
+    }
+
+    /* progress ring */
+    .prog-ring {
+      display: flex;
+      align-items: center;
+      gap: 8px
+    }
+
+    .prog-circle {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: .78rem;
+      flex-shrink: 0
+    }
+
+    /* success state */
+    .success-box {
+      background: rgba(34, 197, 94, .1);
+      border: 1px solid rgba(34, 197, 94, .3);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      display: none
+    }
+
+    .success-box.show {
+      display: block
+    }
+
+    /* mobile filter drawer */
+    .fdrawer {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: min(310px, 88vw);
+      background: var(--filter);
+      border-right: 1px solid var(--border);
+      z-index: 1051;
+      padding: 22px;
+      overflow-y: auto;
+      transform: translateX(-100%);
+      transition: transform .3s ease
+    }
+
+    .fdrawer.open {
+      transform: translateX(0)
+    }
+
+    .foverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .55);
+      z-index: 1050;
+      display: none;
+      backdrop-filter: blur(3px)
+    }
+
+    .foverlay.open {
+      display: block
+    }
+
+    /* sticky mobile apply bar */
+    .mob-apply-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      padding: 10px 14px;
+      z-index: 998;
+      display: none;
+      gap: 10px;
+      align-items: center
+    }
+
+    @media(max-width:991px) {
+      .mob-apply-bar {
+        display: flex;
+      }
+    }
+
+    /* tooltip badge */
+    .skill-known {
+      position: relative
+    }
+
+    .skill-known::after {
+      content: 'Γ£ô You have this';
+      position: absolute;
+      bottom: calc(100% + 5px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--green);
+      color: #000;
+      font-size: .65rem;
+      font-weight: 700;
+      padding: 3px 7px;
+      border-radius: 5px;
+      white-space: nowrap;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .2s
+    }
+
+    .skill-known:hover::after {
+      opacity: 1
+    }
+
+    /* footer */
+    footer {
+      background: #0c0c18;
+      border-top: 1px solid var(--border);
+      padding: 46px 0 22px
+    }
+
+    .ft {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: .92rem
+    }
+
+    .ft span {
+      color: var(--purple)
+    }
+
+    .fl-links {
+      list-style: none;
+      padding: 0
+    }
+
+    .fl-links li {
+      margin-bottom: 8px
+    }
+
+    .fl-links a {
+      color: var(--tm);
+      text-decoration: none;
+      font-size: .84rem;
+      transition: color .2s
+    }
+
+    .fl-links a:hover {
+      color: var(--tp)
+    }
+
+    .fci {
+      display: flex;
+      gap: 11px;
+      margin-bottom: 11px
+    }
+
+    .fci i {
+      color: var(--purple);
+      font-size: .95rem;
+      margin-top: 2px;
+      flex-shrink: 0
+    }
+
+    .fci span {
+      color: var(--tm);
+      font-size: .82rem;
+      line-height: 1.5
+    }
+
+    .fbot {
+      border-top: 1px solid var(--border);
+      margin-top: 32px;
+      padding-top: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px
+    }
+
+    .fbot p,
+    .fbot a {
+      color: var(--td);
+      font-size: .77rem;
+      text-decoration: none
+    }
+
+    /* toast */
+    #tc {
+      position: fixed;
+      bottom: 22px;
+      right: 22px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 8px
+    }
+
+    .toast-i {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding: 11px 16px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: .83rem;
+      animation: slideIn .3s ease;
+      box-shadow: 0 8px 28px rgba(0, 0, 0, .4);
+      min-width: 220px
+    }
+
+    .toast-i.s {
+      border-left: 3px solid var(--green)
+    }
+
+    .toast-i.n {
+      border-left: 3px solid var(--purple)
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(28px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateX(0)
+      }
+    }
+
+    @keyframes fadeO {
+      to {
+        opacity: 0;
+        transform: translateX(28px)
+      }
+    }
+
+    /* no results */
+    .nores {
+      text-align: center;
+      padding: 50px 20px;
+      color: var(--td)
+    }
+
+    .nores i {
+      font-size: 2.8rem;
+      display: block;
+      margin-bottom: 13px;
+      color: var(--border)
+    }
+
+    @media(max-width:991px) {
+      .filter-col-desk {
+        display: none
+      }
+
+      .btn-fmob {
+        display: flex
+      }
+
+      .sidebar {
+        position: relative;
+        top: 0
+      }
+    }
+
+    @media(max-width:767px) {
+      .cbox {
+        padding: 16px 14px
+      }
+
+      .jcard {
+        padding: 15px 14px
+      }
+
+      .sal-grid {
+        grid-template-columns: 1fr 1fr
+      }
+
+      .stat-b {
+        padding: 10px 12px
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<!-- ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ NAVBAR ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ -->
-<div class="navbar-wrapper">
-  <div class="container">
-    <nav class="navbar-custom">
-      <a href="../../index.html" class="logo-box">
-        <div class="logo-icon">T</div>
-        <div class="logo-text">Tools<span>&Job</span></div>
-      </a>
+  <!-- ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ NAVBAR ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ -->
+  <div class="navbar-wrapper">
+    <div class="container">
+      <nav class="navbar-custom">
+        <a href="../../index.html" class="logo-box">
+          <div class="logo-icon">T</div>
+          <div class="logo-text">Tools<span>&Job</span></div>
+        </a>
 
-      <div class="nav-pill d-none d-lg-flex">
-        <a href="../../index.html">Home</a>
-        <a href="../jobs/jobs.html" class="active">Find Jobs</a>
-        <a href="../companies/companies.html">Companies</a>
-        <a href="../services/services.html">Services</a>
-        <a href="../resources/resources.html">Resources</a>
-      </div>
+        <div class="nav-pill d-none d-lg-flex">
+          <a href="../../index.html">Home</a>
+          <a href="../jobs/jobs.html" class="active">Find Jobs</a>
+          <a href="../companies/companies.html">Companies</a>
+          <a href="../services/services.html">Services</a>
+          <a href="../resources/resources.html">Resources</a>
+        </div>
 
-      <div class="auth-btns">
-        <a href="../auth/login.html" class="btn-login">Log In</a>
-        <a href="../auth/register.html" class="btn-signup">Sign Up</a>
-      </div>
-    </nav>
+        <div class="auth-btns">
+          <a href="../auth/login.html" class="btn-login">Log In</a>
+          <a href="../auth/register.html" class="btn-signup">Sign Up</a>
+        </div>
+      </nav>
+    </div>
   </div>
-</div>
 
-<!-- ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+  <!-- ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
      PAGE 1 ΓÇö FIND JOBS
 ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ -->
-<div id="pageJobs" class="page active">
+  <div id="pageJobs" class="page active">
 
-  <section class="hero">
-    <div class="container">
-      <div class="row align-items-center g-3">
-        <div class="col-lg-6">
-          <h1 class="hero-title">Find Your <span style="color:var(--purple)">Dream Job</span></h1>
-          <p class="hero-sub" id="heroSub">Showing <strong>5 active jobs</strong> for freshers</p>
-        </div>
-        <div class="col-lg-6">
-          <div class="search-box">
-            <i class="bi bi-search"></i>
-            <input type="text" id="srch" placeholder="Search jobs, skills, companiesΓÇª" onkeydown="if(event.key==='Enter')applyF()">
-            <button class="btn-srch" onclick="applyF()"><i class="bi bi-search me-1"></i>Search</button>
+    <section class="hero">
+      <div class="container">
+        <div class="row align-items-center g-3">
+          <div class="col-lg-6">
+            <h1 class="hero-title">Find Your <span style="color:var(--purple)">Dream Job</span></h1>
+            <p class="hero-sub" id="heroSub">Showing <strong>5 active jobs</strong> for freshers</p>
           </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="container" style="padding:0 12px 60px">
-    <div class="row g-4 pt-3">
-
-      <!-- FILTERS DESKTOP -->
-      <div class="col-lg-3 filter-col-desk">
-        <div class="fpanel" id="fpDesk">
-          <div class="fp-title"><i class="bi bi-funnel-fill" style="color:var(--purple)"></i> Filters
-            <button class="btn-clr ms-auto py-1 px-3 w-auto" onclick="clearF()">Clear</button>
-          </div>
-          <div class="fp-sec">
-            <div class="fp-label">Location</div>
-            <label class="fp-chk"><input type="checkbox" class="lf" value="Bangalore"><span>Bangalore</span></label>
-            <label class="fp-chk"><input type="checkbox" class="lf" value="Pune"><span>Pune</span></label>
-            <label class="fp-chk"><input type="checkbox" class="lf" value="Hyderabad"><span>Hyderabad</span></label>
-            <label class="fp-chk"><input type="checkbox" class="lf" value="Mumbai"><span>Mumbai</span></label>
-            <label class="fp-chk"><input type="checkbox" class="lf" value="Remote"><span>Remote</span></label>
-            <label class="fp-chk"><input type="checkbox" class="lf" value="Delhi"><span>Delhi</span></label>
-          </div>
-          <div class="fp-sec">
-            <div class="fp-label">Skills</div>
-            <div id="skillTags">
-              <span class="stag" onclick="togSk(this,'React')">React</span>
-              <span class="stag" onclick="togSk(this,'Java')">Java</span>
-              <span class="stag" onclick="togSk(this,'Python')">Python</span>
-              <span class="stag" onclick="togSk(this,'Figma')">Figma</span>
-              <span class="stag" onclick="togSk(this,'Node.js')">Node.js</span>
-              <span class="stag" onclick="togSk(this,'SQL')">SQL</span>
-              <span class="stag" onclick="togSk(this,'TypeScript')">TypeScript</span>
+          <div class="col-lg-6">
+            <div class="search-box">
+              <i class="bi bi-search"></i>
+              <input type="text" id="srch" placeholder="Search jobs, skills, companiesΓÇª"
+                onkeydown="if(event.key==='Enter')applyF()">
+              <button class="btn-srch" onclick="applyF()"><i class="bi bi-search me-1"></i>Search</button>
             </div>
           </div>
-          <div class="fp-sec">
-            <div class="fp-label">Salary (LPA)</div>
-            <input type="range" min="0" max="20" value="20" id="salR" oninput="updSal(this.value)" style="width:100%;accent-color:var(--purple);margin-top:4px">
-            <div style="display:flex;justify-content:space-between;font-size:.73rem;color:var(--td);margin-top:3px"><span>Γé╣0L</span><span id="salLbl">Any</span></div>
-          </div>
-          <div class="fp-sec">
-            <div class="fp-label">Experience</div>
-            <label class="fp-chk"><input type="radio" name="exp" class="ef" value="all" checked><span>All</span></label>
-            <label class="fp-chk"><input type="radio" name="exp" class="ef" value="0"><span>Fresher (0 Yrs)</span></label>
-            <label class="fp-chk"><input type="radio" name="exp" class="ef" value="1"><span>0ΓÇô1 Years</span></label>
-            <label class="fp-chk"><input type="radio" name="exp" class="ef" value="2"><span>1ΓÇô2 Years</span></label>
-          </div>
-          <div class="fp-sec">
-            <div class="fp-label">Job Type</div>
-            <label class="fp-chk"><input type="checkbox" class="tf" value="Full Time"><span>Full Time</span></label>
-            <label class="fp-chk"><input type="checkbox" class="tf" value="Internship"><span>Internship</span></label>
-            <label class="fp-chk"><input type="checkbox" class="tf" value="Contract"><span>Contract</span></label>
-          </div>
-          <button class="btn-clr" onclick="clearF()"><i class="bi bi-x-circle me-1"></i>Clear All Filters</button>
         </div>
       </div>
+    </section>
 
-      <!-- JOBS LIST -->
-      <div class="col-lg-9">
-        <div class="sbar">
-          <div class="d-flex align-items-center gap-2">
-            <button class="btn-fmob" onclick="openFD()"><i class="bi bi-funnel"></i> Filters</button>
-            <span class="jcount">Showing <b id="jcnt">5</b> jobs</span>
-          </div>
-          <div class="d-flex align-items-center gap-2">
-            <label style="color:var(--tm);font-size:.8rem">Sort:</label>
-            <select id="sortSel" onchange="applyF()">
-              <option value="newest">Newest First</option>
-              <option value="sh">Salary: HighΓÇôLow</option>
-              <option value="sl">Salary: LowΓÇôHigh</option>
-              <option value="match">Best Match</option>
-            </select>
+    <div class="container" style="padding:0 12px 60px">
+      <div class="row g-4 pt-3">
+
+        <!-- FILTERS DESKTOP -->
+        <div class="col-lg-3 filter-col-desk">
+          <div class="fpanel" id="fpDesk">
+            <div class="fp-title"><i class="bi bi-funnel-fill" style="color:var(--purple)"></i> Filters
+              <button class="btn-clr ms-auto py-1 px-3 w-auto" onclick="clearF()">Clear</button>
+            </div>
+            <div class="fp-sec">
+              <div class="fp-label">Location</div>
+              <label class="fp-chk"><input type="checkbox" class="lf" value="Bangalore"><span>Bangalore</span></label>
+              <label class="fp-chk"><input type="checkbox" class="lf" value="Pune"><span>Pune</span></label>
+              <label class="fp-chk"><input type="checkbox" class="lf" value="Hyderabad"><span>Hyderabad</span></label>
+              <label class="fp-chk"><input type="checkbox" class="lf" value="Mumbai"><span>Mumbai</span></label>
+              <label class="fp-chk"><input type="checkbox" class="lf" value="Remote"><span>Remote</span></label>
+              <label class="fp-chk"><input type="checkbox" class="lf" value="Delhi"><span>Delhi</span></label>
+            </div>
+            <div class="fp-sec">
+              <div class="fp-label">Skills</div>
+              <div id="skillTags">
+                <span class="stag" onclick="togSk(this,'React')">React</span>
+                <span class="stag" onclick="togSk(this,'Java')">Java</span>
+                <span class="stag" onclick="togSk(this,'Python')">Python</span>
+                <span class="stag" onclick="togSk(this,'Figma')">Figma</span>
+                <span class="stag" onclick="togSk(this,'Node.js')">Node.js</span>
+                <span class="stag" onclick="togSk(this,'SQL')">SQL</span>
+                <span class="stag" onclick="togSk(this,'TypeScript')">TypeScript</span>
+              </div>
+            </div>
+            <div class="fp-sec">
+              <div class="fp-label">Salary (LPA)</div>
+              <input type="range" min="0" max="20" value="20" id="salR" oninput="updSal(this.value)"
+                style="width:100%;accent-color:var(--purple);margin-top:4px">
+              <div style="display:flex;justify-content:space-between;font-size:.73rem;color:var(--td);margin-top:3px">
+                <span>Γé╣0L</span><span id="salLbl">Any</span></div>
+            </div>
+            <div class="fp-sec">
+              <div class="fp-label">Experience</div>
+              <label class="fp-chk"><input type="radio" name="exp" class="ef" value="all"
+                  checked><span>All</span></label>
+              <label class="fp-chk"><input type="radio" name="exp" class="ef" value="0"><span>Fresher (0
+                  Yrs)</span></label>
+              <label class="fp-chk"><input type="radio" name="exp" class="ef" value="1"><span>0ΓÇô1 Years</span></label>
+              <label class="fp-chk"><input type="radio" name="exp" class="ef" value="2"><span>1ΓÇô2 Years</span></label>
+            </div>
+            <div class="fp-sec">
+              <div class="fp-label">Job Type</div>
+              <label class="fp-chk"><input type="checkbox" class="tf" value="Full Time"><span>Full Time</span></label>
+              <label class="fp-chk"><input type="checkbox" class="tf" value="Internship"><span>Internship</span></label>
+              <label class="fp-chk"><input type="checkbox" class="tf" value="Contract"><span>Contract</span></label>
+            </div>
+            <button class="btn-clr" onclick="clearF()"><i class="bi bi-x-circle me-1"></i>Clear All Filters</button>
           </div>
         </div>
-        <div id="jc"></div>
-        <div class="text-center">
-          <button class="btn-load" id="loadBtn" onclick="loadMore()">Load More Jobs <i class="bi bi-chevron-down"></i></button>
+
+        <!-- JOBS LIST -->
+        <div class="col-lg-9">
+          <div class="sbar">
+            <div class="d-flex align-items-center gap-2">
+              <button class="btn-fmob" onclick="openFD()"><i class="bi bi-funnel"></i> Filters</button>
+              <span class="jcount">Showing <b id="jcnt">5</b> jobs</span>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+              <label style="color:var(--tm);font-size:.8rem">Sort:</label>
+              <select id="sortSel" onchange="applyF()">
+                <option value="newest">Newest First</option>
+                <option value="sh">Salary: HighΓÇôLow</option>
+                <option value="sl">Salary: LowΓÇôHigh</option>
+                <option value="match">Best Match</option>
+              </select>
+            </div>
+          </div>
+          <div id="jc"></div>
+          <div class="text-center">
+            <button class="btn-load" id="loadBtn" onclick="loadMore()">Load More Jobs <i
+                class="bi bi-chevron-down"></i></button>
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-lg-3 col-md-6">
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <div class="logo-icon">T</div><span class="ft">Tools<span>&Job</span></span>
+            </div>
+            <p style="color:var(--tm);font-size:.83rem;margin-top:8px;max-width:210px;line-height:1.6">Connecting the
+              next generation of professional talent with industry leaders.</p>
+            <div class="d-flex gap-2 mt-3">
+              <a class="btn-sh" style="padding:7px 10px;font-size:.82rem" href="#"><i class="bi bi-linkedin"></i></a>
+              <a class="btn-sh" style="padding:7px 10px;font-size:.82rem" href="#"><i class="bi bi-twitter-x"></i></a>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-6 col-6">
+            <p class="ft mb-3">Resources</p>
+            <ul class="fl-links">
+              <li><a href="#">Job Board</a></li>
+              <li><a href="#">Skill Mastery</a></li>
+              <li><a href="#">Resume Forge</a></li>
+            </ul>
+          </div>
+          <div class="col-lg-2 col-md-6 col-6">
+            <p class="ft mb-3">Enterprise</p>
+            <ul class="fl-links">
+              <li><a href="#">Hire Talent</a></li>
+              <li><a href="#">Mandate Board</a></li>
+              <li><a href="#">Pricing</a></li>
+            </ul>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <p class="ft mb-3">Connect</p>
+            <div class="fci"><i class="bi bi-geo-alt-fill"></i><span>Professional Tech Park, Cyber Hub,<br>Hyderabad,
+                India</span></div>
+            <div class="fci"><i class="bi bi-envelope-fill"></i><span>hello@toolsandjob.com</span></div>
+          </div>
+        </div>
+        <div class="fbot">
+          <p>&copy; 2026 Tools and Job. All rights reserved.</p>
+          <div class="d-flex gap-3"><a href="#">Privacy</a><a href="#">Terms</a></div>
+        </div>
+      </div>
+    </footer>
   </div>
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="container">
-      <div class="row g-4">
-        <div class="col-lg-3 col-md-6">
-          <div class="d-flex align-items-center gap-2 mb-2"><div class="logo-icon">T</div><span class="ft">Tools<span>&Job</span></span></div>
-          <p style="color:var(--tm);font-size:.83rem;margin-top:8px;max-width:210px;line-height:1.6">Connecting the next generation of professional talent with industry leaders.</p>
-          <div class="d-flex gap-2 mt-3">
-            <a class="btn-sh" style="padding:7px 10px;font-size:.82rem" href="#"><i class="bi bi-linkedin"></i></a>
-            <a class="btn-sh" style="padding:7px 10px;font-size:.82rem" href="#"><i class="bi bi-twitter-x"></i></a>
-          </div>
-        </div>
-        <div class="col-lg-2 col-md-6 col-6">
-          <p class="ft mb-3">Resources</p>
-          <ul class="fl-links">
-            <li><a href="#">Job Board</a></li><li><a href="#">Skill Mastery</a></li><li><a href="#">Resume Forge</a></li>
-          </ul>
-        </div>
-        <div class="col-lg-2 col-md-6 col-6">
-          <p class="ft mb-3">Enterprise</p>
-          <ul class="fl-links">
-            <li><a href="#">Hire Talent</a></li><li><a href="#">Mandate Board</a></li><li><a href="#">Pricing</a></li>
-          </ul>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <p class="ft mb-3">Connect</p>
-          <div class="fci"><i class="bi bi-geo-alt-fill"></i><span>Professional Tech Park, Cyber Hub,<br>Hyderabad, India</span></div>
-          <div class="fci"><i class="bi bi-envelope-fill"></i><span>hello@toolsandjob.com</span></div>
-        </div>
-      </div>
-      <div class="fbot"><p>&copy; 2026 Tools and Job. All rights reserved.</p><div class="d-flex gap-3"><a href="#">Privacy</a><a href="#">Terms</a></div></div>
-    </div>
-  </footer>
-</div>
-
-<!-- ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+  <!-- ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
      PAGE 2 ΓÇö JOB DETAIL
 ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ -->
-<div id="pageJD" class="page">
-  <div class="container jd-wrap">
+  <div id="pageJD" class="page">
+    <div class="container jd-wrap">
 
-    <!-- BREADCRUMB -->
-    <nav style="padding:12px 0 10px">
-      <div style="display:flex;align-items:center;gap:6px;font-size:.82rem;flex-wrap:wrap">
-        <a class="bc" href="jobs.html" style="color:var(--tm);text-decoration:none;cursor:pointer"><i class="bi bi-house me-1"></i>Jobs</a>
-        <i class="bi bi-chevron-right" style="color:var(--td);font-size:.7rem"></i>
-        <span id="bcText" style="color:var(--td)">LoadingΓÇª</span>
-      </div>
-    </nav>
-
-    <div class="row g-4" id="jdRoot"></div>
-
-  </div>
-
-  <!-- MOBILE STICKY APPLY BAR -->
-  <div class="mob-apply-bar" id="mobBar">
-    <button class="btn-qa flex-grow-1 justify-content-center" onclick="scrollToApply()"><i class="bi bi-lightning-fill"></i> Quick Apply</button>
-    <button class="btn-sj" id="mobSaveBtn" onclick="toggleSave()"><i class="bi bi-bookmark"></i></button>
-  </div>
-
-  <!-- FOOTER -->
-  <footer>
-    <div class="container">
-      <div class="row g-4">
-        <div class="col-lg-3 col-md-6">
-          <div class="d-flex align-items-center gap-2 mb-2"><div class="logo-icon">T</div><span class="ft">Tools<span>&Job</span></span></div>
-          <p style="color:var(--tm);font-size:.83rem;margin-top:8px;max-width:210px;line-height:1.6">Connecting the next generation of professional talent with industry leaders.</p>
+      <!-- BREADCRUMB -->
+      <nav style="padding:12px 0 10px">
+        <div style="display:flex;align-items:center;gap:6px;font-size:.82rem;flex-wrap:wrap">
+          <a class="bc" href="jobs.html" style="color:var(--tm);text-decoration:none;cursor:pointer"><i
+              class="bi bi-house me-1"></i>Jobs</a>
+          <i class="bi bi-chevron-right" style="color:var(--td);font-size:.7rem"></i>
+          <span id="bcText" style="color:var(--td)">LoadingΓÇª</span>
         </div>
-        <div class="col-lg-2 col-md-6 col-6">
-          <p class="ft mb-3">For Job Seekers</p>
-          <ul class="fl-links">
-            <li><a href="#">Browse Jobs</a></li><li><a href="#">Job Alerts</a></li><li><a href="#">Resume Services</a></li><li><a href="#">Career Advice</a></li>
-          </ul>
-        </div>
-        <div class="col-lg-2 col-md-6 col-6">
-          <p class="ft mb-3">For Employers</p>
-          <ul class="fl-links">
-            <li><a href="#">Post a Job</a></li><li><a href="#">Browse Candidates</a></li><li><a href="#">Pricing Plans</a></li><li><a href="#">Partner with Us</a></li>
-          </ul>
-        </div>
-        <div class="col-lg-3 col-md-6">
-          <p class="ft mb-3">Contact Us</p>
-          <div class="fci"><i class="bi bi-geo-alt-fill"></i><span>Sai Complex, Temple Road, Shirdi, MH ΓÇô 423109</span></div>
-          <div class="fci"><i class="bi bi-telephone-fill"></i><span>+91 80 1234 5678</span></div>
-          <div class="fci"><i class="bi bi-envelope-fill"></i><span>support@fresherhub.in</span></div>
-        </div>
-      </div>
-      <div class="fbot"><p>┬⌐ 2026 FresherHub. All rights reserved.</p><div class="d-flex gap-3"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a></div></div>
+      </nav>
+
+      <div class="row g-4" id="jdRoot"></div>
+
     </div>
-  </footer>
-</div>
 
-<!-- MOBILE FILTER DRAWER -->
-<div class="foverlay" id="fov" onclick="closeFD()"></div>
-<div class="fdrawer" id="fdraw"></div>
+    <!-- MOBILE STICKY APPLY BAR -->
+    <div class="mob-apply-bar" id="mobBar">
+      <button class="btn-qa flex-grow-1 justify-content-center" onclick="scrollToApply()"><i
+          class="bi bi-lightning-fill"></i> Quick Apply</button>
+      <button class="btn-sj" id="mobSaveBtn" onclick="toggleSave()"><i class="bi bi-bookmark"></i></button>
+    </div>
 
-<!-- TOAST -->
-<div id="tc"></div>
+    <!-- FOOTER -->
+    <footer>
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-lg-3 col-md-6">
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <div class="logo-icon">T</div><span class="ft">Tools<span>&Job</span></span>
+            </div>
+            <p style="color:var(--tm);font-size:.83rem;margin-top:8px;max-width:210px;line-height:1.6">Connecting the
+              next generation of professional talent with industry leaders.</p>
+          </div>
+          <div class="col-lg-2 col-md-6 col-6">
+            <p class="ft mb-3">For Job Seekers</p>
+            <ul class="fl-links">
+              <li><a href="#">Browse Jobs</a></li>
+              <li><a href="#">Job Alerts</a></li>
+              <li><a href="#">Resume Services</a></li>
+              <li><a href="#">Career Advice</a></li>
+            </ul>
+          </div>
+          <div class="col-lg-2 col-md-6 col-6">
+            <p class="ft mb-3">For Employers</p>
+            <ul class="fl-links">
+              <li><a href="#">Post a Job</a></li>
+              <li><a href="#">Browse Candidates</a></li>
+              <li><a href="#">Pricing Plans</a></li>
+              <li><a href="#">Partner with Us</a></li>
+            </ul>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <p class="ft mb-3">Contact Us</p>
+            <div class="fci"><i class="bi bi-geo-alt-fill"></i><span>Sai Complex, Temple Road, Shirdi, MH ΓÇô
+                423109</span></div>
+            <div class="fci"><i class="bi bi-telephone-fill"></i><span>+91 80 1234 5678</span></div>
+            <div class="fci"><i class="bi bi-envelope-fill"></i><span>support@fresherhub.in</span></div>
+          </div>
+        </div>
+        <div class="fbot">
+          <p>┬⌐ 2026 FresherHub. All rights reserved.</p>
+          <div class="d-flex gap-3"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a></div>
+        </div>
+      </div>
+    </footer>
+  </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-// ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ DATA ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+  <!-- MOBILE FILTER DRAWER -->
+  <div class="foverlay" id="fov" onclick="closeFD()"></div>
+  <div class="fdrawer" id="fdraw"></div>
+
+  <!-- TOAST -->
+  <div id="tc"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ DATA ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
 
 
-// No need to redefine CONFIG here since it's in config.js
-let selSkills=[], jobSaved=new Set(), currentJob=null, showAll=false;
-let JOBS = [];
-let fetchedJobs = [];
+    // No need to redefine CONFIG here since it's in config.js
+    let selSkills = [], jobSaved = new Set(), currentJob = null, showAll = false;
+    let JOBS = [];
+    let fetchedJobs = [];
 
-// FETCH JOBS FROM BACKEND
-async function fetchJobs() {
-    try {
+    // FETCH JOBS FROM BACKEND
+    async function fetchJobs() {
+      try {
         const queryParams = window.location.search;
         const res = await fetch(`${CONFIG.API_URL}/jobs${queryParams}`);
-        
+
         // Also fetch saved jobs if logged in
         const session = getSession();
         if (session && session.token) {
-            try {
-                const sres = await fetch(`${CONFIG.API_URL}/saved-jobs`, { headers: { 'Authorization': `Bearer ${session.token}` } });
-                if(sres.ok) {
-                    const sdata = await sres.json();
-                    // sdata is an array of saved job objects where `job` has the ID
-                    sdata.forEach(sj => {
-                        if (sj.job && sj.job._id) jobSaved.add(sj.job._id);
-                        // Depending on populate depth, could just be sj.job
-                        else if (sj.job) jobSaved.add(sj.job);
-                    });
-                }
-            } catch(e) { console.error("Error fetching saved jobs", e); }
+          try {
+            const sres = await fetch(`${CONFIG.API_URL}/saved-jobs`, { headers: { 'Authorization': `Bearer ${session.token}` } });
+            if (sres.ok) {
+              const sdata = await sres.json();
+              // sdata is an array of saved job objects where `job` has the ID
+              sdata.forEach(sj => {
+                if (sj.job && sj.job._id) jobSaved.add(sj.job._id);
+                // Depending on populate depth, could just be sj.job
+                else if (sj.job) jobSaved.add(sj.job);
+              });
+            }
+          } catch (e) { console.error("Error fetching saved jobs", e); }
         }
 
-        if(res.ok) {
-            const data = await res.json();
-            
-            // Map backend data to frontend structure securely checking for jobs array
-            const jobsArray = Array.isArray(data) ? data : (data.jobs || []);
-            
-            fetchedJobs = jobsArray.map(j => ({
-                id: j._id,
-                title: j.title,
-                co: j.company ? j.company.name : 'Unknown Company',
-                ini: j.company && j.company.name ? j.company.name.charAt(0).toUpperCase() : 'C',
-                loc: j.location || 'Remote',
-                type: j.jobType || 'Full Time',
-                exp: j.experienceLevel || 'Fresher',
-                expV: parseInt(j.experienceLevel) || 0,
-                sal: j.salary || 'Not Disclosed',
-                salMin: parseInt(j.salary) || 0,
-                skills: Array.isArray(j.tags) ? j.tags : (typeof j.tags === 'string' ? j.tags.split(',') : ['JavaScript', 'HTML']),
-                pre: false, ceo: false, isNew: true,
-                posted: new Date(j.createdAt).toLocaleDateString() || 'Recently',
-                rating: 4.5, rc: 100, match: 85, daysLeft: 30, apps: 0,
-                color: '#6d28d9',
-                desc: j.description || '',
-                resp: Array.isArray(j.requirements) ? j.requirements : (j.requirements ? [j.requirements] : []),
-                req: [],
-                process: [],
-                salary: { base: 0, var: 0, ben: 0 },
-                reviews: []
-            }));
-            
-            selSkills = [];
-            JOBS = fetchedJobs;
-            renderJobs(fetchedJobs.slice(0, 5));
+        if (res.ok) {
+          const data = await res.json();
+
+          // Map backend data to frontend structure securely checking for jobs array
+          const jobsArray = Array.isArray(data) ? data : (data.jobs || []);
+
+          fetchedJobs = jobsArray.map(j => ({
+            id: j._id,
+            title: j.title,
+            co: j.company ? j.company.name : 'Unknown Company',
+            ini: j.company && j.company.name ? j.company.name.charAt(0).toUpperCase() : 'C',
+            loc: j.location || 'Remote',
+            type: j.jobType || 'Full Time',
+            exp: j.experienceLevel || 'Fresher',
+            expV: parseInt(j.experienceLevel) || 0,
+            sal: j.salary || 'Not Disclosed',
+            salMin: parseInt(j.salary) || 0,
+            skills: Array.isArray(j.tags) ? j.tags : (typeof j.tags === 'string' ? j.tags.split(',') : ['JavaScript', 'HTML']),
+            pre: false, ceo: false, isNew: true,
+            posted: new Date(j.createdAt).toLocaleDateString() || 'Recently',
+            rating: 4.5, rc: 100, match: 85, daysLeft: 30, apps: 0,
+            color: '#6d28d9',
+            desc: j.description || '',
+            resp: Array.isArray(j.requirements) ? j.requirements : (j.requirements ? [j.requirements] : []),
+            req: [],
+            process: [],
+            salary: { base: 0, var: 0, ben: 0 },
+            reviews: []
+          }));
+
+          selSkills = [];
+          JOBS = fetchedJobs;
+          renderJobs(fetchedJobs.slice(0, 5));
         }
-    } catch (e) {
+      } catch (e) {
         console.error("Failed to fetch jobs:", e);
         toast("Failed to load jobs from server.");
+      }
     }
-}
 
-// Global Paginator Tracker
-let currentPage = 1;
+    // Global Paginator Tracker
+    let currentPage = 1;
 
-async function loadNextPageFromBackend() {
-    try {
+    async function loadNextPageFromBackend() {
+      try {
         currentPage++;
         const limit = 50; // default initial fetch limit logic
         const queryParams = window.location.search ? `${window.location.search}&page=${currentPage}&limit=${limit}` : `?page=${currentPage}&limit=${limit}`;
-        
+
         const res = await fetch(`${CONFIG.API_URL}/jobs${queryParams}`);
-        if(res.ok) {
-            const data = await res.json();
-            const jobsArray = Array.isArray(data) ? data : (data.jobs || []);
-            
-            if (jobsArray.length === 0) {
-               toast("No more jobs to load.");
-               document.getElementById('loadBtn').style.display='none';
-               return;
-            }
-            
-            const newJobs = jobsArray.map(j => ({
-                id: j._id,
-                title: j.title,
-                co: j.company ? j.company.name : 'Unknown Company',
-                ini: j.company && j.company.name ? j.company.name.charAt(0).toUpperCase() : 'C',
-                loc: j.location || 'Remote',
-                type: j.jobType || 'Full Time',
-                exp: j.experienceLevel || 'Fresher',
-                expV: parseInt(j.experienceLevel) || 0,
-                sal: j.salary || 'Not Disclosed',
-                salMin: parseInt(j.salary) || 0,
-                skills: Array.isArray(j.tags) ? j.tags : (typeof j.tags === 'string' ? j.tags.split(',') : ['JavaScript', 'HTML']),
-                pre: false, ceo: false, isNew: true,
-                posted: new Date(j.createdAt).toLocaleDateString() || 'Recently',
-                rating: 4.5, rc: 100, match: 85, daysLeft: 30, apps: 0,
-                color: '#6d28d9',
-                desc: j.description || '',
-                resp: Array.isArray(j.requirements) ? j.requirements : (j.requirements ? [j.requirements] : []),
-                req: [], process: [], salary: { base: 0, var: 0, ben: 0 }, reviews: []
-            }));
-            
-            fetchedJobs = [...fetchedJobs, ...newJobs];
-            JOBS = fetchedJobs;
-            applyF(); // Re-trigger the active filter loops to render the newly injected jobs
-            toast(`${newJobs.length} more jobs loaded.`);
+        if (res.ok) {
+          const data = await res.json();
+          const jobsArray = Array.isArray(data) ? data : (data.jobs || []);
+
+          if (jobsArray.length === 0) {
+            toast("No more jobs to load.");
+            document.getElementById('loadBtn').style.display = 'none';
+            return;
+          }
+
+          const newJobs = jobsArray.map(j => ({
+            id: j._id,
+            title: j.title,
+            co: j.company ? j.company.name : 'Unknown Company',
+            ini: j.company && j.company.name ? j.company.name.charAt(0).toUpperCase() : 'C',
+            loc: j.location || 'Remote',
+            type: j.jobType || 'Full Time',
+            exp: j.experienceLevel || 'Fresher',
+            expV: parseInt(j.experienceLevel) || 0,
+            sal: j.salary || 'Not Disclosed',
+            salMin: parseInt(j.salary) || 0,
+            skills: Array.isArray(j.tags) ? j.tags : (typeof j.tags === 'string' ? j.tags.split(',') : ['JavaScript', 'HTML']),
+            pre: false, ceo: false, isNew: true,
+            posted: new Date(j.createdAt).toLocaleDateString() || 'Recently',
+            rating: 4.5, rc: 100, match: 85, daysLeft: 30, apps: 0,
+            color: '#6d28d9',
+            desc: j.description || '',
+            resp: Array.isArray(j.requirements) ? j.requirements : (j.requirements ? [j.requirements] : []),
+            req: [], process: [], salary: { base: 0, var: 0, ben: 0 }, reviews: []
+          }));
+
+          fetchedJobs = [...fetchedJobs, ...newJobs];
+          JOBS = fetchedJobs;
+          applyF(); // Re-trigger the active filter loops to render the newly injected jobs
+          toast(`${newJobs.length} more jobs loaded.`);
         }
-    } catch (e) {
-         console.error(e);
-         toast("Failed to load more jobs.");
+      } catch (e) {
+        console.error(e);
+        toast("Failed to load more jobs.");
+      }
     }
-}
 
-// ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ NAVIGATION ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
-function goJobs(){
-  document.getElementById('pageJobs').classList.add('active');
-  document.getElementById('pageJD').classList.remove('active');
-  window.scrollTo({top:0,behavior:'smooth'});
-  document.title='Find Jobs | Tools and Job';
-}
-function goJD(id){
-  window.location.href = `job-details.html?id=${id}`;
-}
+    // ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ NAVIGATION ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+    function goJobs() {
+      document.getElementById('pageJobs').classList.add('active');
+      document.getElementById('pageJD').classList.remove('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      document.title = 'Find Jobs | Tools and Job';
+    }
+    function goJD(id) {
+      window.location.href = `job-details.html?id=${id}`;
+    }
 
-// ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ HELPERS ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
-function mkStars(r,sz=''){
-  return Array.from({length:5},(_,i)=>{
-    const f=i<Math.floor(r), h=!f&&(r-Math.floor(r)>=.5)&&i===Math.floor(r);
-    return `<i class="bi bi-star${f?'-fill':h?'-half':''}" style="color:${f||h?'var(--yellow)':'var(--border)'};${sz?`font-size:${sz}`:''}" ></i>`;
-  }).join('');
-}
-function fmt(n){return '₹'+n.toLocaleString('en-IN')}
+    // ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ HELPERS ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+    function mkStars(r, sz = '') {
+      return Array.from({ length: 5 }, (_, i) => {
+        const f = i < Math.floor(r), h = !f && (r - Math.floor(r) >= .5) && i === Math.floor(r);
+        return `<i class="bi bi-star${f ? '-fill' : h ? '-half' : ''}" style="color:${f || h ? 'var(--yellow)' : 'var(--border)'};${sz ? `font-size:${sz}` : ''}" ></i>`;
+      }).join('');
+    }
+    function fmt(n) { return '₹' + n.toLocaleString('en-IN') }
 
-function toast(msg,type='n'){
-  const c=document.getElementById('tc');
-  const t=document.createElement('div');
-  t.className=`toast-i ${type}`;
-  t.innerHTML=`<i class="bi bi-${type==='s'?'check-circle-fill':'info-circle-fill'}" style="color:${type==='s'?'var(--green)':'var(--purple)'}"></i> ${msg}`;
-  c.appendChild(t);
-  setTimeout(()=>{t.style.animation='fadeO .3s ease forwards';setTimeout(()=>t.remove(),300)},2600);
-}
+    function toast(msg, type = 'n') {
+      const c = document.getElementById('tc');
+      const t = document.createElement('div');
+      t.className = `toast-i ${type}`;
+      t.innerHTML = `<i class="bi bi-${type === 's' ? 'check-circle-fill' : 'info-circle-fill'}" style="color:${type === 's' ? 'var(--green)' : 'var(--purple)'}"></i> ${msg}`;
+      c.appendChild(t);
+      setTimeout(() => { t.style.animation = 'fadeO .3s ease forwards'; setTimeout(() => t.remove(), 300) }, 2600);
+    }
 
-// ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ JOBS PAGE ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
-function renderCard(j){
-  const dl=j.daysLeft<=7?`<span class="badge-urg"><i class="bi bi-clock"></i>${j.daysLeft}d left</span>`:'';
-  return `
+    // ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ JOBS PAGE ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+    function renderCard(j) {
+      const dl = j.daysLeft <= 7 ? `<span class="badge-urg"><i class="bi bi-clock"></i>${j.daysLeft}d left</span>` : '';
+      return `
   <div class="jcard" onclick="goJD('${j.id}')">
     <div class="d-flex align-items-start justify-content-between gap-3 flex-wrap">
       <div class="d-flex align-items-start gap-3">
@@ -664,9 +1927,9 @@ function renderCard(j){
           <div class="jt">${j.title}</div>
           <div class="jco"><i class="bi bi-building me-1"></i>${j.co}</div>
           <div class="d-flex flex-wrap gap-2 mt-2">
-            ${j.pre?`<span class="badge-pre"><i class="bi bi-star-fill"></i>PREMIUM</span>`:''}
-            ${j.ceo?`<span class="badge-ceo"><i class="bi bi-patch-check-fill"></i>CEO Approved</span>`:''}
-            ${j.isNew?`<span class="badge-new">NEW</span>`:''}
+            ${j.pre ? `<span class="badge-pre"><i class="bi bi-star-fill"></i>PREMIUM</span>` : ''}
+            ${j.ceo ? `<span class="badge-ceo"><i class="bi bi-patch-check-fill"></i>CEO Approved</span>` : ''}
+            ${j.isNew ? `<span class="badge-new">NEW</span>` : ''}
             ${dl}
           </div>
         </div>
@@ -681,105 +1944,105 @@ function renderCard(j){
       <span><i class="bi bi-briefcase"></i>${j.type}</span>
       <span><i class="bi bi-clock-history"></i>${j.exp}</span>
     </div>
-    <div style="margin-top:11px">${j.skills.map(s=>`<span class="jtag">${s}</span>`).join('')}</div>
+    <div style="margin-top:11px">${j.skills.map(s => `<span class="jtag">${s}</span>`).join('')}</div>
     <div class="d-flex align-items-center justify-content-between mt-3 pt-3" style="border-top:1px solid var(--border)">
       <div class="d-flex align-items-center gap-3 flex-wrap">
         <div class="d-flex align-items-center gap-6" style="gap:6px">
           <div class="match-bar"><div class="match-fill" style="width:${j.match}%"></div></div>
           <span class="match-text">${j.match}% match</span>
         </div>
-        <div class="stars">${mkStars(j.rating,'0.78rem')}<span style="font-size:.75rem;color:var(--tm);margin-left:4px">${j.rating}</span></div>
+        <div class="stars">${mkStars(j.rating, '0.78rem')}<span style="font-size:.75rem;color:var(--tm);margin-left:4px">${j.rating}</span></div>
       </div>
       <div class="d-flex align-items-center gap-2">
-        <button class="btn-bk${jobSaved.has(j.id)?' on':''}" id="bk-${j.id}" onclick="bkJob(event,'${j.id}')" title="Save"><i class="bi bi-bookmark${jobSaved.has(j.id)?'-fill':''}"></i></button>
+        <button class="btn-bk${jobSaved.has(j.id) ? ' on' : ''}" id="bk-${j.id}" onclick="bkJob(event,'${j.id}')" title="Save"><i class="bi bi-bookmark${jobSaved.has(j.id) ? '-fill' : ''}"></i></button>
         <button class="btn-apply" onclick="event.stopPropagation();goJD('${j.id}')">View & Apply</button>
       </div>
     </div>
   </div>`;
-}
+    }
 
-function renderJobs(list){
-  const c=document.getElementById('jc');
-  if(!list.length){c.innerHTML=`<div class="nores"><i class="bi bi-search"></i><p>No jobs match your filters.</p><p style="font-size:.82rem;margin-top:5px">Try adjusting or clearing filters.</p></div>`;document.getElementById('jcnt').textContent='0';return;}
-  document.getElementById('jcnt').textContent=list.length;
-  c.innerHTML=list.map(j=>renderCard(j)).join('');
-  document.getElementById('heroSub').innerHTML=`Showing <strong>${list.length} active jobs</strong> for freshers`;
-}
+    function renderJobs(list) {
+      const c = document.getElementById('jc');
+      if (!list.length) { c.innerHTML = `<div class="nores"><i class="bi bi-search"></i><p>No jobs match your filters.</p><p style="font-size:.82rem;margin-top:5px">Try adjusting or clearing filters.</p></div>`; document.getElementById('jcnt').textContent = '0'; return; }
+      document.getElementById('jcnt').textContent = list.length;
+      c.innerHTML = list.map(j => renderCard(j)).join('');
+      document.getElementById('heroSub').innerHTML = `Showing <strong>${list.length} active jobs</strong> for freshers`;
+    }
 
-function applyF(){
-  const q=document.getElementById('srch').value.toLowerCase();
-  const locs=[...document.querySelectorAll('.lf:checked')].map(c=>c.value.toLowerCase());
-  const types=[...document.querySelectorAll('.tf:checked')].map(c=>c.value);
-  const exp=document.querySelector('.ef:checked')?.value||'all';
-  const maxS=parseFloat(document.getElementById('salR').value);
+    function applyF() {
+      const q = document.getElementById('srch').value.toLowerCase();
+      const locs = [...document.querySelectorAll('.lf:checked')].map(c => c.value.toLowerCase());
+      const types = [...document.querySelectorAll('.tf:checked')].map(c => c.value);
+      const exp = document.querySelector('.ef:checked')?.value || 'all';
+      const maxS = parseFloat(document.getElementById('salR').value);
 
-  let arr=fetchedJobs.filter(j=>{
-    const mQ=!q||j.title.toLowerCase().includes(q)||j.co.toLowerCase().includes(q)||j.skills.some(s=>s.toLowerCase().includes(q));
-    const mL=!locs.length||locs.some(l=>j.loc.toLowerCase().includes(l));
-    const mT=!types.length||types.includes(j.type);
-    const mE=exp==='all'||j.expV<=parseInt(exp);
-    const mS=j.salMin<=maxS;
-    const mSk=!selSkills.length||selSkills.every(s=>j.skills.includes(s));
-    return mQ&&mL&&mT&&mE&&mS&&mSk;
-  });
+      let arr = fetchedJobs.filter(j => {
+        const mQ = !q || j.title.toLowerCase().includes(q) || j.co.toLowerCase().includes(q) || j.skills.some(s => s.toLowerCase().includes(q));
+        const mL = !locs.length || locs.some(l => j.loc.toLowerCase().includes(l));
+        const mT = !types.length || types.includes(j.type);
+        const mE = exp === 'all' || j.expV <= parseInt(exp);
+        const mS = j.salMin <= maxS;
+        const mSk = !selSkills.length || selSkills.every(s => j.skills.includes(s));
+        return mQ && mL && mT && mE && mS && mSk;
+      });
 
-  const s=document.getElementById('sortSel').value;
-  if(s==='sh') arr=[...arr].sort((a,b)=>b.salMin-a.salMin);
-  else if(s==='sl') arr=[...arr].sort((a,b)=>a.salMin-b.salMin);
-  else if(s==='match') arr=[...arr].sort((a,b)=>b.match-a.match);
+      const s = document.getElementById('sortSel').value;
+      if (s === 'sh') arr = [...arr].sort((a, b) => b.salMin - a.salMin);
+      else if (s === 'sl') arr = [...arr].sort((a, b) => a.salMin - b.salMin);
+      else if (s === 'match') arr = [...arr].sort((a, b) => b.match - a.match);
 
-  renderJobs(arr);
-  document.getElementById('loadBtn').style.display='none';
-}
+      renderJobs(arr);
+      document.getElementById('loadBtn').style.display = 'none';
+    }
 
-document.addEventListener('change',e=>{if(e.target.matches('.lf,.tf,.ef'))applyF()});
+    document.addEventListener('change', e => { if (e.target.matches('.lf,.tf,.ef')) applyF() });
 
-function togSk(el,s){
-  el.classList.toggle('on');
-  selSkills.includes(s)?selSkills=selSkills.filter(x=>x!==s):selSkills.push(s);
-  applyF();
-}
-function updSal(v){
-  document.getElementById('salLbl').textContent=v==20?'Any':`Up to ₹${v}L`;
-  applyF();
-}
-function clearF(){
-  document.querySelectorAll('.lf,.tf').forEach(e=>e.checked=false);
-  document.querySelector('.ef[value="all"]').checked=true;
-  document.getElementById('salR').value=20;
-  document.getElementById('salLbl').textContent='Any';
-  document.getElementById('srch').value='';
-  selSkills=[];
-  document.querySelectorAll('.stag').forEach(t=>t.classList.remove('on'));
-  renderJobs(JOBS.slice(0,5));
-  document.getElementById('loadBtn').style.display='';
-  toast('Filters cleared');
-}
-function loadMore(){
-  if (fetchedJobs.length < 50) {
-      // Local fallback if we have a tiny DB
-      renderJobs(JOBS);
-      document.getElementById('loadBtn').style.display='none';
-      toast(`${JOBS.length-5} more jobs loaded`);
-  } else {
-      // Paged backend request
-      loadNextPageFromBackend();
-  }
-}
-function bkJob(e,id){
-  e.stopPropagation();
-  const b=document.getElementById(`bk-${id}`);
-  if(jobSaved.has(id)){jobSaved.delete(id);b.classList.remove('on');b.innerHTML='<i class="bi bi-bookmark"></i>';toast('Removed from saved');}
-  else{jobSaved.add(id);b.classList.add('on');b.innerHTML='<i class="bi bi-bookmark-fill"></i>';toast('Job saved Γ£ô','s');}
-}
+    function togSk(el, s) {
+      el.classList.toggle('on');
+      selSkills.includes(s) ? selSkills = selSkills.filter(x => x !== s) : selSkills.push(s);
+      applyF();
+    }
+    function updSal(v) {
+      document.getElementById('salLbl').textContent = v == 20 ? 'Any' : `Up to ₹${v}L`;
+      applyF();
+    }
+    function clearF() {
+      document.querySelectorAll('.lf,.tf').forEach(e => e.checked = false);
+      document.querySelector('.ef[value="all"]').checked = true;
+      document.getElementById('salR').value = 20;
+      document.getElementById('salLbl').textContent = 'Any';
+      document.getElementById('srch').value = '';
+      selSkills = [];
+      document.querySelectorAll('.stag').forEach(t => t.classList.remove('on'));
+      renderJobs(JOBS.slice(0, 5));
+      document.getElementById('loadBtn').style.display = '';
+      toast('Filters cleared');
+    }
+    function loadMore() {
+      if (fetchedJobs.length < 50) {
+        // Local fallback if we have a tiny DB
+        renderJobs(JOBS);
+        document.getElementById('loadBtn').style.display = 'none';
+        toast(`${JOBS.length - 5} more jobs loaded`);
+      } else {
+        // Paged backend request
+        loadNextPageFromBackend();
+      }
+    }
+    function bkJob(e, id) {
+      e.stopPropagation();
+      const b = document.getElementById(`bk-${id}`);
+      if (jobSaved.has(id)) { jobSaved.delete(id); b.classList.remove('on'); b.innerHTML = '<i class="bi bi-bookmark"></i>'; toast('Removed from saved'); }
+      else { jobSaved.add(id); b.classList.add('on'); b.innerHTML = '<i class="bi bi-bookmark-fill"></i>'; toast('Job saved Γ£ô', 's'); }
+    }
 
-// ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ JD PAGE ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
-function renderJD(j){
-  document.getElementById('bcText').textContent=j.title;
-  const total=j.salary.base+j.salary.var+j.salary.ben;
-  const sim=JOBS.filter(x=>x.id!==j.id).slice(0,3);
+    // ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ JD PAGE ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+    function renderJD(j) {
+      document.getElementById('bcText').textContent = j.title;
+      const total = j.salary.base + j.salary.var + j.salary.ben;
+      const sim = JOBS.filter(x => x.id !== j.id).slice(0, 3);
 
-  const html=`
+      const html = `
   <!-- LEFT -->
   <div class="col-lg-8">
 
@@ -789,9 +2052,9 @@ function renderJD(j){
         <div class="clogo-lg" style="color:${j.color}">${j.ini}</div>
         <div class="flex-grow-1">
           <div class="d-flex flex-wrap gap-2 mb-2">
-            ${j.pre?`<span class="badge-pre"><i class="bi bi-star-fill"></i>PREMIUM JOB</span>`:''}
-            ${j.ceo?`<span class="badge-ceo"><i class="bi bi-patch-check-fill"></i>CEO Approved</span>`:''}
-            ${j.isNew?`<span class="badge-new">NEW</span>`:''}
+            ${j.pre ? `<span class="badge-pre"><i class="bi bi-star-fill"></i>PREMIUM JOB</span>` : ''}
+            ${j.ceo ? `<span class="badge-ceo"><i class="bi bi-patch-check-fill"></i>CEO Approved</span>` : ''}
+            ${j.isNew ? `<span class="badge-new">NEW</span>` : ''}
           </div>
           <h1 class="jd-title">${j.title}</h1>
           <p style="color:var(--tm);font-size:.88rem;margin-top:5px">
@@ -799,7 +2062,7 @@ function renderJD(j){
             <i class="bi bi-geo-alt me-1"></i>${j.loc}
           </p>
           <div class="d-flex align-items-center gap-2 mt-2">
-            <div class="stars">${mkStars(j.rating,'0.88rem')}</div>
+            <div class="stars">${mkStars(j.rating, '0.88rem')}</div>
             <span style="font-size:.8rem;color:var(--tm)">${j.rating} (${j.rc} reviews)</span>
           </div>
         </div>
@@ -833,7 +2096,7 @@ function renderJD(j){
         <div class="sec-h"><i class="bi bi-building"></i>About the Company</div>
         <p style="color:var(--tm);font-size:.88rem;line-height:1.75;margin-bottom:16px">${j.about}</p>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-bottom:20px">
-          ${[['Industry',j.ind],['Size',j.size],['Founded',j.yr],['Website','Visit <i class="bi bi-box-arrow-up-right"></i>']].map(([l,v])=>`
+          ${[['Industry', j.ind], ['Size', j.size], ['Founded', j.yr], ['Website', 'Visit <i class="bi bi-box-arrow-up-right"></i>']].map(([l, v]) => `
           <div style="background:var(--filter);border:1px solid var(--border);border-radius:10px;padding:11px 13px">
             <div style="font-size:.65rem;text-transform:uppercase;letter-spacing:.07em;color:var(--td);margin-bottom:3px">${l}</div>
             <div style="font-weight:600;font-size:.85rem">${v}</div>
@@ -843,23 +2106,23 @@ function renderJD(j){
         <p style="color:var(--tm);font-size:.88rem;line-height:1.75;margin-bottom:14px">${j.desc}</p>
         <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;margin-bottom:10px">Responsibilities</h3>
         <ul style="list-style:none;padding:0">
-          ${j.resp.map(r=>`<li class="chk-li purple"><i class="bi bi-check-circle-fill"></i><span>${r}</span></li>`).join('')}
+          ${j.resp.map(r => `<li class="chk-li purple"><i class="bi bi-check-circle-fill"></i><span>${r}</span></li>`).join('')}
         </ul>
       </div>
 
       <!-- TAB: SKILLS & PROCESS -->
       <div class="tab-content" id="tab-skills">
         <div class="sec-h"><i class="bi bi-tools"></i>Required Skills</div>
-        <div style="margin-bottom:16px">${j.skills.map(s=>`<span class="pill">${s}</span>`).join('')}</div>
+        <div style="margin-bottom:16px">${j.skills.map(s => `<span class="pill">${s}</span>`).join('')}</div>
         <div class="sec-h"><i class="bi bi-list-check"></i>What You Need</div>
         <ul style="list-style:none;padding:0;margin-bottom:20px">
-          ${j.req.map(r=>`<li class="chk-li"><i class="bi bi-check-circle-fill"></i><span>${r}</span></li>`).join('')}
+          ${j.req.map(r => `<li class="chk-li"><i class="bi bi-check-circle-fill"></i><span>${r}</span></li>`).join('')}
         </ul>
         <div class="sec-h"><i class="bi bi-diagram-3"></i>Hiring Process</div>
         <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">
-          ${j.process.map((s,i)=>`
-          <span class="proc-step"><i class="bi bi-${['file-text','laptop','people','person-badge','gift','chat-left-dots'][i]||'circle'}" style="color:var(--purple)"></i>${s}</span>
-          ${i<j.process.length-1?`<i class="bi bi-chevron-right" style="color:var(--td);font-size:.8rem"></i>`:''}`).join('')}
+          ${j.process.map((s, i) => `
+          <span class="proc-step"><i class="bi bi-${['file-text', 'laptop', 'people', 'person-badge', 'gift', 'chat-left-dots'][i] || 'circle'}" style="color:var(--purple)"></i>${s}</span>
+          ${i < j.process.length - 1 ? `<i class="bi bi-chevron-right" style="color:var(--td);font-size:.8rem"></i>` : ''}`).join('')}
         </div>
       </div>
 
@@ -875,10 +2138,10 @@ function renderJD(j){
         <p style="font-size:.73rem;color:var(--td)">* Performance bonus is paid annually based on individual and company performance.</p>
         <div style="margin-top:18px;padding:14px;background:var(--filter);border:1px solid var(--border);border-radius:11px">
           <p style="font-size:.82rem;font-weight:600;margin-bottom:10px">Salary components breakdown</p>
-          ${[['Base Salary',j.salary.base,total,'#7c3aed'],['Variable Pay',j.salary.var,total,'#f97316'],['Benefits',j.salary.ben,total,'#22c55e']].map(([l,v,t,c])=>`
+          ${[['Base Salary', j.salary.base, total, '#7c3aed'], ['Variable Pay', j.salary.var, total, '#f97316'], ['Benefits', j.salary.ben, total, '#22c55e']].map(([l, v, t, c]) => `
           <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
             <span style="width:100px;font-size:.78rem;color:var(--tm)">${l}</span>
-            <div style="flex:1;height:7px;background:var(--border);border-radius:4px;overflow:hidden"><div style="width:${Math.round(v/t*100)}%;height:100%;background:${c};border-radius:4px"></div></div>
+            <div style="flex:1;height:7px;background:var(--border);border-radius:4px;overflow:hidden"><div style="width:${Math.round(v / t * 100)}%;height:100%;background:${c};border-radius:4px"></div></div>
             <span style="font-size:.78rem;font-weight:600;width:80px;text-align:right">${fmt(v)}</span>
           </div>`).join('')}
         </div>
@@ -889,11 +2152,11 @@ function renderJD(j){
         <div class="d-flex align-items-center gap-4 p-3 mb-3" style="background:var(--filter);border:1px solid var(--border);border-radius:12px;flex-wrap:wrap">
           <div style="text-align:center">
             <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:2.4rem;color:var(--yellow)">${j.rating}</div>
-            <div class="stars">${mkStars(j.rating,'1rem')}</div>
+            <div class="stars">${mkStars(j.rating, '1rem')}</div>
             <div style="font-size:.72rem;color:var(--td);margin-top:3px">Overall</div>
           </div>
           <div style="flex:1;min-width:160px">
-            ${[[5,'85%'],[4,'10%'],[3,'3%'],[2,'1%'],[1,'1%']].map(([s,p])=>`
+            ${[[5, '85%'], [4, '10%'], [3, '3%'], [2, '1%'], [1, '1%']].map(([s, p]) => `
             <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px">
               <span style="font-size:.72rem;color:var(--tm);width:8px">${s}</span>
               <i class="bi bi-star-fill" style="color:var(--yellow);font-size:.68rem"></i>
@@ -902,7 +2165,7 @@ function renderJD(j){
             </div>`).join('')}
           </div>
         </div>
-        ${j.reviews.map(r=>`
+        ${j.reviews.map(r => `
         <div class="rv-card">
           <div class="d-flex align-items-start gap-3">
             <div class="rv-av">${r.n[0]}</div>
@@ -913,7 +2176,7 @@ function renderJD(j){
                   <div style="font-size:.74rem;color:var(--tm)">${r.r}</div>
                 </div>
                 <div>
-                  <div class="stars">${mkStars(r.stars,'.78rem')}</div>
+                  <div class="stars">${mkStars(r.stars, '.78rem')}</div>
                   <div style="font-size:.7rem;color:var(--td);text-align:right;margin-top:2px">${r.mo}</div>
                 </div>
               </div>
@@ -936,7 +2199,7 @@ function renderJD(j){
       <!-- JOB OVERVIEW -->
       <div class="cbox">
         <div class="sec-h"><i class="bi bi-info-circle"></i>Job Overview</div>
-        ${[['bi-calendar3','Posted',j.posted],['bi-clock','Deadline',j.deadline],['bi-people','Applicants',j.apps],['bi-briefcase','Job ID',j.jobId],['bi-building','Industry',j.ind],['bi-geo-alt','Location',j.loc]].map(([ic,l,v])=>`
+        ${[['bi-calendar3', 'Posted', j.posted], ['bi-clock', 'Deadline', j.deadline], ['bi-people', 'Applicants', j.apps], ['bi-briefcase', 'Job ID', j.jobId], ['bi-building', 'Industry', j.ind], ['bi-geo-alt', 'Location', j.loc]].map(([ic, l, v]) => `
         <div class="ov-row">
           <span class="ov-l"><i class="bi ${ic}"></i>${l}</span>
           <span class="ov-v">${v}</span>
@@ -1001,19 +2264,19 @@ function renderJD(j){
         </div>
       </div>
 
-      ${j.pre?`
+      ${j.pre ? `
       <!-- PREMIUM BOX -->
       <div class="prem-box">
         <div class="prem-icon">≡ƒÅå</div>
         <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:.92rem;margin-bottom:6px">Premium Opportunity</div>
         <p style="font-size:.78rem;color:var(--tm);margin-bottom:12px;line-height:1.5">Top companies prioritise premium applicants. Get 3x more visibility with Pro.</p>
         <button class="btn-upg"><i class="bi bi-lightning-charge-fill me-1"></i>Upgrade to Pro ΓåÆ</button>
-      </div>`:``}
+      </div>`: ``}
 
       <!-- SIMILAR JOBS -->
       <div class="cbox mt-3">
         <div class="sec-h"><i class="bi bi-grid"></i>Similar Jobs</div>
-        ${sim.map(s=>`
+        ${sim.map(s => `
         <div class="sim-card" onclick="goJD(${s.id})">
           <div class="d-flex align-items-center gap-3">
             <div style="width:34px;height:34px;border-radius:9px;background:var(--hover);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:.85rem;color:${s.color};flex-shrink:0">${s.ini}</div>
@@ -1028,162 +2291,163 @@ function renderJD(j){
     </div>
   </div>`;
 
-  document.getElementById('jdRoot').innerHTML=html;
+      document.getElementById('jdRoot').innerHTML = html;
 
-  // restore save state
-  const sBtn=document.getElementById('saveBtn');
-  const sIco=document.getElementById('saveIco');
-  if(sBtn && jobSaved.has(j.id)){
-    sBtn.classList.add('on');
-    sBtn.innerHTML=`<i class="bi bi-bookmark-fill" id="saveIco"></i>Saved`;
-  }
+      // restore save state
+      const sBtn = document.getElementById('saveBtn');
+      const sIco = document.getElementById('saveIco');
+      if (sBtn && jobSaved.has(j.id)) {
+        sBtn.classList.add('on');
+        sBtn.innerHTML = `<i class="bi bi-bookmark-fill" id="saveIco"></i>Saved`;
+      }
 
-  // drag & drop
-  const dz=document.getElementById('dropZone');
-  if(dz){
-    dz.addEventListener('dragover',e=>{e.preventDefault();dz.style.borderColor='var(--purple)';});
-    dz.addEventListener('dragleave',()=>{dz.style.borderColor='var(--border)';});
-    dz.addEventListener('drop',e=>{e.preventDefault();dz.style.borderColor='var(--border)';const f=e.dataTransfer.files[0];if(f)document.getElementById('cvLabel').textContent=`Γ£ô ${f.name}`;});
-  }
-}
+      // drag & drop
+      const dz = document.getElementById('dropZone');
+      if (dz) {
+        dz.addEventListener('dragover', e => { e.preventDefault(); dz.style.borderColor = 'var(--purple)'; });
+        dz.addEventListener('dragleave', () => { dz.style.borderColor = 'var(--border)'; });
+        dz.addEventListener('drop', e => { e.preventDefault(); dz.style.borderColor = 'var(--border)'; const f = e.dataTransfer.files[0]; if (f) document.getElementById('cvLabel').textContent = `Γ£ô ${f.name}`; });
+      }
+    }
 
-// TABS
-function swTab(id,btn){
-  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('on'));
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('on'));
-  document.getElementById('tab-'+id).classList.add('on');
-  btn.classList.add('on');
-}
+    // TABS
+    function swTab(id, btn) {
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('on'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('on'));
+      document.getElementById('tab-' + id).classList.add('on');
+      btn.classList.add('on');
+    }
 
-// SAVE
-async function toggleSave(){
-  if(!currentJob)return;
-  const session = getSession();
-  if(!session || !session.token) {
-      toast('Please login to save jobs.');
-      return;
-  }
+    // SAVE
+    async function toggleSave() {
+      if (!currentJob) return;
+      const session = getSession();
+      if (!session || !session.token) {
+        toast('Please login to save jobs.');
+        return;
+      }
 
-  const id=currentJob.id;
-  const btn=document.getElementById('saveBtn');
-  const mobBtn=document.getElementById('mobSaveBtn');
-  
-  try {
-      if(jobSaved.has(id)){
-        // Remove
-        const res = await fetch(`${CONFIG.API_URL}/saved-jobs/${id}`, {
+      const id = currentJob.id;
+      const btn = document.getElementById('saveBtn');
+      const mobBtn = document.getElementById('mobSaveBtn');
+
+      try {
+        if (jobSaved.has(id)) {
+          // Remove
+          const res = await fetch(`${CONFIG.API_URL}/saved-jobs/${id}`, {
             method: 'DELETE',
             headers: { 'Authorization': `Bearer ${session.token}` }
-        });
-        if(res.ok) {
+          });
+          if (res.ok) {
             jobSaved.delete(id);
-            if(btn){btn.classList.remove('on');btn.innerHTML=`<i class="bi bi-bookmark"></i>Save Job`;}
-            if(mobBtn)mobBtn.innerHTML=`<i class="bi bi-bookmark"></i>`;
+            if (btn) { btn.classList.remove('on'); btn.innerHTML = `<i class="bi bi-bookmark"></i>Save Job`; }
+            if (mobBtn) mobBtn.innerHTML = `<i class="bi bi-bookmark"></i>`;
             toast('Removed from saved');
-        }
-      } else {
-        // Save
-        const res = await fetch(`${CONFIG.API_URL}/saved-jobs/${id}`, {
+          }
+        } else {
+          // Save
+          const res = await fetch(`${CONFIG.API_URL}/saved-jobs/${id}`, {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${session.token}` }
-        });
-        if(res.ok) {
+          });
+          if (res.ok) {
             jobSaved.add(id);
-            if(btn){btn.classList.add('on');btn.innerHTML=`<i class="bi bi-bookmark-fill"></i>Saved`;}
-            if(mobBtn)mobBtn.innerHTML=`<i class="bi bi-bookmark-fill"></i>`;
-            toast('Job saved Γ£ô','s');
+            if (btn) { btn.classList.add('on'); btn.innerHTML = `<i class="bi bi-bookmark-fill"></i>Saved`; }
+            if (mobBtn) mobBtn.innerHTML = `<i class="bi bi-bookmark-fill"></i>`;
+            toast('Job saved Γ£ô', 's');
+          }
         }
+      } catch (e) { console.error(e); toast('Error communicating with server'); }
+    }
+
+    // SHARE
+    function shareJob() {
+      if (navigator.share && currentJob) { navigator.share({ title: currentJob.title, text: `${currentJob.title} at ${currentJob.co}`, url: location.href }); }
+      else { navigator.clipboard.writeText(location.href).then(() => toast('Link copied!', 's')).catch(() => toast('Could not copy link')); }
+    }
+
+    // SCROLL TO APPLY
+    function scrollToApply() {
+      const el = document.getElementById('applyPanelEl');
+      if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    }
+
+    // CV UPLOAD
+    function cvChosen(inp) {
+      const f = inp.files[0];
+      if (f) document.getElementById('cvLabel').textContent = `Γ£ô ${f.name}`;
+    }
+
+    // SUBMIT APPLICATION
+    async function submitApp() {
+      const session = getSession();
+      if (!session || !session.token) {
+        toast('Please login to apply for jobs.');
+        setTimeout(() => window.location.href = '../auth/login.html', 1500);
+        return;
       }
-  } catch(e) { console.error(e); toast('Error communicating with server'); }
-}
 
-// SHARE
-function shareJob(){
-  if(navigator.share&&currentJob){navigator.share({title:currentJob.title,text:`${currentJob.title} at ${currentJob.co}`,url:location.href});}
-  else{navigator.clipboard.writeText(location.href).then(()=>toast('Link copied!','s')).catch(()=>toast('Could not copy link'));}
-}
+      // Frontend validation for visual completeness (even though backend doesn't need it)
+      const n = document.getElementById('appName')?.value.trim();
+      const e = document.getElementById('appEmail')?.value.trim();
+      if (!n || !e) { toast('Please fill in Name and Email'); return; }
+      const cv = document.getElementById('cvFile');
+      if (!cv || !cv.files.length) { toast('Please upload your Resume'); return; }
 
-// SCROLL TO APPLY
-function scrollToApply(){
-  const el=document.getElementById('applyPanelEl');
-  if(el){el.scrollIntoView({behavior:'smooth',block:'start'});}
-}
-
-// CV UPLOAD
-function cvChosen(inp){
-  const f=inp.files[0];
-  if(f)document.getElementById('cvLabel').textContent=`Γ£ô ${f.name}`;
-}
-
-// SUBMIT APPLICATION
-async function submitApp() {
-  const session = getSession();
-  if (!session || !session.token) {
-      toast('Please login to apply for jobs.');
-      setTimeout(() => window.location.href = '../auth/login.html', 1500);
-      return;
-  }
-
-  // Frontend validation for visual completeness (even though backend doesn't need it)
-  const n = document.getElementById('appName')?.value.trim();
-  const e = document.getElementById('appEmail')?.value.trim();
-  if (!n || !e) { toast('Please fill in Name and Email'); return; }
-  const cv = document.getElementById('cvFile');
-  if (!cv || !cv.files.length) { toast('Please upload your Resume'); return; }
-
-  try {
-      const response = await fetch(`${CONFIG.API_URL}/applications/job/${currentJob.id}`, {
+      try {
+        const response = await fetch(`${CONFIG.API_URL}/applications/job/${currentJob.id}`, {
           method: 'POST',
           headers: {
-              'Authorization': `Bearer ${session.token}`
+            'Authorization': `Bearer ${session.token}`
           }
-      });
+        });
 
-      const data = await response.json();
+        const data = await response.json();
 
-      if (response.ok) {
-          document.getElementById('applyForm').style.display='none';
+        if (response.ok) {
+          document.getElementById('applyForm').style.display = 'none';
           document.getElementById('successBox').classList.add('show');
-          toast(`Application for ${currentJob.title} submitted! 🎉`,'s');
+          toast(`Application for ${currentJob.title} submitted! 🎉`, 's');
           setTimeout(() => toast('You\'ll hear from us in 3–5 business days'), 1400);
-      } else {
+        } else {
           toast(data.message || 'Failed to submit application');
+        }
+      } catch (error) {
+        console.error("Error submitting application:", error);
+        toast("Error connecting to server.");
       }
-  } catch (error) {
-      console.error("Error submitting application:", error);
-      toast("Error connecting to server.");
-  }
-}
+    }
 
-function resetForm(){
-  document.getElementById('successBox').classList.remove('show');
-  document.getElementById('applyForm').style.display='';
-  document.getElementById('appName').value='';
-  document.getElementById('appEmail').value='';
-  document.getElementById('cvLabel').textContent='Click to upload or drag & drop';
-  document.getElementById('cvFile').value='';
-}
+    function resetForm() {
+      document.getElementById('successBox').classList.remove('show');
+      document.getElementById('applyForm').style.display = '';
+      document.getElementById('appName').value = '';
+      document.getElementById('appEmail').value = '';
+      document.getElementById('cvLabel').textContent = 'Click to upload or drag & drop';
+      document.getElementById('cvFile').value = '';
+    }
 
-// MOBILE FILTER DRAWER
-function openFD(){
-  document.getElementById('fdraw').innerHTML=`
+    // MOBILE FILTER DRAWER
+    function openFD() {
+      document.getElementById('fdraw').innerHTML = `
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
       <div style="font-family:'Syne',sans-serif;font-weight:700;display:flex;align-items:center;gap:6px"><i class="bi bi-funnel-fill" style="color:var(--purple)"></i>Filters</div>
       <button onclick="closeFD()" style="background:none;border:none;color:var(--tm);font-size:1.2rem;cursor:pointer"><i class="bi bi-x-lg"></i></button>
     </div>
     ${document.getElementById('fpDesk').innerHTML}`;
-  document.getElementById('fdraw').classList.add('open');
-  document.getElementById('fov').classList.add('open');
-}
-function closeFD(){
-  document.getElementById('fdraw').classList.remove('open');
-  document.getElementById('fov').classList.remove('open');
-}
+      document.getElementById('fdraw').classList.add('open');
+      document.getElementById('fov').classList.add('open');
+    }
+    function closeFD() {
+      document.getElementById('fdraw').classList.remove('open');
+      document.getElementById('fov').classList.remove('open');
+    }
 
-// INIT
-fetchJobs();
-</script>
-<script src="../../js/config.js"></script>
-<script src="../../js/auth.js"></script>
+    // INIT
+    fetchJobs();
+  </script>
+  <script src="../../js/config.js"></script>
+  <script src="../../js/auth.js"></script>
 </body>
+
 </html>

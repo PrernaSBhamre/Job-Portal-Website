@@ -69,6 +69,7 @@ const adminRoutes = require('./routes/adminRoutes');
 const savedJobRoutes = require('./routes/savedJobRoutes');
 const resourceRoutes = require('./routes/resourceRoutes');
 const recruiterRoutes = require('./routes/recruiterRoutes');
+const notificationRoutes = require('./routes/notificationRoutes');
 
 // --- Mount Routes ---
 app.use('/api/auth', authRoutes);
@@ -80,6 +81,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/saved-jobs', savedJobRoutes);
 app.use('/api/resources', resourceRoutes);
 app.use('/api/recruiter', recruiterRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 // --- Basic Route ---
 // Serve the main frontend index.html

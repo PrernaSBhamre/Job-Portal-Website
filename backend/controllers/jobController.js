@@ -34,7 +34,7 @@ const getJobs = async (req, res, next) => {
   try {
     const { keyword, location, type, salary } = req.query;
 
-    let query = {};
+    let query = { isApproved: true, isActive: true };
 
     if (keyword) {
       query.$or = [
@@ -91,6 +91,10 @@ const getJobById = async (req, res, next) => {
       .populate('created_by', 'fullname email profile');
 
     if (job) {
+      // Increment views count
+      job.viewsCount = (job.viewsCount || 0) + 1;
+      await job.save();
+
       res.json(job);
     } else {
       res.status(404);

@@ -1,6 +1,7 @@
 const Job = require('../models/Job');
 const Application = require('../models/Application');
 const Company = require('../models/Company');
+const Notification = require('../models/Notification');
 const mongoose = require('mongoose');
 
 // @desc    Get recruiter dashboard statistics
@@ -41,6 +42,10 @@ const getRecruiterStats = async (req, res, next) => {
       job: { $in: jobIds },
       createdAt: { $gte: today }
     });
+    const shortlistedCount = await Application.countDocuments({ 
+      job: { $in: jobIds },
+      status: 'Shortlisted'
+    });
 
     // Chart Data: Applicants per day (last 7 days)
     const sevenDaysAgo = new Date();
@@ -79,6 +84,7 @@ const getRecruiterStats = async (req, res, next) => {
         totalJobs,
         activeJobs,
         totalApplicants,
+        shortlistedCount,
         applicantsToday
       },
       charts: {
@@ -123,6 +129,28 @@ const getRecruiterJobs = async (req, res, next) => {
         totalJobs: count
       }
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Update a job post
+// @route   PUT /api/recruiter/jobs/:id
+// @access  Private/Recruiter
+const updateJob = async (req, res, next) => {
+  try {
+    const job = await Job.findOne({ _id: req.params.id, created_by: req.user._id });
+    if (!job) {
+      return res.status(404).json({ success: false, message: 'Job not found or unauthorized' });
+    }
+
+    // Exclude certain fields from being updated by recruiter
+    const { isApproved, applicationsCount, viewsCount, ...updates } = req.body;
+    
+    Object.assign(job, updates);
+    await job.save();
+
+    res.status(200).json({ success: true, message: 'Job updated successfully', job });
   } catch (error) {
     next(error);
   }
@@ -184,8 +212,22 @@ const updateApplicationStatus = async (req, res, next) => {
       return res.status(403).json({ success: false, message: 'Not authorized to update this application' });
     }
 
+    const oldStatus = application.status;
     application.status = status;
+    application.statusTimeline.push({
+      status: status,
+      comment: req.body.comment || `Status updated from ${oldStatus} to ${status}`
+    });
+
     await application.save();
+
+    // Create Notification for the Applicant
+    await Notification.create({
+      userId: application.applicant,
+      message: `Your application status for '${application.job.title}' has been updated to ${status}.`,
+      type: 'status_update',
+      link: '/user/applications'
+    });
 
     res.status(200).json({
       success: true,
@@ -228,10 +270,38 @@ const manageCompanyProfile = async (req, res, next) => {
   }
 };
 
+// @desc    Get recent applications across all jobs for the recruiter
+// @route   GET /api/recruiter/recent-applications
+// @access  Private/Recruiter
+const getRecentApplications = async (req, res, next) => {
+  try {
+    const recruiterId = req.user._id;
+
+    // Get all job IDs for this recruiter
+    const jobs = await Job.find({ created_by: recruiterId }).select('_id');
+    const jobIds = jobs.map(j => j._id);
+
+    const applications = await Application.find({ job: { $in: jobIds } })
+      .populate('applicant', 'fullname email profile')
+      .populate('job', 'title')
+      .sort({ createdAt: -1 })
+      .limit(10);
+
+    res.status(200).json({
+      success: true,
+      applications
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getRecruiterStats,
   getRecruiterJobs,
+  updateJob,
   getJobApplicants,
+  getRecentApplications,
   updateApplicationStatus,
   manageCompanyProfile
 };

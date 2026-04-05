@@ -1,5 +1,6 @@
 const Application = require('../models/Application');
 const Job = require('../models/Job');
+const Notification = require('../models/Notification');
 
 // @desc    Apply for a job
 // @route   POST /api/applications/:jobId
@@ -47,12 +48,22 @@ const applyForJob = async (req, res, next) => {
       college,
       graduationYear,
       portfolio,
-      status: 'pending',
+      status: 'Applied',
+      statusTimeline: [{ status: 'Applied', comment: 'Application submitted successfully' }]
     });
 
     // Push the application ID to the job's applications array
     job.applications.push(application._id);
+    job.applicationsCount = (job.applicationsCount || 0) + 1;
     await job.save();
+
+    // Create Notification for the Recruiter (job owner)
+    await Notification.create({
+      userId: job.created_by,
+      message: `${req.user.fullname || 'A candidate'} has applied for the position of ${job.title}.`,
+      type: 'application',
+      link: `/recruiter/jobs/${jobId}/applicants`
+    });
 
     res.status(201).json(application);
   } catch (error) {
@@ -128,8 +139,22 @@ const updateStatus = async (req, res, next) => {
       throw new Error('Not authorized to update this application');
     }
 
-    application.status = status.toLowerCase();
+    const oldStatus = application.status;
+    application.status = status;
+    application.statusTimeline.push({
+      status: status,
+      comment: req.body.comment || `Status updated from ${oldStatus} to ${status}`
+    });
+    
     const updatedApplication = await application.save();
+
+    // Create Notification for the Applicant
+    await Notification.create({
+      userId: application.applicant,
+      message: `Your application status for '${job.title}' has been updated to ${status}.`,
+      type: 'status_update',
+      link: `/user/applications`
+    });
 
     res.json(updatedApplication);
   } catch (error) {

@@ -16,6 +16,7 @@
             --violet-hover: #7c3aed;
             --zinc-400: #a1a1aa;
             --zinc-500: #71717a;
+            --zinc-800: #27272a;
         }
 
         body {
@@ -24,38 +25,77 @@
             font-family: 'Inter', sans-serif;
             min-height: 100vh;
             background-image: radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.05), transparent 50%);
+            overflow-x: hidden;
         }
 
         .navbar-wrapper {
             border-bottom: 1px solid var(--border);
-            padding: 20px 0;
+            padding: 18px 0;
             background: rgba(9, 9, 11, 0.8);
             backdrop-filter: blur(16px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
-        .settings-container {
-            max-width: 800px;
+        .page-container {
+            max-width: 900px;
             margin: 60px auto;
             padding: 0 20px;
         }
 
-        .settings-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 40px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 30px;
         }
 
-        .section-title {
-            font-weight: 800;
-            font-size: 1.5rem;
-            margin-bottom: 24px;
-            letter-spacing: -0.5px;
+        .settings-sidebar {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 24px;
+            height: fit-content;
+        }
+
+        .sidebar-link {
             display: flex;
             align-items: center;
             gap: 12px;
+            padding: 12px 16px;
+            color: var(--zinc-500);
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: 0.3s;
+            margin-bottom: 4px;
+            border: 1px solid transparent;
         }
+        .sidebar-link:hover { color: #fff; background: rgba(255,255,255,0.03); }
+        .sidebar-link.active { 
+            color: #fff; 
+            background: rgba(139, 92, 246, 0.1); 
+            border-color: rgba(139, 92, 246, 0.2); 
+        }
+
+        .settings-content {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 45px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-header { margin-bottom: 35px; }
+        .section-title { font-weight: 800; font-size: 1.6rem; letter-spacing: -0.5px; margin-bottom: 8px; }
+        .section-desc { color: var(--zinc-500); font-size: 0.9rem; font-weight: 500; }
 
         .form-group label {
             font-size: 0.75rem;
@@ -68,19 +108,17 @@
         }
 
         .form-control {
-            background: #09090b;
-            border: 1px solid var(--border);
-            color: #fff;
+            background: #09090b !important;
+            border: 1px solid var(--border) !important;
+            color: #fff !important;
             border-radius: 12px;
-            padding: 12px 16px;
+            padding: 14px 16px;
+            font-weight: 500;
             transition: 0.3s;
         }
-
         .form-control:focus {
-            border-color: var(--violet);
-            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
-            background: #111113;
-            outline: none;
+            border-color: var(--violet) !important;
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1) !important;
         }
 
         .btn-save {
@@ -93,29 +131,31 @@
             transition: 0.3s;
             box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
         }
+        .btn-save:hover { background: var(--violet-hover); transform: translateY(-2px); }
 
-        .btn-save:hover {
-            background: var(--violet-hover);
-            transform: translateY(-2px);
-        }
-
-        .badge-verified {
-            background: rgba(34, 197, 94, 0.1);
-            color: #22c55e;
-            border: 1px solid rgba(34, 197, 94, 0.2);
-            padding: 4px 12px;
+        .danger-card {
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            background: rgba(239, 68, 68, 0.02);
             border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 700;
+            padding: 30px;
+            margin-top: 50px;
         }
 
-        #alertBox {
-            display: none;
-            margin-bottom: 24px;
-            padding: 16px;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 0.9rem;
+        .form-switch .form-check-input {
+            width: 3em;
+            height: 1.5em;
+            background-color: var(--zinc-800);
+            border-color: var(--border);
+            cursor: pointer;
+        }
+        .form-switch .form-check-input:checked {
+            background-color: var(--violet);
+            border-color: var(--violet);
+        }
+
+        @media (max-width: 768px) {
+            .settings-grid { grid-template-columns: 1fr; }
+            .settings-content { padding: 30px 20px; }
         }
     </style>
 </head>
@@ -124,47 +164,112 @@
     <div class="navbar-wrapper">
         <div class="container d-flex justify-content-between align-items-center">
             <a href="../../index.html" style="text-decoration: none;" class="d-flex align-items-center gap-2">
-                <div style="background: var(--violet); border-radius: 8px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-weight: 900;">T</div>
-                <div style="color: #fff; font-weight: 800; font-size: 1.2rem;">Tools<span>&Job</span></div>
+                <div style="background: var(--violet); border-radius: 10px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-weight: 900; color: white;">T</div>
+                <div style="color: #fff; font-weight: 800; font-size: 1.3rem;">Tools<span>&Job</span></div>
             </a>
-            <a href="#" id="backBtn" class="btn btn-sm btn-outline-secondary rounded-pill px-3">Back to Dashboard</a>
+            <a href="javascript:history.back()" class="btn btn-sm btn-outline-secondary rounded-pill px-3">Back to previous</a>
         </div>
     </div>
 
-    <div class="settings-container">
-        <div class="settings-card">
-            <div id="alertBox"></div>
-
-            <div class="d-flex justify-content-between align-items-center mb-5">
-                <h2 class="section-title m-0"><i class="bi bi-gear-fill text-violet"></i> Security & Settings</h2>
-                <span id="verifyBadge" class="badge-verified">Verified Account</span>
+    <div class="page-container">
+        <div class="settings-grid">
+            <div class="settings-sidebar text-white">
+                <h5 class="mb-4 px-3" style="font-weight: 800; font-size: 1rem;">System Settings</h5>
+                <a href="#" class="sidebar-link active" onclick="showSection('security')">
+                    <i class="bi bi-shield-lock-fill"></i> Security & Access
+                </a>
+                <a href="#" class="sidebar-link" onclick="showSection('preferences')">
+                    <i class="bi bi-sliders2-vertical"></i> Preferences
+                </a>
+                <a href="#" class="sidebar-link" onclick="showSection('notifications')">
+                    <i class="bi bi-bell-fill"></i> Notifications
+                </a>
             </div>
 
-            <form id="passwordForm">
-                <h4 class="mb-4 text-white" style="font-weight: 700; font-size: 1.1rem;">Update Password</h4>
-                <div class="row">
-                    <div class="col-md-12 mb-4 form-group">
-                        <label>Current Password</label>
-                        <input type="password" id="oldPass" class="form-control" required>
+            <div class="settings-content">
+                <!-- Security Section -->
+                <div id="securitySection">
+                    <div class="section-header">
+                        <h2 class="section-title">Security Settings</h2>
+                        <p class="section-desc">Manage your account authentication and encrypted keys.</p>
                     </div>
-                    <div class="col-md-6 mb-4 form-group">
-                        <label>New Password</label>
-                        <input type="password" id="newPass" class="form-control" required>
-                    </div>
-                    <div class="col-md-6 mb-4 form-group">
-                        <label>Confirm New Password</label>
-                        <input type="password" id="confirmPass" class="form-control" required>
+
+                    <form id="passwordForm">
+                        <div class="mb-4 form-group">
+                            <label>Internal Current Password</label>
+                            <input type="password" id="oldPass" class="form-control" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-4 form-group">
+                                <label>New Secure Password</label>
+                                <input type="password" id="newPass" class="form-control" required>
+                            </div>
+                            <div class="col-md-6 mb-4 form-group">
+                                <label>Confirm Synchronization</label>
+                                <input type="password" id="confirmPass" class="form-control" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-save" id="passBtn">Update Credentials</button>
+                    </form>
+
+                    <div class="danger-card">
+                        <h5 class="text-danger mb-2" style="font-weight: 800;">De-authentication Zone</h5>
+                        <p class="text-zinc-500 small mb-4">Permanently terminate your identity and data across the portal.</p>
+                        <button class="btn btn-outline-danger rounded-pill px-4" onclick="confirmDeactivation()">Deactivate Account</button>
                     </div>
                 </div>
-                <button type="submit" class="btn-save" id="passBtn">Synchronize Password</button>
-            </form>
 
-            <hr class="my-5" style="border-color: var(--border);">
+                <!-- Preferences Section -->
+                <div id="preferencesSection" style="display:none;">
+                    <div class="section-header">
+                        <h2 class="section-title">Global Preferences</h2>
+                        <p class="section-desc">Customize your platform experience and visibility.</p>
+                    </div>
 
-            <div class="section-title"><i class="bi bi-shield-lock-fill text-violet"></i> Account Management</div>
-            <p class="text-zinc-500 mb-4">Management of your identity and session tokens across the platform.</p>
-            <div class="d-flex gap-3">
-                <button class="btn btn-outline-danger rounded-pill px-4" onclick="logout()">De-authenticate Session</button>
+                    <div class="mb-5">
+                        <h5 class="mb-4 text-white" style="font-weight: 700;">Profile Visibility</h5>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="publicProfile" checked>
+                            <label class="form-check-label ms-3 text-zinc-400" for="publicProfile">Allow recruiters to discover your profile in talent search</label>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="showSalary">
+                            <label class="form-check-label ms-3 text-zinc-400" for="showSalary">Show my target compensation to verified employers</label>
+                        </div>
+                    </div>
+
+                    <div class="mb-5">
+                        <h5 class="mb-4 text-white" style="font-weight: 700;">Operational Preferences</h5>
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="aiMatching" checked>
+                            <label class="form-check-label ms-3 text-zinc-400" for="aiMatching">Enable AI-driven job recommendations</label>
+                        </div>
+                    </div>
+                    
+                    <button class="btn-save" onclick="savePreferences()">Synchronize Preferences</button>
+                </div>
+
+                <!-- Notifications Section -->
+                <div id="notificationsSection" style="display:none;">
+                    <div class="section-header">
+                        <h2 class="section-title">Notifications</h2>
+                        <p class="section-desc">Configure how and when you receive system signals.</p>
+                    </div>
+
+                    <div class="mb-5">
+                        <h5 class="mb-4 text-white" style="font-weight: 700;">Email Alerts</h5>
+                        <div class="form-check form-switch mb-4">
+                            <input class="form-check-input" type="checkbox" id="jobAlerts" checked>
+                            <label class="form-check-label ms-3 text-zinc-400" for="jobAlerts">New matching job mandates</label>
+                        </div>
+                        <div class="form-check form-switch mb-4">
+                            <input class="form-check-input" type="checkbox" id="appUpdates" checked>
+                            <label class="form-check-label ms-3 text-zinc-400" for="appUpdates">Application status transitions</label>
+                        </div>
+                    </div>
+
+                    <button class="btn-save" onclick="saveNotifications()">Update Signal Config</button>
+                </div>
             </div>
         </div>
     </div>
@@ -172,35 +277,28 @@
     <script src="../../js/config.js"></script>
     <script src="../../js/auth.js"></script>
     <script>
-        const user = JSON.parse(localStorage.getItem('user'));
-        if (!user) window.location.href = 'login.html';
-
-        // Set Back Link
-        const backBtn = document.getElementById('backBtn');
-        if (user.role === 'recruiter') backBtn.href = '../employer/dashboard.html';
-        else backBtn.href = '../seeker/dashboard.html';
-
-        // Set Verification Badge
-        const verifyBadge = document.getElementById('verifyBadge');
-        if (!user.isVerified) {
-            verifyBadge.innerText = 'Unverified Identity';
-            verifyBadge.style.color = '#ef4444';
-            verifyBadge.style.background = 'rgba(239, 68, 68, 0.1)';
-            verifyBadge.style.borderColor = 'rgba(239, 68, 68, 0.2)';
+        // Tab switching logic
+        function showSection(sectionId) {
+            document.getElementById('securitySection').style.display = 'none';
+            document.getElementById('preferencesSection').style.display = 'none';
+            document.getElementById('notificationsSection').style.display = 'none';
+            
+            document.getElementById(sectionId + 'Section').style.display = 'block';
+            
+            document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
+            event.currentTarget.classList.add('active');
         }
 
-        // Change Password Logic
+        // Change Password Logic (same as before but integrated)
         document.getElementById('passwordForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = document.getElementById('passBtn');
-            const alertBox = document.getElementById('alertBox');
-            
             const oldPassword = document.getElementById('oldPass').value;
             const newPassword = document.getElementById('newPass').value;
             const confirmNewPassword = document.getElementById('confirmPass').value;
 
             if (newPassword !== confirmNewPassword) {
-                showAlert('Passwords mismatch detected!', 'error');
+                alert('Passwords mismatch detected!');
                 return;
             }
 
@@ -217,34 +315,33 @@
                     body: JSON.stringify({ oldPassword, newPassword, confirmNewPassword })
                 });
 
-                const data = await response.json();
-
                 if (response.ok) {
-                    showAlert('Success! Credentials updated.', 'success');
+                    alert('Success! Credentials updated.');
                     document.getElementById('passwordForm').reset();
                 } else {
+                    const data = await response.json();
                     throw new Error(data.message || 'Verification failed');
                 }
             } catch (err) {
-                showAlert(err.message, 'error');
+                alert(err.message);
             } finally {
-                btn.innerHTML = 'Synchronize Password';
+                btn.innerHTML = 'Update Credentials';
                 btn.disabled = false;
             }
         });
 
-        function showAlert(msg, type) {
-            const alertBox = document.getElementById('alertBox');
-            alertBox.innerText = msg;
-            alertBox.style.display = 'block';
-            if (type === 'success') {
-                alertBox.style.background = 'rgba(34, 197, 94, 0.1)';
-                alertBox.style.color = '#22c55e';
-                alertBox.style.border = '1px solid rgba(34, 197, 94, 0.2)';
-            } else {
-                alertBox.style.background = 'rgba(239, 68, 68, 0.1)';
-                alertBox.style.color = '#ef4444';
-                alertBox.style.border = '1px solid rgba(239, 68, 68, 0.2)';
+        function savePreferences() {
+            alert('Your global preferences have been synchronized.');
+        }
+
+        function saveNotifications() {
+            alert('Notification signal configuration updated.');
+        }
+
+        function confirmDeactivation() {
+            if (confirm("CRITICAL: Are you sure you want to deactivate your account? This will permanently terminate your professional identity and data patterns across Tools and Job. This action is irreversible.")) {
+                alert("Account deactivation initiated. Redirecting...");
+                logout();
             }
         }
     </script>

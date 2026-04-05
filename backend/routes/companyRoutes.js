@@ -3,11 +3,13 @@ const router = express.Router();
 const {
   createCompany,
   getMyCompany,
-  updateCompany
+  updateCompany,
+  getAllCompanies
 } = require('../controllers/companyController');
 const { protect, isEmployer } = require('../middleware/authMiddleware');
 
 router.route('/')
+  .get(getAllCompanies)
   .post(protect, isEmployer, createCompany);
 
 router.route('/mine')

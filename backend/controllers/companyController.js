@@ -87,8 +87,21 @@ const updateCompany = async (req, res, next) => {
   }
 };
 
+// @desc    Get all active companies for the public frontend
+// @route   GET /api/company
+// @access  Public
+const getAllCompanies = async (req, res, next) => {
+  try {
+    const companies = await Company.find({ isVerified: true }).sort({ createdAt: -1 });
+    res.json(companies);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getMyCompany,
   createCompany,
-  updateCompany
+  updateCompany,
+  getAllCompanies
 };

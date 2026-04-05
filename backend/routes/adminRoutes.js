@@ -20,7 +20,9 @@ const {
   updateAdminProfile,
   changeAdminPassword,
   getSettings,
-  updateSettings
+  updateSettings,
+  getAllMessages,
+  resolveMessage
 } = require('../controllers/adminController');
 const { adminProtect } = require('../middleware/adminAuth');
 
@@ -61,5 +63,9 @@ router.put('/change-password', changeAdminPassword);
 // System Settings
 router.get('/settings', getSettings);
 router.put('/settings', updateSettings);
+
+// Support Messages
+router.get('/messages', getAllMessages);
+router.put('/messages/:id/resolve', resolveMessage);
 
 module.exports = router;

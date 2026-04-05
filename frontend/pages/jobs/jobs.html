@@ -1803,8 +1803,8 @@
           fetchedJobs = jobsArray.map(j => ({
             id: j._id,
             title: j.title,
-            co: j.company ? j.company.name : 'Unknown Company',
-            ini: j.company && j.company.name ? j.company.name.charAt(0).toUpperCase() : 'C',
+            co: j.companyId ? j.companyId.name : (j.company ? j.company.name : 'Unknown Company'),
+            ini: j.companyId && j.companyId.name ? j.companyId.name.charAt(0).toUpperCase() : (j.company && j.company.name ? j.company.name.charAt(0).toUpperCase() : 'C'),
             loc: j.location || 'Remote',
             type: j.jobType || 'Full Time',
             exp: j.experienceLevel || 'Fresher',
@@ -1857,8 +1857,8 @@
           const newJobs = jobsArray.map(j => ({
             id: j._id,
             title: j.title,
-            co: j.company ? j.company.name : 'Unknown Company',
-            ini: j.company && j.company.name ? j.company.name.charAt(0).toUpperCase() : 'C',
+            co: j.companyId ? j.companyId.name : (j.company ? j.company.name : 'Unknown Company'),
+            ini: j.companyId && j.companyId.name ? j.companyId.name.charAt(0).toUpperCase() : (j.company && j.company.name ? j.company.name.charAt(0).toUpperCase() : 'C'),
             loc: j.location || 'Remote',
             type: j.jobType || 'Full Time',
             exp: j.experienceLevel || 'Fresher',

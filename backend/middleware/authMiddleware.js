@@ -57,10 +57,10 @@ const isAdmin = (req, res, next) => {
 };
 
 const isEmployer = (req, res, next) => {
-  if (req.user && req.user.role === 'employer') {
+  if (req.user && (req.user.role === 'employer' || req.user.role === 'recruiter')) {
     next();
   } else {
-    res.status(403).json({ message: 'Not authorized as an employer' });
+    res.status(403).json({ message: 'Not authorized as a recruiter' });
   }
 };
 

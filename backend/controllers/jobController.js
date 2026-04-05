@@ -218,6 +218,42 @@ const deleteJob = async (req, res, next) => {
   }
 };
 
+// @desc    Get all active and approved public jobs
+// @route   GET /api/jobs
+// @access  Public
+const getAllPublicJobs = async (req, res, next) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 50;
+    const skip = (page - 1) * limit;
+
+    const query = {
+      isApproved: true,
+      isActive: true,
+      isClosed: false
+    };
+
+    const jobs = await Job.find(query)
+      .populate('companyId', 'name logo location industry size description website isVerified')
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    const totalJobs = await Job.countDocuments(query);
+
+    res.json({
+      success: true,
+      count: jobs.length,
+      total: totalJobs,
+      page,
+      pages: Math.ceil(totalJobs / limit),
+      jobs
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   createJob,
   getMyJobs,
@@ -225,5 +261,6 @@ module.exports = {
   updateJob,
   pauseJob,
   closeJob,
-  deleteJob
+  deleteJob,
+  getAllPublicJobs
 };

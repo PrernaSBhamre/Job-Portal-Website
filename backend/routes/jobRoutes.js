@@ -7,11 +7,13 @@ const {
   updateJob,
   pauseJob,
   closeJob,
-  deleteJob
+  deleteJob,
+  getAllPublicJobs
 } = require('../controllers/jobController');
 const { protect, isEmployer } = require('../middleware/authMiddleware');
 
 router.route('/')
+  .get(getAllPublicJobs)
   .post(protect, isEmployer, createJob);
 
 router.route('/mine')

@@ -10,7 +10,7 @@ const JobsEngine = () => {
   const [saving, setSaving] = useState(false);
   const [formData, setFormData] = useState({
     title: '', description: '', location: '', type: 'full-time', 
-    experienceLevel: 'Entry Level', minSalary: '', maxSalary: '', currency: 'USD'
+    experienceLevel: 'Entry Level', salaryMin: '', salaryMax: '', openings: '1'
   });
 
   const fetchJobs = async () => {
@@ -39,11 +39,9 @@ const JobsEngine = () => {
     try {
       const payload = {
          ...formData,
-         salary: {
-            min: Number(formData.minSalary),
-            max: Number(formData.maxSalary),
-            currency: formData.currency
-         }
+         salaryMin: Number(formData.salaryMin),
+         salaryMax: Number(formData.salaryMax),
+         openings: Number(formData.openings),
       };
       await api.post('/jobs', payload);
       toast.success('Job created! Awaiting admin approval.', { icon: '⏳' });
@@ -168,11 +166,15 @@ const JobsEngine = () => {
                 </div>
                 <div className="space-y-1">
                   <label className="text-sm text-gray-300">Min Salary</label>
-                  <input name="minSalary" type="number" required value={formData.minSalary} onChange={handleChange} className="w-full bg-surface border border-gray-700 text-white rounded-xl py-2 px-3 focus:outline-none focus:border-primary" />
+                  <input name="salaryMin" type="number" required value={formData.salaryMin} onChange={handleChange} className="w-full bg-surface border border-gray-700 text-white rounded-xl py-2 px-3 focus:outline-none focus:border-primary" />
                 </div>
                 <div className="space-y-1">
                   <label className="text-sm text-gray-300">Max Salary</label>
-                  <input name="maxSalary" type="number" required value={formData.maxSalary} onChange={handleChange} className="w-full bg-surface border border-gray-700 text-white rounded-xl py-2 px-3 focus:outline-none focus:border-primary" />
+                  <input name="salaryMax" type="number" required value={formData.salaryMax} onChange={handleChange} className="w-full bg-surface border border-gray-700 text-white rounded-xl py-2 px-3 focus:outline-none focus:border-primary" />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-sm text-gray-300">No. of Openings</label>
+                  <input name="openings" type="number" min="1" required value={formData.openings} onChange={handleChange} className="w-full bg-surface border border-gray-700 text-white rounded-xl py-2 px-3 focus:outline-none focus:border-primary" />
                 </div>
               </div>
               <div className="space-y-1">

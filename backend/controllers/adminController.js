@@ -70,13 +70,13 @@ const getDashboardStats = async (req, res, next) => {
     const recentJobs = await Job.find({})
       .sort({ createdAt: -1 })
       .limit(5)
-      .populate('company', 'name logo');
+      .populate('companyId', 'name logo');
 
     const recentApplications = await Application.find({})
       .sort({ createdAt: -1 })
       .limit(5)
-      .populate('job', 'title')
-      .populate('applicant', 'fullname email profilePhoto');
+      .populate('jobId', 'title')
+      .populate('userId', 'fullname email profilePhoto');
 
     res.json({
       success: true,
@@ -198,8 +198,8 @@ const getAllJobs = async (req, res, next) => {
     }
 
     const jobs = await Job.find(query)
-      .populate('company', 'name logo')
-      .populate('created_by', 'fullname email')
+      .populate('companyId', 'name logo')
+      .populate('employerId', 'fullname email')
       .sort({ createdAt: -1 })
       .limit(limit * 1)
       .skip((page - 1) * limit);
@@ -272,8 +272,8 @@ const getAllApplications = async (req, res, next) => {
     if (status !== 'all') query.status = status;
 
     const applications = await Application.find(query)
-      .populate('job', 'title')
-      .populate('applicant', 'fullname email')
+      .populate('jobId', 'title')
+      .populate('userId', 'fullname email')
       .sort({ createdAt: -1 })
       .limit(limit * 1)
       .skip((page - 1) * limit);
@@ -541,6 +541,36 @@ const updateSettings = async (req, res, next) => {
 
 
 
+// --- Messages & Support Management ---
+
+// @desc    Get all support messages
+// @route   GET /api/admin/messages
+const getAllMessages = async (req, res, next) => {
+  try {
+    const messages = await Support.find()
+      .sort({ createdAt: -1 });
+    res.json(messages);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Mark a message as resolved
+// @route   PUT /api/admin/messages/:id/resolve
+const resolveMessage = async (req, res, next) => {
+  try {
+    const message = await Support.findById(req.params.id);
+    if (!message) {
+      return res.status(404).json({ success: false, message: 'Message not found' });
+    }
+    message.status = 'resolved';
+    await message.save();
+    res.json({ success: true, message: 'Message marked as resolved', data: message });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getDashboardStats,
   getAllUsers,
@@ -561,5 +591,7 @@ module.exports = {
   updateAdminProfile,
   changeAdminPassword,
   getSettings,
-  updateSettings
+  updateSettings,
+  getAllMessages,
+  resolveMessage
 };

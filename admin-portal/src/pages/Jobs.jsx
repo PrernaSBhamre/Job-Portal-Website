@@ -103,7 +103,7 @@ const Jobs = () => {
              )}
           </Space>
           <Space separator={<div className="w-1 h-1 bg-zinc-800 rounded-full" />} className="text-zinc-500 text-xs font-medium">
-             <Space size={4}><ShopOutlined className="text-violet-500/50" /> {record.company?.name || 'Partner Org'}</Space>
+             <Space size={4}><ShopOutlined className="text-violet-500/50" /> {record.companyId?.name || 'Partner Org'}</Space>
              <Space size={4}><EnvironmentOutlined /> {record.location}</Space>
              <Space size={4}><DollarOutlined className="text-violet-500/50" /> {record.salary}</Space>
           </Space>
@@ -130,8 +130,8 @@ const Jobs = () => {
     },
     {
       title: 'Posted By',
-      dataIndex: 'created_by',
-      key: 'created_by',
+      dataIndex: 'employerId',
+      key: 'employerId',
       render: (user) => (
         <div className="flex flex-col">
           <Text className="text-zinc-200">{user?.fullname}</Text>

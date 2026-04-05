@@ -60,28 +60,28 @@ const Applications = () => {
   const columns = [
     {
       title: 'Applicant Identity',
-      key: 'applicant',
+      key: 'userId',
       render: (_, record) => (
         <Space size={16}>
           <div className="relative">
             <Avatar 
-              src={record.applicant?.profilePhoto} 
+              src={record.userId?.profilePhoto} 
               icon={<UserOutlined />} 
               className="bg-zinc-900 border-2 border-violet-500/10 shadow-xl" 
               size={48}
             />
           </div>
           <div className="flex flex-col">
-            <Text strong className="text-zinc-100 text-base tracking-tight">{record.applicant?.fullname}</Text>
-            <Text type="secondary" className="text-zinc-500 font-medium text-xs mt-0.5">{record.applicant?.email}</Text>
+            <Text strong className="text-zinc-100 text-base tracking-tight">{record.userId?.fullname}</Text>
+            <Text type="secondary" className="text-zinc-500 font-medium text-xs mt-0.5">{record.userId?.email}</Text>
           </div>
         </Space>
       ),
     },
     {
       title: 'Target Position',
-      dataIndex: 'job',
-      key: 'job',
+      dataIndex: 'jobId',
+      key: 'jobId',
       render: (job) => (
         <div className="flex flex-col gap-0.5">
           <Text strong className="text-violet-400 font-bold">{job?.title}</Text>

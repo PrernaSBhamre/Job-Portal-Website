@@ -23,7 +23,9 @@ const {
   updateSettings,
   toggleUserFlag,
   resolveReport,
-  getAuditLogs
+  getAuditLogs,
+  getAllMessages,
+  resolveMessage
 } = require('../controllers/adminController');
 const { adminProtect } = require('../middleware/adminAuth');
 
@@ -69,5 +71,9 @@ router.put('/settings', updateSettings);
 router.get('/audit-logs', getAuditLogs);
 router.put('/users/:id/flag', toggleUserFlag);
 router.put('/reports/:id/resolve', resolveReport);
+
+// Support Messages
+router.get('/messages', getAllMessages);
+router.put('/messages/:id/resolve', resolveMessage);
 
 module.exports = router;

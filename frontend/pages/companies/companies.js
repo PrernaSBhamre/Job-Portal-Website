@@ -8,7 +8,7 @@ async function fetchCompanies() {
     const container = document.getElementById('compContainer');
     
     try {
-        const response = await fetch(`${CONFIG.API_URL}/companies`);
+        const response = await fetch(`${CONFIG.API_URL}/company`);
         
         if (response.ok) {
             const data = await response.json();

@@ -1366,6 +1366,7 @@
         </div>
 
         <div class="auth-btns">
+          <a href="http://localhost:5174" class="btn-login" style="color:var(--violet)">For Employers</a>
           <a href="/pages/auth/login.html" class="btn-login">Log In</a>
           <a href="/pages/auth/register.html" class="btn-signup">Sign Up</a>
         </div>
@@ -1740,6 +1741,7 @@
           <a href="#">Privacy Policy</a>
           <a href="#">Terms of Service</a>
           <a href="#">Sitemap</a>
+          <a href="http://localhost:5173" style="color:var(--violet)">Admin Access</a>
         </div>
       </div>
     </div>
@@ -1752,46 +1754,7 @@
     <script src="/js/config.js"></script>
     <script src="/js/auth.js"></script>
     <script src="/js/utils.js"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-          fetchLatestJobs();
-      });
-
-      async function fetchLatestJobs() {
-          const grid = document.getElementById('jobGrid');
-          if (!grid) return;
-
-          try {
-              const res = await fetch(`${CONFIG.API_URL}/jobs?limit=4`);
-              const data = await res.json();
-              const jobs = Array.isArray(data) ? data : (data.jobs || []);
-              
-              if (jobs.length > 0) {
-                  grid.innerHTML = jobs.map(j => `
-                    <div class="job-card">
-                      <div class="jc-head">
-                        <div class="co-av">${j.company?.name?.charAt(0) || 'C'}</div>
-                        <div>
-                          <div class="jc-title">${j.title}</div>
-                          <div class="jc-co"><i class="bi bi-building me-1"></i>${j.company?.name || 'Company'}</div>
-                        </div>
-                      </div>
-                      <div class="jc-tags">
-                        ${(Array.isArray(j.tags) ? j.tags : []).slice(0, 3).map(t => `<span class="j-tag">${t}</span>`).join('')}
-                      </div>
-                      <div class="jc-meta">
-                        <span><i class="bi bi-geo-alt"></i> ${j.location || 'Remote'}</span>
-                        <span><i class="bi bi-currency-rupee"></i> ${j.salary || 'Not Disclosed'}</span>
-                      </div>
-                      <a href="pages/jobs/job-details.html?id=${j._id}" class="jc-btn">View Job <i class="bi bi-arrow-right"></i></a>
-                    </div>
-                  `).join('');
-              }
-          } catch (err) {
-              console.error("Home jobs fetch failed:", err);
-          }
-      }
-    </script>
+    <script src="/js/home-v2.js"></script>
 </body>
 
 </html>

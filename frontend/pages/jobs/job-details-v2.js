@@ -62,39 +62,35 @@ function renderJobDetails(job) {
     document.getElementById('loadingArea').style.display = 'none';
     document.getElementById('jobArea').style.display = 'block';
 
+    const company = job.companyId || job.company || {};
+    const compName = company.name || 'Unknown Company';
+    const compIni = compName.substring(0, 2).toUpperCase();
+
     // Top Card
     document.getElementById('jdTitle').textContent = job.title;
-    
-    let compName = 'Unknown Company';
-    let compIni = 'U';
-    if (job.company && job.company.name) {
-        compName = job.company.name;
-        compIni = compName.substring(0,2).toUpperCase();
-        
-        // Populate About Company Section dynamically
-        if(job.company.description) {
-            document.getElementById('jdCompDesc').textContent = job.company.description;
-        }
-        if(job.company.industry) document.getElementById('jdCompInd').textContent = job.company.industry;
-        if(job.company.companySize) document.getElementById('jdCompSize').textContent = job.company.companySize;
-        if(job.company.founded) document.getElementById('jdCompFound').textContent = job.company.founded;
-        
-        const webEl = document.getElementById('jdCompWeb');
-        if(job.company.website) {
-            webEl.href = job.company.website;
-            webEl.style.display = 'inline-block';
-        } else {
-            webEl.style.display = 'none';
-        }
-    }
-    
     document.getElementById('jdCompany').textContent = compName;
     document.getElementById('jdInitial').textContent = compIni;
-    document.getElementById('jdLoc').textContent = job.location || 'Remote';
+    document.getElementById('jdLoc').textContent = job.location || (job.isRemote ? 'Remote' : 'On-site');
     
-    document.getElementById('jdSal').textContent = job.salary || 'Not Disclosed';
-    document.getElementById('jdExp').textContent = job.experienceLevel || 'Fresher';
-    document.getElementById('jdType').textContent = job.jobType || 'Full Time';
+    // Salary Range
+    const salary = job.salaryMin && job.salaryMax 
+        ? `₹${(job.salaryMin/100000).toFixed(1)}L - ₹${(job.salaryMax/100000).toFixed(1)}L` 
+        : (job.salary || 'Not Disclosed');
+    document.getElementById('jdSal').textContent = salary;
+
+    document.getElementById('jdExp').textContent = job.experienceRequired || 'Fresher / 0-2 Years';
+    document.getElementById('jdType').textContent = job.type || 'Full Time';
+
+    if (company.description) {
+        document.getElementById('jdCompDesc').textContent = company.description;
+    }
+    if (company.industry) document.getElementById('jdCompInd').textContent = company.industry;
+    if (company.companySize) document.getElementById('jdCompSize').textContent = company.companySize;
+    if (company.website) {
+        const webEl = document.getElementById('jdCompWeb');
+        webEl.href = company.website;
+        webEl.style.display = 'inline-block';
+    }
 
     if (job.description) {
         document.getElementById('jdDesc').textContent = job.description;
@@ -119,8 +115,8 @@ function renderJobDetails(job) {
 
     const elElig = document.getElementById('jdElig');
     const hdrElig = document.getElementById('hdrElig');
-    if (job.eligibility) {
-        elElig.textContent = job.eligibility;
+    if (job.educationRequired) {
+        elElig.textContent = job.educationRequired;
         hdrElig.style.display = 'block';
         elElig.style.display = 'block';
     } else {
@@ -129,24 +125,24 @@ function renderJobDetails(job) {
     }
 
     // Requirements (Checkmarks list)
-    if (job.requirements && job.requirements.length > 0) {
-        document.getElementById('jdReqs').innerHTML = job.requirements.map(r => `<li><i class="bi bi-shield-check" style="color:var(--purple);margin-right:8px;"></i> ${r.trim()}</li>`).join('');
+    if (job.skills && job.skills.length > 0) {
+        document.getElementById('jdReqs').innerHTML = job.skills.map(s => `<li><i class="bi bi-shield-check" style="color:var(--violet);margin-right:8px;"></i> ${s.trim()}</li>`).join('');
     } else {
-        document.getElementById('jdReqs').innerHTML = '<li><i class="bi bi-shield-check" style="color:var(--purple);margin-right:8px;"></i> Strong understanding of Javascript (ES6+)</li>';
+        document.getElementById('jdReqs').innerHTML = '<li><i class="bi bi-shield-check" style="color:var(--violet);margin-right:8px;"></i> Strong understanding of software fundamentals</li>';
     }
 
     // Skills Tags
-    const tags = job.tags && job.tags.length ? job.tags : ['JavaScript', 'HTML/CSS', 'Responsive Design'];
+    const tags = job.skills && job.skills.length ? job.skills : (job.tags || ['General', 'IT', 'Technology']);
     document.getElementById('jdTags').innerHTML = tags.map(t => `<span class="jd-tag">${t}</span>`).join('');
 
     // Right Column Overview
     const posted = new Date(job.createdAt);
     const diffTime = Math.abs(new Date() - posted);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    document.getElementById('ovPosted').textContent = diffDays <= 1 ? 'Just now' : `${diffDays} days ago`;
+    document.getElementById('ovPosted').textContent = diffDays <= 1 ? 'Today' : `${diffDays} days ago`;
     
-    document.getElementById('ovApps').textContent = Math.floor(Math.random() * 200) + 10; // Dummy applicants metric
-    document.getElementById('ovID').textContent = '#' + job._id.substring(job._id.length - 5).toUpperCase();
+    document.getElementById('ovApps').textContent = job.applicationsCount || 0;
+    document.getElementById('ovID').textContent = '#' + (job._id || '').substring((job._id || '').length - 5).toUpperCase();
 
     // Bind Apply Buttons to Unstop Modal
     const btnApp1 = document.getElementById('btnQuickApply');

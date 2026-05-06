@@ -10,7 +10,7 @@ import {
   Avatar, 
   Tooltip, 
   Popconfirm, 
-  message,
+  App,
   Badge,
   Empty
 } from 'antd';
@@ -30,6 +30,7 @@ import dayjs from 'dayjs';
 const { Title, Text } = Typography;
 
 const Companies = () => {
+  const { message } = App.useApp();
   const [loading, setLoading] = useState(false);
   const [companies, setCompanies] = useState([]);
   const [total, setTotal] = useState(0);
@@ -127,8 +128,8 @@ const Companies = () => {
     },
     {
       title: 'Owner',
-      dataIndex: 'userId',
-      key: 'userId',
+      dataIndex: 'employerId',
+      key: 'employerId',
       render: (user) => (
         <div className="flex flex-col">
           <Text className="text-zinc-200">{user?.fullname}</Text>

@@ -119,16 +119,7 @@ const AdminLayout = ({ children }) => {
         }}
         width={280}
         className="border-r border-zinc-800/100 sidebar-premium hidden md:block"
-        style={{ 
-          background: '#09090b',
-          height: '100vh',
-          position: 'fixed',
-          left: 0,
-          top: 0,
-          bottom: 0,
-          zIndex: 1001,
-          overflow: 'auto'
-        }}
+        style={{ background: '#09090b' }}
       >
         <div className="flex items-center px-8 py-12 gap-4">
           <div className="w-11 h-11 bg-violet-600 rounded-2xl flex items-center justify-center shadow-2xl shadow-violet-600/30">
@@ -150,23 +141,8 @@ const AdminLayout = ({ children }) => {
           style={{ background: 'transparent' }}
         />
       </Sider>
-      <Layout style={{ 
-        marginLeft: collapsed ? 0 : 280, 
-        transition: 'all 0.2s cubic-bezier(0.2, 0, 0, 1)',
-        minHeight: '100vh'
-      }}>
-        <Header 
-          className="px-6 flex items-center justify-between border-b border-zinc-800/50" 
-          style={{ 
-            background: '#09090b', 
-            position: 'sticky', 
-            top: 0, 
-            zIndex: 1000,
-            padding: '0 24px',
-            height: '64px',
-            lineHeight: '64px'
-          }}
-        >
+      <Layout>
+        <Header className="px-6 flex items-center justify-between border-b border-zinc-800/50" style={{ background: '#09090b' }}>
           <Button
             type="text"
             icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
@@ -207,8 +183,11 @@ const AdminLayout = ({ children }) => {
         placement="left"
         onClose={() => setMobileVisible(false)}
         open={mobileVisible}
-        size={280}
-        styles={{ body: { padding: 0 }, header: { display: 'none' } }}
+        styles={{ 
+          header: { display: 'none' },
+          body: { padding: 0 },
+          wrapper: { width: 280 }
+        }}
         className="sidebar-premium-drawer"
       >
         <div style={{ background: '#09090b', height: '100%', borderRight: '1px solid #18181b' }}>

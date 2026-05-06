@@ -2,45 +2,66 @@ const mongoose = require('mongoose');
 
 const applicationSchema = new mongoose.Schema(
   {
-    job: {
+    jobId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Job',
-      required: [true, 'Application must belong to a job'],
+      required: true,
     },
-    applicant: {
+    userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
-      required: [true, 'Application must belong to a user'],
+      required: true,
+    },
+    employerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true, // Denormalized for optimized query access
+    },
+    resumeSnapshot: {
+      type: String,
+      required: [true, 'Please attach a resume PDF or DOCX file'],
+    },
+    screeningAnswers: {
+      type: [{
+        question: String,
+        answer: String
+      }]
     },
     status: {
       type: String,
-      enum: ['Applied', 'Under Review', 'Shortlisted', 'Rejected', 'Hired'],
-      default: 'Applied',
+      enum: ['applied', 'viewed', 'shortlisted', 'rejected', 'interview_scheduled', 'hired'],
+      default: 'applied',
     },
     statusTimeline: [
       {
         status: { type: String },
-        date: { type: Date, default: Date.now },
-        comment: { type: String }
+        updatedAt: { type: Date, default: Date.now },
+        updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
       }
     ],
-    resume: {
-      type: String,
-      required: [true, 'Please attach a resume PDF or DOCX file'],
+    employerNotes: {
+      type: String, // Private for employer
     },
-    coverLetter: {
-      type: String,
+    isWithdrawn: {
+      type: Boolean,
+      default: false
     },
-    fullName: { type: String },
-    phone: { type: String },
-    college: { type: String },
-    graduationYear: { type: Number },
-    portfolio: { type: String }
+    withdrawnAt: {
+      type: Date
+    },
+    appliedAt: {
+      type: Date,
+      default: Date.now
+    },
+    isJobDeleted: {
+      type: Boolean,
+      default: false
+    }
   },
   { timestamps: true }
 );
 
 // Prevent users from submitting multiple applications to the exact same job
-applicationSchema.index({ job: 1, applicant: 1 }, { unique: true });
+applicationSchema.index({ jobId: 1, userId: 1 }, { unique: true });
 
 module.exports = mongoose.model('Application', applicationSchema);

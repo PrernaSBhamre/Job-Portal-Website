@@ -2,6 +2,16 @@ const mongoose = require('mongoose');
 
 const jobSchema = new mongoose.Schema(
   {
+    employerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
+    companyId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Company',
+      required: true,
+    },
     title: {
       type: String,
       required: [true, 'Please add a job title'],
@@ -10,58 +20,75 @@ const jobSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Please add a description'],
     },
-    responsibilities: [{
-      type: String
-    }],
-    eligibility: {
-      type: String
-    },
-    perks: [{
-      type: String
-    }],
-    requirements: [{
+    category: {
       type: String,
-      required: [true, 'Please add requirements']
-    }],
-    salary: {
-      type: String, // Kept as String to allow "₹4L - ₹6L" ranges from Figma
-      required: [true, 'Please add a salary or salary range'],
     },
-    experienceLevel: {
-      type: String, // Kept as String to allow "0-1 Years" ranges from Figma
-      required: [true, 'Please add required experience level'],
+    type: {
+      type: String, // e.g. Full-Time, Part-Time
     },
     location: {
       type: String,
-      required: [true, 'Please add a location'],
     },
-    jobType: {
-      type: String,
-      required: [true, 'Please add job type (e.g. Full-Time, Part-Time)'],
+    isRemote: {
+      type: Boolean,
+      default: false
     },
-    position: {
-      type: Number,
-      required: [true, 'Please add number of positions available']
-    },
-    tags: [{
-      type: String // To store tags like ["React", "TypeScript", "Tailwind"]
+    skills: [{
+      type: String
     }],
-    company: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Company',
-      required: [true, 'Job must belong to a company'],
+    experienceRequired: {
+      type: String,
     },
-    created_by: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      required: [true, 'Job must be created by a user'],
+    educationRequired: {
+      type: String,
     },
-    applications: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Application',
-      }
-    ],
+    salaryMin: {
+      type: Number,
+    },
+    salaryMax: {
+      type: Number,
+    },
+    salaryNegotiable: {
+      type: Boolean,
+      default: false
+    },
+    openings: {
+      type: Number,
+      required: true
+    },
+    deadline: {
+      type: Date
+    },
+    screeningQuestions: {
+      type: [{
+        question: String,
+        required: Boolean
+      }],
+      validate: [val => val.length <= 3, '{PATH} exceeds the limit of 3']
+    },
+    isApproved: {
+      type: Boolean,
+      default: false
+    },
+    approvedAt: {
+      type: Date
+    },
+    approvedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    },
+    isActive: {
+      type: Boolean,
+      default: true
+    },
+    isPaused: {
+      type: Boolean,
+      default: false
+    },
+    isClosed: {
+      type: Boolean,
+      default: false
+    },
     applicationsCount: {
       type: Number,
       default: 0
@@ -69,10 +96,6 @@ const jobSchema = new mongoose.Schema(
     viewsCount: {
       type: Number,
       default: 0
-    },
-    isApproved: {
-      type: Boolean,
-      default: false
     },
     isFeatured: {
       type: Boolean,
@@ -90,10 +113,6 @@ const jobSchema = new mongoose.Schema(
       type: String,
       enum: ['pending', 'approved', 'rejected', 'closed'],
       default: 'pending'
-    },
-    isActive: {
-      type: Boolean,
-      default: true
     }
   },
   { timestamps: true }

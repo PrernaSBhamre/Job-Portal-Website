@@ -159,13 +159,13 @@ const getDashboardStats = async (req, res, next) => {
     const recentJobs = await Job.find({})
       .sort({ createdAt: -1 })
       .limit(5)
-      .populate('company', 'name logo');
+      .populate('companyId', 'name logo');
 
     const recentApplications = await Application.find({})
       .sort({ createdAt: -1 })
       .limit(5)
-      .populate('job', 'title')
-      .populate('applicant', 'fullname email profilePhoto');
+      .populate('jobId', 'title')
+      .populate('userId', 'fullname email profilePhoto');
 
     // Run Automated Fraud Detection
     const fraudFlags = await runFraudDetection();
@@ -311,8 +311,8 @@ const getAllJobs = async (req, res, next) => {
     }
 
     const jobs = await Job.find(query)
-      .populate('company', 'name logo')
-      .populate('created_by', 'fullname email')
+      .populate('companyId', 'name logo')
+      .populate('employerId', 'fullname email')
       .sort({ createdAt: -1 })
       .limit(limit * 1)
       .skip((page - 1) * limit);
@@ -358,11 +358,19 @@ const updateJobStatus = async (req, res, next) => {
     if (status === 'approved') {
       const Notification = require('../models/Notification');
       await Notification.create({
-        userId: job.created_by,
+        toUserId: job.employerId,
+        fromUserId: req.user._id, // admin
         message: `Your job post '${job.title}' has been approved by the admin and is now live!`,
-        type: 'job_approval',
-        link: '/employer/jobs'
+        type: 'general'
       });
+
+      // --- Socket.IO Event Delivery ---
+      if (req.io && job.employerId) {
+        req.io.to(`employer_${job.employerId.toString()}`).emit('job_approved', {
+            jobId: job._id,
+            jobTitle: job.title
+        });
+      }
     }
 
     res.json({ success: true, message: `Job updated successfully`, job });
@@ -380,8 +388,8 @@ const getAllApplications = async (req, res, next) => {
     if (status !== 'all') query.status = status;
 
     const applications = await Application.find(query)
-      .populate('job', 'title')
-      .populate('applicant', 'fullname email')
+      .populate('jobId', 'title')
+      .populate('userId', 'fullname email')
       .sort({ createdAt: -1 })
       .limit(limit * 1)
       .skip((page - 1) * limit);
@@ -409,7 +417,7 @@ const getAllCompanies = async (req, res, next) => {
     if (search) query.name = { $regex: search, $options: 'i' };
 
     const companies = await Company.find(query)
-      .populate('userId', 'fullname email')
+      .populate('employerId', 'fullname email')
       .sort({ createdAt: -1 })
       .limit(limit * 1)
       .skip((page - 1) * limit);
@@ -577,7 +585,7 @@ const deleteCompany = async (req, res, next) => {
     const company = await Company.findById(req.params.id);
     if (!company) return res.status(404).json({ success: false, message: 'Company not found' });
     await Company.deleteOne({ _id: company._id });
-    await Job.deleteMany({ company: company._id });
+    await Job.deleteMany({ companyId: company._id });
     res.json({ success: true, message: 'Company and its jobs removed' });
   } catch (error) {
     next(error);
@@ -749,6 +757,36 @@ const getAuditLogs = async (req, res, next) => {
   }
 };
 
+// --- Messages & Support Management ---
+
+// @desc    Get all support messages
+// @route   GET /api/admin/messages
+const getAllMessages = async (req, res, next) => {
+  try {
+    const messages = await Support.find()
+      .sort({ createdAt: -1 });
+    res.json(messages);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Mark a message as resolved
+// @route   PUT /api/admin/messages/:id/resolve
+const resolveMessage = async (req, res, next) => {
+  try {
+    const message = await Support.findById(req.params.id);
+    if (!message) {
+      return res.status(404).json({ success: false, message: 'Message not found' });
+    }
+    message.status = 'resolved';
+    await message.save();
+    res.json({ success: true, message: 'Message marked as resolved', data: message });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getDashboardStats,
   getAllUsers,
@@ -772,5 +810,7 @@ module.exports = {
   updateSettings,
   resolveReport,
   toggleUserFlag,
-  getAuditLogs
+  getAuditLogs,
+  getAllMessages,
+  resolveMessage
 };
